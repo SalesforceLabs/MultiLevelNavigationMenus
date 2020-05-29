@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Menu_Path__c</fullName>
+    <externalId>false</externalId>
+    <formula>Menu__r.Name + &quot; - &quot; +
+RPAD(
+LPAD(
+IF( NOT(ISBLANK( TEXT(
+Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c))), 
+TEXT(Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c), &quot;&quot;),3,&quot;0&quot;) +
+
+LPAD(
+IF( NOT(ISBLANK( TEXT(
+Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c))),
+TEXT(Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c),&quot;&quot;),3,&quot;0&quot;) +
+
+LPAD(  
+IF( NOT(ISBLANK( TEXT(
+Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c))),
+TEXT(Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c), &quot;&quot;),3,&quot;0&quot;) + 
+
+LPAD(
+IF(NOT(ISBLANK( TEXT(
+Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c))),
+TEXT(Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c),&quot;&quot;),3,&quot;0&quot;) +
+
+LPAD(
+IF(NOT(ISBLANK( TEXT(
+Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c))),
+TEXT(Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c),&quot;&quot;),3,&quot;0&quot;) +
+
+LPAD(
+IF(NOT(ISBLANK( TEXT(
+Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c))),
+TEXT(Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c),&quot;&quot;),3,&quot;0&quot;) +
+
+LPAD(
+IF(NOT(ISBLANK( TEXT(
+Menu_Item__r.Menu_Item__r.Position__c))),
+TEXT(Menu_Item__r.Menu_Item__r.Position__c),&quot;&quot;),3,&quot;0&quot;) +
+
+LPAD(
+IF( NOT(ISBLANK( TEXT(
+Menu_Item__r.Position__c ))),
+TEXT(Menu_Item__r.Position__c),&quot;&quot;),3,&quot;0&quot;) +
+
+LPAD(
+IF( NOT(ISBLANK( TEXT(
+Position__c ))),
+TEXT(Position__c),&quot;&quot;),3,&quot;0&quot;)
+,
+18,
+&quot;0&quot;)</formula>
+    <label>Menu Path</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

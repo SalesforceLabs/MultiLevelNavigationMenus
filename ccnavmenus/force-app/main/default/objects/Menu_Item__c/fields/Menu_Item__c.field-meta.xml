@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Menu_Item__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Menu Item</label>
+    <lookupFilter>
+        <active>true</active>
+        <errorMessage>Parent and Child Menu Item should belong to the same Menu.</errorMessage>
+        <filterItems>
+            <field>$Source.Menu__c</field>
+            <operation>equals</operation>
+            <valueField>Menu_Item__c.Menu__c</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Menu_Item__c</referenceTo>
+    <relationshipLabel>Menu Items</relationshipLabel>
+    <relationshipName>Menu_Items</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
