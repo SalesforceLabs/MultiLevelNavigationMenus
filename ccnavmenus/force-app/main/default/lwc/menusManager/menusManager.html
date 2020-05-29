@@ -1,0 +1,157 @@
+<template>
+    <div class="slds-theme_default">
+        <div class="slds-align_absolute-center">
+            <div class="slds-size_1-of-3 ">
+                <lightning-combobox
+                    name="progress"
+                    label="Choose Menu"
+                    value=""
+                    placeholder="Select a Menu"
+                    options={menuOptions}
+                    onchange={handleMenuChange}
+                    required
+                ></lightning-combobox>
+                <lightning-button-group>
+                    <lightning-button label="New Menu" title="New Menu"
+                            onclick={openCreateModal}>
+                    </lightning-button>
+
+                    <template if:false={menuId}>
+                        <lightning-button label="Edit Menu" title="Edit Menu"
+                            disabled>
+                        </lightning-button>
+                        <lightning-button label="Delete Menu" title="Delete Menu"
+                            disabled>
+                        </lightning-button>
+                    </template>
+
+                    <template if:true={menuId}>
+                        <lightning-button label="Edit Menu" title="New Menu"
+                                onclick={openEditModal}>
+                        </lightning-button>
+                        <lightning-button label="Delete Menu" title="Delete Menu"
+                                onclick={openDeleteModal}>
+                        </lightning-button>
+                    </template>
+                </lightning-button-group>
+            </div>
+        </div>
+        <div>
+            <lightning-tree-grid class="menuItemstreegrid"
+                hide-checkbox-column
+                columns={MENU_ITEM_COLUMNS_DEFINITION}
+                data={menuItemList}
+                key-field="id"
+                onrowaction={handleRowAction}>
+            </lightning-tree-grid>
+        </div>
+
+        <center>
+        <p><b>Show Modal Box using Lightning Web Componentes</b></p><br/><br/>
+        <lightning-button label="Show Modal" variant="brand" onclick={openCreateModal}></lightning-button>
+        </center>
+
+        <template if:true={createModalOpen}>
+
+        <div class="demo-only" style="height: 640px;">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeCreateModal}>
+                            <lightning-icon icon-name="utility:close" size="medium" variant="inverse">
+                            </lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Create New Menu</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <center>
+                            <lightning-record-form
+                                object-api-name="ccnavmenus__Menu__c"
+                                layout-type="Full"
+                                mode="edit"
+                                oncancel={closeCreateModal}
+                                onsuccess={createMenuSuccess}>
+                            </lightning-record-form>
+
+                        </center>
+                    </div>
+                    <footer class="slds-modal__footer">
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+        </template>
+
+        <template if:true={editModalOpen}>
+
+            <div class="demo-only" style="height: 640px;">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeEditModal}>
+                                <lightning-icon icon-name="utility:close" size="medium" variant="inverse">
+                                </lightning-icon>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                            <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Edit Menu</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                            <center>
+
+                                <lightning-record-form
+                                    record-id={menuId}
+                                    object-api-name="ccnavmenus__Menu__c"
+                                    layout-type="Full"
+                                    mode="edit"
+                                    oncancel={closeEditModal}
+                                    onsuccess={editMenuSuccess}>
+                                </lightning-record-form>
+    
+                            </center>
+                        </div>
+                        <footer class="slds-modal__footer">
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+            </template>
+
+            <template if:true={deleteModalOpen}>
+
+                <div class="demo-only" style="height: 640px;">
+                    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container">
+                            <header class="slds-modal__header">
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeDeleteModal}>
+                                    <lightning-icon icon-name="utility:close" size="medium" variant="inverse">
+                                    </lightning-icon>
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+                                <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">Edit Menu</h2>
+                            </header>
+                            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                                <center>
+    
+                                    Are you sure you want to delete "{menuName}"?
+        
+                                </center>
+                            </div>
+                            <footer class="slds-modal__footer">
+                                <lightning-button label="Yes" title="Yes"
+                                onclick={handleDeleteMenu}></lightning-button>
+                                <lightning-button label="No" title="No"
+                                onclick={closeDeleteModal}></lightning-button>
+                            </footer>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                </div>
+                </template>
+
+    </div>       
+
+
+ </template>

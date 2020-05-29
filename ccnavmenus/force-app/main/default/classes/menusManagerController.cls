@@ -1,4 +1,24 @@
-public with sharing class menusController {
+public with sharing class menusManagerController {
+    
+    @AuraEnabled(cacheable=true)
+    public static String getMenus()
+    {
+       List<ccnavmenus__Menu__c> menuList = [SELECT Id, Name FROM ccnavmenus__Menu__c ORDER BY Name LIMIT 100];
+       return System.JSON.serialize(menuList);
+    }
+
+    @AuraEnabled
+    public static String deleteMenu(Id menuId)
+    {
+        String result = 'success';
+        try {
+        ccnavmenus__Menu__c menu = new ccnavmenus__Menu__c(Id=menuId);
+        delete menu;
+        } catch(Exception e) {
+            result = e+'';
+        }
+        return result;
+    }
 
     @AuraEnabled(cacheable=true)
     public static String getMenu(Id menuId)
@@ -13,7 +33,7 @@ public with sharing class menusController {
 
         } catch(Exception e){}
 
-        return System.JSON.serialize(listTOCLevel1);
+        return System.JSON.serialize(listTOCLevel1).replaceAll('"items"','"_children"');
     }
 
     private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(Id menuId)
@@ -184,6 +204,7 @@ public with sharing class menusController {
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
         ti.href = toc.ccnavmenus__URL__c;
+        ti.openInNewWindow = toc.ccnavmenus__Open_in_New_Window__c;
         ti.expanded = expanded;
         ti.items = new List<treeItem2>();
         ti.itemsMap = new Map<String, treeItem2>();
@@ -198,6 +219,7 @@ public with sharing class menusController {
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
         ti.href = toc.ccnavmenus__URL__c;
+        ti.openInNewWindow = toc.ccnavmenus__Open_in_New_Window__c;
         ti.expanded = expanded;
         ti.items = new List<treeItem3>();
         ti.itemsMap = new Map<String, treeItem3>();
@@ -212,6 +234,7 @@ public with sharing class menusController {
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
         ti.href = toc.ccnavmenus__URL__c;
+        ti.openInNewWindow = toc.ccnavmenus__Open_in_New_Window__c;
         ti.expanded = expanded;
         ti.items = new List<treeItem4>();
         ti.itemsMap = new Map<String, treeItem4>();
@@ -226,6 +249,7 @@ public with sharing class menusController {
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
         ti.href = toc.ccnavmenus__URL__c;
+        ti.openInNewWindow = toc.ccnavmenus__Open_in_New_Window__c;
         ti.expanded = expanded;
         ti.items = new List<treeItem5>();
         ti.itemsMap = new Map<String, treeItem5>();
@@ -240,6 +264,7 @@ public with sharing class menusController {
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
         ti.href = toc.ccnavmenus__URL__c;
+        ti.openInNewWindow = toc.ccnavmenus__Open_in_New_Window__c;
         ti.expanded = expanded;
         ti.items = new List<treeItem6>();
         ti.itemsMap = new Map<String, treeItem6>();
@@ -254,6 +279,7 @@ public with sharing class menusController {
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
         ti.href = toc.ccnavmenus__URL__c;
+        ti.openInNewWindow = toc.ccnavmenus__Open_in_New_Window__c;
         ti.expanded = expanded;
         
         return ti;
@@ -269,6 +295,8 @@ public class treeItem
     public string name;
 
     public string href;
+
+    public boolean openInNewWindow;
 
     public boolean expanded;
 
@@ -287,6 +315,8 @@ public class treeItem2
 
     public string href;
 
+    public boolean openInNewWindow;
+
     public boolean expanded;
 
     public List<treeItem3> items;
@@ -304,6 +334,8 @@ public class treeItem3
 
     public string href;
 
+    public boolean openInNewWindow;
+
     public boolean expanded;
 
     public List<treeItem4> items;
@@ -320,6 +352,8 @@ public class treeItem4
     public string name;
 
     public string href;
+
+    public boolean openInNewWindow;
 
     public boolean expanded;
 
@@ -339,6 +373,8 @@ public class treeItem5
 
     public string href;
 
+    public boolean openInNewWindow;
+
     public boolean expanded;
 
     public List<treeItem6> items;
@@ -357,9 +393,11 @@ public class treeItem6
 
     public string href;
 
+    public boolean openInNewWindow;
+
     public boolean expanded;
 
 }
 
-}
 
+}

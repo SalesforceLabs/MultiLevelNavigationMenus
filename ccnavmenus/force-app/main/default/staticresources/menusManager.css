@@ -1,0 +1,5 @@
+.menuItemstreegrid .slds-scrollable_y, 
+.menuItemstreegrid .slds-scrollable--y {
+    overflow: visible !important;
+    overflow-y: visible !important;
+}
