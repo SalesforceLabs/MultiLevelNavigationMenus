@@ -2,4 +2,6 @@
 .menuItemstreegrid .slds-scrollable--y {
     overflow: visible !important;
     overflow-y: visible !important;
+    min-height: 400px;
 }
+

@@ -12,6 +12,8 @@ public with sharing class menusManagerController {
     {
         String result = 'success';
         try {
+        List<ccnavmenus__Menu_Item__c> menuItemList = [SELECT Id FROM ccnavmenus__Menu_Item__c WHERE ccnavmenus__Menu__c = :menuId];
+        delete menuItemList;
         ccnavmenus__Menu__c menu = new ccnavmenus__Menu__c(Id=menuId);
         delete menu;
         } catch(Exception e) {
@@ -36,10 +38,28 @@ public with sharing class menusManagerController {
         return System.JSON.serialize(listTOCLevel1).replaceAll('"items"','"_children"');
     }
 
+    @AuraEnabled
+    public static String deleteMenuItem(Id menuItemId)
+    {
+        String result = 'success';
+        try {
+            List<ccnavmenus__Menu_Item__c> menuItemList = [SELECT Id FROM ccnavmenus__Menu_Item__c WHERE 
+            Id =: menuItemId OR ccnavmenus__Menu_Item__c = :menuItemId OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c = :menuItemId
+            OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c  = :menuItemId 
+            OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c = :menuItemId
+            OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c = :menuItemId 
+            OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c  = :menuItemId];
+            delete menuItemList;
+        } catch(Exception e) {
+            result = e+'';
+        }
+        return result;
+    }
+
     private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(Id menuId)
     {
-        return new Map<Id, ccnavmenus__Menu_Item__c>([SELECT Id, Name, ccnavmenus__URL__c, ccnavmenus__Menu_Path__c, ccnavmenus__Open_in_New_Window__c,
-        ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, 
+        return new Map<Id, ccnavmenus__Menu_Item__c>([SELECT Id, Name, ccnavmenus__URL__c, ccnavmenus__Menu_Path__c, ccnavmenus__Open_in_New_Window__c, ccnavmenus__Position__c,
+        ccnavmenus__Public__c,ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, 
         ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,
         ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, 
         ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,
@@ -204,7 +224,10 @@ public with sharing class menusManagerController {
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
         ti.href = toc.ccnavmenus__URL__c;
-        ti.openInNewWindow = toc.ccnavmenus__Open_in_New_Window__c;
+        ti.position = toc.ccnavmenus__Position__c;
+        ti.miId = toc.ccnavmenus__Menu_Item__c;
+        ti.openInNewWindow = (toc.ccnavmenus__Open_in_New_Window__c) ? 'Yes' : 'No';
+        ti.isPublic = (toc.ccnavmenus__Public__c) ? 'Yes' : 'No' ;
         ti.expanded = expanded;
         ti.items = new List<treeItem2>();
         ti.itemsMap = new Map<String, treeItem2>();
@@ -219,7 +242,10 @@ public with sharing class menusManagerController {
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
         ti.href = toc.ccnavmenus__URL__c;
-        ti.openInNewWindow = toc.ccnavmenus__Open_in_New_Window__c;
+        ti.position = toc.ccnavmenus__Position__c;
+        ti.miId = toc.ccnavmenus__Menu_Item__c;
+        ti.openInNewWindow = (toc.ccnavmenus__Open_in_New_Window__c) ? 'Yes' : 'No';
+        ti.isPublic = (toc.ccnavmenus__Public__c) ? 'Yes' : 'No' ;
         ti.expanded = expanded;
         ti.items = new List<treeItem3>();
         ti.itemsMap = new Map<String, treeItem3>();
@@ -234,7 +260,10 @@ public with sharing class menusManagerController {
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
         ti.href = toc.ccnavmenus__URL__c;
-        ti.openInNewWindow = toc.ccnavmenus__Open_in_New_Window__c;
+        ti.position = toc.ccnavmenus__Position__c;
+        ti.miId = toc.ccnavmenus__Menu_Item__c;
+        ti.openInNewWindow = (toc.ccnavmenus__Open_in_New_Window__c) ? 'Yes' : 'No';
+        ti.isPublic = (toc.ccnavmenus__Public__c) ? 'Yes' : 'No' ;
         ti.expanded = expanded;
         ti.items = new List<treeItem4>();
         ti.itemsMap = new Map<String, treeItem4>();
@@ -249,7 +278,10 @@ public with sharing class menusManagerController {
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
         ti.href = toc.ccnavmenus__URL__c;
-        ti.openInNewWindow = toc.ccnavmenus__Open_in_New_Window__c;
+        ti.position = toc.ccnavmenus__Position__c;
+        ti.miId = toc.ccnavmenus__Menu_Item__c;
+        ti.openInNewWindow = (toc.ccnavmenus__Open_in_New_Window__c) ? 'Yes' : 'No';
+        ti.isPublic = (toc.ccnavmenus__Public__c) ? 'Yes' : 'No' ;
         ti.expanded = expanded;
         ti.items = new List<treeItem5>();
         ti.itemsMap = new Map<String, treeItem5>();
@@ -264,7 +296,10 @@ public with sharing class menusManagerController {
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
         ti.href = toc.ccnavmenus__URL__c;
-        ti.openInNewWindow = toc.ccnavmenus__Open_in_New_Window__c;
+        ti.position = toc.ccnavmenus__Position__c;
+        ti.miId = toc.ccnavmenus__Menu_Item__c;
+        ti.openInNewWindow = (toc.ccnavmenus__Open_in_New_Window__c) ? 'Yes' : 'No';
+        ti.isPublic = (toc.ccnavmenus__Public__c) ? 'Yes' : 'No' ;
         ti.expanded = expanded;
         ti.items = new List<treeItem6>();
         ti.itemsMap = new Map<String, treeItem6>();
@@ -279,7 +314,10 @@ public with sharing class menusManagerController {
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
         ti.href = toc.ccnavmenus__URL__c;
-        ti.openInNewWindow = toc.ccnavmenus__Open_in_New_Window__c;
+        ti.position = toc.ccnavmenus__Position__c;
+        ti.miId = toc.ccnavmenus__Menu_Item__c;
+        ti.openInNewWindow = (toc.ccnavmenus__Open_in_New_Window__c) ? 'Yes' : 'No';
+        ti.isPublic = (toc.ccnavmenus__Public__c) ? 'Yes' : 'No' ;
         ti.expanded = expanded;
         
         return ti;
@@ -296,7 +334,13 @@ public class treeItem
 
     public string href;
 
-    public boolean openInNewWindow;
+    public string position;
+
+    public string miId;
+
+    public string openInNewWindow;
+
+    public string isPublic;
 
     public boolean expanded;
 
@@ -315,7 +359,13 @@ public class treeItem2
 
     public string href;
 
-    public boolean openInNewWindow;
+    public string position;
+
+    public string miId;
+
+    public string openInNewWindow;
+
+    public string isPublic;
 
     public boolean expanded;
 
@@ -334,7 +384,13 @@ public class treeItem3
 
     public string href;
 
-    public boolean openInNewWindow;
+    public string position;
+
+    public string miId;
+
+    public string openInNewWindow;
+
+    public string isPublic;
 
     public boolean expanded;
 
@@ -353,7 +409,13 @@ public class treeItem4
 
     public string href;
 
-    public boolean openInNewWindow;
+    public string position;
+
+    public string miId;
+
+    public string openInNewWindow;
+
+    public string isPublic;
 
     public boolean expanded;
 
@@ -373,7 +435,13 @@ public class treeItem5
 
     public string href;
 
-    public boolean openInNewWindow;
+    public string position;
+
+    public string miId;
+
+    public string openInNewWindow;
+
+    public string isPublic;
 
     public boolean expanded;
 
@@ -393,7 +461,13 @@ public class treeItem6
 
     public string href;
 
-    public boolean openInNewWindow;
+    public string position;
+
+    public string miId;
+
+    public string openInNewWindow;
+
+    public string isPublic;
 
     public boolean expanded;
 

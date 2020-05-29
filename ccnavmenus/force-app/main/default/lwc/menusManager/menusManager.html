@@ -23,6 +23,9 @@
                         <lightning-button label="Delete Menu" title="Delete Menu"
                             disabled>
                         </lightning-button>
+                        <lightning-button label="Create Menu Item" title="Create Menu Item"
+                                disabled>
+                        </lightning-button>
                     </template>
 
                     <template if:true={menuId}>
@@ -32,11 +35,14 @@
                         <lightning-button label="Delete Menu" title="Delete Menu"
                                 onclick={openDeleteModal}>
                         </lightning-button>
+                        <lightning-button label="Create Menu Item" title="Create Menu Item"
+                                onclick={openCreateEditModal}>
+                        </lightning-button>
                     </template>
                 </lightning-button-group>
             </div>
         </div>
-        <div>
+        <div if:true={menuId}>
             <lightning-tree-grid class="menuItemstreegrid"
                 hide-checkbox-column
                 columns={MENU_ITEM_COLUMNS_DEFINITION}
@@ -46,10 +52,8 @@
             </lightning-tree-grid>
         </div>
 
-        <center>
-        <p><b>Show Modal Box using Lightning Web Componentes</b></p><br/><br/>
-        <lightning-button label="Show Modal" variant="brand" onclick={openCreateModal}></lightning-button>
-        </center>
+        
+        <!-- MODALS START HERE -->
 
         <template if:true={createModalOpen}>
 
@@ -117,39 +121,141 @@
                 </section>
                 <div class="slds-backdrop slds-backdrop_open"></div>
             </div>
+        </template>
+
+        <template if:true={deleteModalOpen}>
+
+            <div class="demo-only" style="height: 640px;">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeDeleteModal}>
+                                <lightning-icon icon-name="utility:close" size="medium" variant="inverse">
+                                </lightning-icon>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                            <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">Delete Menu {menuName}</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                            <center>
+
+                                <p>Are you sure you want to delete "{menuName}"?</p>
+                                <p>WARNING: This will delete all child menu items as well!</p>
+    
+                            </center>
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <lightning-button label="Yes" title="Yes"
+                            onclick={handleDeleteMenu}></lightning-button>
+                            <lightning-button label="No" title="No"
+                            onclick={closeDeleteModal}></lightning-button>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </template>
+
+        <template if:true={createEditModalOpen}>
+
+            <div class="demo-only" style="height: 840px;">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeCreateEditModal}>
+                                <lightning-icon icon-name="utility:close" size="medium" variant="inverse">
+                                </lightning-icon>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                            <h2 id="modal-heading-04" class="slds-text-heading_medium slds-hyphenate">
+                                <span if:true={selectedMenuItemIdForEdit}> Edit </span>
+                                <span if:false={selectedMenuItemIdForEdit}> Create </span>
+                                Menu Item {selectedMenuItemLabelForEdit}</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4" style="height: 640px;">
+                            <center>
+                                <lightning-record-edit-form record-id={selectedMenuItemIdForEdit}
+                                object-api-name="ccnavmenus__Menu_Item__c" onsuccess={handleCreateEditSuccess}>
+                                    <lightning-messages>
+                                    </lightning-messages>
+
+                                    <lightning-input-field field-name="ccnavmenus__Menu__c" value={menuId} disabled readonly>
+                                    </lightning-input-field>
+
+                                    <lightning-input-field if:true={selectedMenuItemIdForCreate} field-name="ccnavmenus__Menu_Item__c" value={selectedMenuItemIdForCreate} disabled readonly>
+                                    </lightning-input-field>
+
+                                    <lightning-input-field field-name="Name" required>
+                                    </lightning-input-field>
+
+                                    <lightning-input-field field-name="ccnavmenus__URL__c" required>
+                                    </lightning-input-field>
+
+                                    <span class="slds-form-element__label">Open in New Window</span>
+                                    <lightning-input-field field-name="ccnavmenus__Open_in_New_Window__c" variant="label-hidden">
+                                    </lightning-input-field>
+
+                                    <span class="slds-form-element__label">Public</span>
+                                    <lightning-input-field field-name="ccnavmenus__Public__c" variant="label-hidden">
+                                    </lightning-input-field>
+
+                                    <span class="slds-form-element__label">Position - Relative to Level</span>
+                                    <lightning-input-field field-name="ccnavmenus__Position__c" variant="label-hidden" required>
+                                    </lightning-input-field>
+                                    <lightning-button
+                                        class="slds-m-top_small"
+                                        variant="brand"
+                                        type="submit"
+                                        name="save"
+                                        label="Save">
+                                    </lightning-button>
+                                    <lightning-button label="Cancel" title="Cancel"
+                                            onclick={closeCreateEditModal}></lightning-button>
+                                </lightning-record-edit-form>
+    
+                            </center>
+                        </div>
+                        <footer class="slds-modal__footer">
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
             </template>
 
-            <template if:true={deleteModalOpen}>
+
+            <template if:true={deleteMIModalOpen}>
 
                 <div class="demo-only" style="height: 640px;">
                     <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
                         <div class="slds-modal__container">
                             <header class="slds-modal__header">
-                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeDeleteModal}>
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeDeleteMIModal}>
                                     <lightning-icon icon-name="utility:close" size="medium" variant="inverse">
                                     </lightning-icon>
                                     <span class="slds-assistive-text">Close</span>
                                 </button>
-                                <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">Edit Menu</h2>
+                                <h2 id="modal-heading-05" class="slds-text-heading_medium slds-hyphenate">Delete Menu Item {selectedMenuItemLabelForDelete}</h2>
                             </header>
-                            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-5">
                                 <center>
     
-                                    Are you sure you want to delete "{menuName}"?
+                                    <p>Are you sure you want to delete "{selectedMenuItemLabelForDelete}"?</p>
+                                    <p>WARNING: This will delete all child menu items as well!</p>
         
                                 </center>
                             </div>
                             <footer class="slds-modal__footer">
                                 <lightning-button label="Yes" title="Yes"
-                                onclick={handleDeleteMenu}></lightning-button>
+                                onclick={handleDeleteMIMenu}></lightning-button>
                                 <lightning-button label="No" title="No"
-                                onclick={closeDeleteModal}></lightning-button>
+                                onclick={closeDeleteMIModal}></lightning-button>
                             </footer>
                         </div>
                     </section>
                     <div class="slds-backdrop slds-backdrop_open"></div>
                 </div>
-                </template>
+            </template>
 
     </div>       
 
