@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>48.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Navigation Menu</masterLabel>
+    <description>Navigation Menu</description>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+
+            <property name="menuId" type="String" label="Menu" required="true" datasource="apex://menusPicklist"
+            description="Choose which menu to display"/>
+
+            <property name="isVertical" type="Boolean" label="Vertical?" required="false" default="false"
+            description="Check to display menu in vertical mode."/>
+
+        </targetConfig>
+    </targetConfigs> 
+</LightningComponentBundle>

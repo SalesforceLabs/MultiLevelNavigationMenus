@@ -1,8 +1,9 @@
 public with sharing class menusController {
 
     @AuraEnabled(cacheable=true)
-    public static String getMenu(Id menuId)
+    public static String getMenu(Id menuId, String url)
     {
+        Map<String,Object> resultMap = new Map<String,Object>();
         List<treeItem> listTOCLevel1 = new List<treeItem>();
 
         try {
@@ -10,23 +11,39 @@ public with sharing class menusController {
             Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId);
 
             listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
+            resultMap.put('menu',listTOCLevel1);
+
 
         } catch(Exception e){}
 
-        return System.JSON.serialize(listTOCLevel1);
+        return System.JSON.serialize(resultMap);
     }
 
     private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(Id menuId)
     {
-        return new Map<Id, ccnavmenus__Menu_Item__c>([SELECT Id, Name, ccnavmenus__URL__c, ccnavmenus__Menu_Path__c, ccnavmenus__Open_in_New_Window__c,
-        ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, 
-        ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,
-        ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, 
-        ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,
-        (SELECT Id FROM ccnavmenus__Menu_Items__r)
-        FROM ccnavmenus__Menu_Item__c WHERE 
-        ccnavmenus__Menu__c = :menuId 
-        ORDER BY ccnavmenus__Menu_Path__c ASC]);
+        String query = 'SELECT Id, Name, ccnavmenus__URL__c, ccnavmenus__Menu_Path__c, ccnavmenus__Open_in_New_Window__c,';
+        query += 'ccnavmenus__SLDS_Icon__c, ccnavmenus__SLDS_Icon_Position__c, ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
+        query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
+        query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
+        query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
+        query += '(SELECT Id FROM ccnavmenus__Menu_Items__r)';
+        query += ' FROM ccnavmenus__Menu_Item__c WHERE ';
+        query += ' ccnavmenus__Menu__c = :menuId';
+
+        if(System.UserInfo.getUserType() == 'Guest')
+        {
+            query += ' AND ccnavmenus__Public__c = TRUE';
+            query += ' AND (ccnavmenus__Menu_Item__c = NULL OR ccnavmenus__Menu_Item__r.ccnavmenus__Public__c = TRUE)';
+            query += ' AND (ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c = NULL OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Public__c = TRUE)';
+            query += ' AND (ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c = NULL OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Public__c = TRUE)';
+            query += ' AND (ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c = NULL OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Public__c = TRUE)';
+            query += ' AND (ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c = NULL OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Public__c = TRUE)';
+        }
+        query += ' ORDER BY ccnavmenus__Menu_Path__c ASC';
+
+        return new Map<Id, ccnavmenus__Menu_Item__c>(
+        (List<ccnavmenus__Menu_Item__c>)Database.query(query)
+        );
     }
 
     private static List<treeItem> populateTreeItemsByParent(Map<Id,ccnavmenus__Menu_Item__c> tocMap, Boolean expanded)
@@ -183,7 +200,10 @@ public with sharing class menusController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.icon = toc.ccnavmenus__SLDS_Icon__c;
+        ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
+        ti.target = (toc.ccnavmenus__Open_in_New_Window__c) ? '_blank' : '';
         ti.expanded = expanded;
         ti.items = new List<treeItem2>();
         ti.itemsMap = new Map<String, treeItem2>();
@@ -197,7 +217,10 @@ public with sharing class menusController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.icon = toc.ccnavmenus__SLDS_Icon__c;
+        ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
+        ti.target = (toc.ccnavmenus__Open_in_New_Window__c) ? '_blank' : '';
         ti.expanded = expanded;
         ti.items = new List<treeItem3>();
         ti.itemsMap = new Map<String, treeItem3>();
@@ -211,7 +234,10 @@ public with sharing class menusController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.icon = toc.ccnavmenus__SLDS_Icon__c;
+        ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
+        ti.target = (toc.ccnavmenus__Open_in_New_Window__c) ? '_blank' : '';
         ti.expanded = expanded;
         ti.items = new List<treeItem4>();
         ti.itemsMap = new Map<String, treeItem4>();
@@ -225,7 +251,10 @@ public with sharing class menusController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.icon = toc.ccnavmenus__SLDS_Icon__c;
+        ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
+        ti.target = (toc.ccnavmenus__Open_in_New_Window__c) ? '_blank' : '';
         ti.expanded = expanded;
         ti.items = new List<treeItem5>();
         ti.itemsMap = new Map<String, treeItem5>();
@@ -239,7 +268,10 @@ public with sharing class menusController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.icon = toc.ccnavmenus__SLDS_Icon__c;
+        ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
+        ti.target = (toc.ccnavmenus__Open_in_New_Window__c) ? '_blank' : '';
         ti.expanded = expanded;
         ti.items = new List<treeItem6>();
         ti.itemsMap = new Map<String, treeItem6>();
@@ -253,7 +285,10 @@ public with sharing class menusController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.icon = toc.ccnavmenus__SLDS_Icon__c;
+        ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
+        ti.target = (toc.ccnavmenus__Open_in_New_Window__c) ? '_blank' : '';
         ti.expanded = expanded;
         
         return ti;
@@ -268,7 +303,13 @@ public class treeItem
 
     public string name;
 
+    public string icon;
+
+    public string iconPosition;
+
     public string href;
+
+    public string target;
 
     public boolean expanded;
 
@@ -285,7 +326,13 @@ public class treeItem2
 
     public string name;
 
+    public string icon;
+
+    public string iconPosition;
+
     public string href;
+
+    public string target;
 
     public boolean expanded;
 
@@ -302,7 +349,13 @@ public class treeItem3
 
     public string name;
 
+    public string icon;
+
+    public string iconPosition;
+
     public string href;
+
+    public string target;
 
     public boolean expanded;
 
@@ -319,9 +372,15 @@ public class treeItem4
 
     public string name;
 
+    public string icon;
+
+    public string iconPosition;
+
     public string href;
 
     public boolean expanded;
+
+    public string target;
 
     public List<treeItem5> items;
 
@@ -337,7 +396,13 @@ public class treeItem5
 
     public string name;
 
+    public string icon;
+
+    public string iconPosition;
+
     public string href;
+
+    public string target;
 
     public boolean expanded;
 
@@ -355,7 +420,13 @@ public class treeItem6
 
     public string name;
 
+    public string icon;
+
+    public string iconPosition;
+
     public string href;
+
+    public string target;
 
     public boolean expanded;
 

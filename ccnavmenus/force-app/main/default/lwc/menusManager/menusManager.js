@@ -21,13 +21,30 @@ const MENU_ITEM_COLUMNS_DEFINITION = [
         type: 'text',
         fieldName: 'label',
         label: 'Name',
+        initialWidth: 300
+    },
+    {
+        type: 'text',
+        fieldName: 'label',
+        label: 'Label',
         initialWidth: 300,
+        cellAttributes:
+        { 
+            iconName: 
+            { 
+                fieldName: 'icon' 
+            }, 
+            iconPosition: 
+            {
+                fieldName: 'iconPosition'
+            }
+        }
     },
     {
         type: 'text',
         fieldName: 'href',
         label: 'URL',
-        initialWidth: 300,
+        initialWidth: 300        
     },
     {
         type: 'text',

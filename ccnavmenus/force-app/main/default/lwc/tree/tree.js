@@ -11,6 +11,7 @@ import { keyCodes, deepCopy } from 'c/utilsPrivate';
 
 export default class cTree extends LightningElement {
     @api header;
+    @api selectedContains = false;
 
     @track _currentFocusedItem = null;
     @track _childNodes;
@@ -89,7 +90,7 @@ export default class cTree extends LightningElement {
             return this.treedata.cloneItems(item);
         });
 
-        const treeRoot = this.treedata.parse(this.items, this.selectedItem);
+        const treeRoot = this.treedata.parse(this.items, this.selectedItem, this.selectedContains);
         this._childNodes = treeRoot ? treeRoot.children : [];
         this._selectedItem = treeRoot.selectedItem;
         this._key = this._childNodes.length > 0 ? treeRoot.key : null;

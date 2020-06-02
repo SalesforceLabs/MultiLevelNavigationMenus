@@ -18,6 +18,9 @@
                     aria-level={item.node.level}
                     label={item.node.label}
                     href={item.node.href}
+                    target={item.node.target}
+                    icon={item.node.icon}
+                    icon-position={item.node.iconPosition}
                     metatext={item.node.metatext}
                     node-ref={item.node.nodeRef}
                     is-expanded={item.node.isExpanded}
@@ -39,6 +42,9 @@
                     aria-level={item.node.level}
                     label={item.node.label}
                     href={item.node.href}
+                    target={item.node.target}
+                    icon={item.node.icon}
+                    icon-position={item.node.iconPosition}
                     metatext={item.node.metatext}
                     node-ref={item.node.nodeRef}
                     is-expanded={item.node.isExpanded}
@@ -74,12 +80,27 @@
                 </span>
             </button>
             <span class="slds-has-flexi-truncate">
-                <a href={href} tabindex="-1" role="presentation">
+                <a href={href} tabindex="-1" role="presentation" target={target} class="menuLink">
+                    <template if:true={icon}>
+                        <c-primitive-icon if:true={iconPositionLeft}
+                        icon-name={icon}
+                        variant="bare"
+                        svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
+                        >
+                        </c-primitive-icon>
+                    </template>
                     <span
                         class="slds-tree__item-label slds-truncate"
                         title={label}
-                        >{label}</span
-                    >
+                        >{label}</span>
+                    <template if:true={icon}>
+                        <c-primitive-icon if:true={iconPositionRight}
+                        icon-name={icon}
+                        variant="bare"
+                        svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
+                        >
+                        </c-primitive-icon>
+                    </template>
                     <template if:true={metatext}>
                         <span
                             class="slds-tree__item-meta slds-truncate"
@@ -104,6 +125,9 @@
                             aria-level={item.node.level}
                             label={item.node.label}
                             href={item.node.href}
+                            target={item.node.target}
+                            icon={item.node.icon}
+                            icon-position={item.node.iconPosition}
                             metatext={item.node.metatext}
                             node-ref={item.node.nodeRef}
                             is-expanded={item.node.isExpanded}
@@ -125,6 +149,9 @@
                             aria-level={item.node.level}
                             label={item.node.label}
                             href={item.node.href}
+                            target={item.node.target}
+                            icon={item.node.icon}
+                            icon-position={item.node.iconPosition}
                             metatext={item.node.metatext}
                             node-ref={item.node.nodeRef}
                             is-expanded={item.node.isExpanded}

@@ -59,7 +59,7 @@ public with sharing class menusManagerController {
     private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(Id menuId)
     {
         return new Map<Id, ccnavmenus__Menu_Item__c>([SELECT Id, Name, ccnavmenus__URL__c, ccnavmenus__Menu_Path__c, ccnavmenus__Open_in_New_Window__c, ccnavmenus__Position__c,
-        ccnavmenus__Public__c,ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, 
+        ccnavmenus__Public__c,ccnavmenus__SLDS_Icon__c,ccnavmenus__SLDS_Icon_Position__c,ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, 
         ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,
         ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, 
         ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,
@@ -223,6 +223,8 @@ public with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.icon = toc.ccnavmenus__SLDS_Icon__c;
+        ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
         ti.position = toc.ccnavmenus__Position__c;
         ti.miId = toc.ccnavmenus__Menu_Item__c;
@@ -241,6 +243,8 @@ public with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.icon = toc.ccnavmenus__SLDS_Icon__c;
+        ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
         ti.position = toc.ccnavmenus__Position__c;
         ti.miId = toc.ccnavmenus__Menu_Item__c;
@@ -259,6 +263,8 @@ public with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.icon = toc.ccnavmenus__SLDS_Icon__c;
+        ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
         ti.position = toc.ccnavmenus__Position__c;
         ti.miId = toc.ccnavmenus__Menu_Item__c;
@@ -277,6 +283,8 @@ public with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.icon = toc.ccnavmenus__SLDS_Icon__c;
+        ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
         ti.position = toc.ccnavmenus__Position__c;
         ti.miId = toc.ccnavmenus__Menu_Item__c;
@@ -295,6 +303,8 @@ public with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.icon = toc.ccnavmenus__SLDS_Icon__c;
+        ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
         ti.position = toc.ccnavmenus__Position__c;
         ti.miId = toc.ccnavmenus__Menu_Item__c;
@@ -313,6 +323,8 @@ public with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.icon = toc.ccnavmenus__SLDS_Icon__c;
+        ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
         ti.position = toc.ccnavmenus__Position__c;
         ti.miId = toc.ccnavmenus__Menu_Item__c;
@@ -331,6 +343,10 @@ public class treeItem
     public string label;
 
     public string name;
+
+    public string icon;
+
+    public string iconPosition;
 
     public string href;
 
@@ -357,6 +373,10 @@ public class treeItem2
 
     public string name;
 
+    public string icon;
+
+    public string iconPosition;
+
     public string href;
 
     public string position;
@@ -382,6 +402,10 @@ public class treeItem3
 
     public string name;
 
+    public string icon;
+
+    public string iconPosition;
+
     public string href;
 
     public string position;
@@ -406,6 +430,10 @@ public class treeItem4
     public string label;
 
     public string name;
+
+    public string icon;
+
+    public string iconPosition;
 
     public string href;
 
@@ -433,6 +461,10 @@ public class treeItem5
 
     public string name;
 
+    public string icon;
+
+    public string iconPosition;
+
     public string href;
 
     public string position;
@@ -458,6 +490,10 @@ public class treeItem6
     public string label;
 
     public string name;
+
+    public string icon;
+
+    public string iconPosition;
 
     public string href;
 

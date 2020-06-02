@@ -24,6 +24,9 @@ export function getTreeNode(node, level, parentKey, childNum) {
         key: computeKey(parentKey, childNum),
         // eslint-disable-next-line no-script-url
         href: node.href || 'javascript:void(0)',
+        target: node.target,
+        icon: node.icon,
+        iconPosition: node.iconPosition,
         isDisabled: node.disabled || false,
         visible: level === 1,
         children: [],

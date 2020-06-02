@@ -59,6 +59,9 @@ export class TreeData {
             expanded: item.expanded,
             metatext: item.metatext,
             href: item.href,
+            target: item.target,
+            icon: item.icon,
+            iconPosition: item.iconPosition,
             disabled: item.disabled,
             items: []
         };
@@ -72,7 +75,7 @@ export class TreeData {
         return newItem;
     }
 
-    parse(data, selected) {
+    parse(data, selected, selectedContains) {
         const root = {};
         root.items = data;
         const seen = new WeakSet();
@@ -109,7 +112,10 @@ export class TreeData {
 
                     this.indices[node.key] = indexedObj;
                     this.nameKeyMapping[node.name] = node.key;
-                    if (node.name === selected) {
+                    
+                    if (node.name === selected 
+                        //added by George
+                        || (selectedContains && selected.includes(node.name))) {
                         this.syncDataToSelected(
                             node,
                             indexedObj.index,

@@ -24,6 +24,9 @@ export default class cTreeItem extends LightningElement {
     @api isRoot = false;
     @api label;
     @api href;
+    @api target;
+    @api icon;
+    @api iconPosition;
     @api metatext;
     @api nodeRef;
     @api isExpanded;
@@ -32,6 +35,14 @@ export default class cTreeItem extends LightningElement {
     @api nodeKey;
     @api isLeaf;
     @api selected;
+
+    @api get iconPositionLeft() {
+        return this.iconPosition !== undefined && this.iconPosition.trim() === 'left';
+    }
+
+    @api get iconPositionRight() {
+        return this.iconPosition !== undefined && this.iconPosition.trim() === 'right';
+    }
 
     @api get childItems() {
         return this._children;
@@ -71,6 +82,7 @@ export default class cTreeItem extends LightningElement {
         );
 
         this.addEventListener('keydown', this.handleKeydown.bind(this));
+
     }
 
     renderedCallback() {
@@ -128,7 +140,7 @@ export default class cTreeItem extends LightningElement {
     handleClick(event) {
         if (!this.isDisabled) {
             // eslint-disable-next-line no-script-url
-            if (this.href === 'javascript:void(0)') {
+            if (this.href === 'javascript:void(0)' || this.href === 'javascript:void(0);') {
                 event.preventDefault();
             }
             let target = 'anchor';

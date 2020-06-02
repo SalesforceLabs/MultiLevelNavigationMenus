@@ -1,0 +1,13 @@
+[aria-expanded="true"] > .slds-tree__item .slds-button__icon .menu-icon,
+[aria-expanded="false"] > .slds-tree__item .slds-button__icon .menu-icon,
+svg.menu-icon {
+    transform: none !important;
+}
+
+a.menuLink {
+    display: flex;
+}
+
+.horizontal-menu c-tree-item[role="tree"] > c-tree-item[role="treeitem"] {
+    display: inline-grid;
+}
