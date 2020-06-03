@@ -29,6 +29,7 @@ export function getTreeNode(node, level, parentKey, childNum) {
         target: node.target,
         icon: node.icon,
         iconPosition: node.iconPosition,
+        calcWidth: node.calcWidth,
         isDisabled: node.disabled || false,
         visible: level === 1,
         children: [],

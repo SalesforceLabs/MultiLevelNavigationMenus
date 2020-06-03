@@ -22,6 +22,9 @@ export default class cTree extends LightningElement {
     @track _items = [];
     
 
+    @track origItems = [];
+    @track resizeId;
+
     _defaultFocused = { key: '1', parent: '0' };
     _selected = null;
     @track _selectedItem = null;
@@ -46,10 +49,19 @@ export default class cTree extends LightningElement {
             this.handleRegistration.bind(this)
         );
 
-        window.addEventListener(
-            'click',
-            this.handleDropDownClose.bind(this)
-        );
+        if(!this.isVertical && this.checkMobile() === false)
+        {
+            window.addEventListener(
+                'click',
+                this.handleDropDownClose.bind(this)
+            );
+
+            window.addEventListener(
+                'resize',
+                this.handleWindowResize.bind(this)
+            );
+        }
+
     }
 
     @api get items() {
@@ -164,6 +176,11 @@ export default class cTree extends LightningElement {
             this.hasDetachedListeners = false;
         }
         
+        if(this.origItems === undefined || this.origItems === null || this.origItems.length === 0)
+        {
+            this.handleMenuResize();
+        }
+
     }
 
     disconnectedCallback() {
@@ -429,5 +446,86 @@ export default class cTree extends LightningElement {
                 }
             }
         } catch(e){}
+    }
+
+    handleWindowResize(e)
+    {
+        clearTimeout(this.resizeId);
+        this.resizeId = setTimeout(this.handleMenuResize(e), 500);
+    }
+
+    handleMenuResize(e)
+    {
+        
+        if(this.isVertical || this.checkMobile())
+        {
+            return;
+        }
+
+        let moreLabel = 'More';
+
+        this.origItems = (this.origItems === undefined || this.origItems === null || this.origItems.length === 0) ? this.items : this.origItems; 
+        
+        let topElement = this.template.querySelector('.slds-tree_container');
+        let topElementWidth = topElement.offsetWidth + parseInt(getComputedStyle(topElement).marginLeft) + parseInt(getComputedStyle(topElement).marginRight);
+        let treeItemElements = this.template.querySelector('c-tree-item').treeItemElements;
+
+        let currItems = [];
+
+        let moreItems = {
+            id: 'more',
+            label: moreLabel,
+            name: 'more',
+            key: 'more',
+            expanded: false,
+            href: 'javascript:void(0);',
+            level: 1,
+            calcWidth: 130,
+            items: []
+        };
+
+        for(let i=0;i<treeItemElements.length;i++)
+        {
+            if(treeItemElements[i].key !== 'more')
+            {
+                this.origItems[i].calcWidth = treeItemElements[i].offsetWidth + parseInt(getComputedStyle(treeItemElements[i]).marginLeft) + parseInt(getComputedStyle(treeItemElements[i]).marginRight);
+            }
+            else
+            {
+                moreItems.calcWidth = treeItemElements[i].offsetWidth + parseInt(getComputedStyle(treeItemElements[i]).marginLeft) + parseInt(getComputedStyle(treeItemElements[i]).marginRight);
+            }
+        }
+
+               
+
+        let calcItemsWidth = moreItems.calcWidth;
+        for(let i=0;i<this.origItems.length;i++)
+        {
+            if(i === treeItemElements.length-1 && this.origItems[i].key === 'more')
+            {
+                break;
+            }
+
+            calcItemsWidth += this.origItems[i].calcWidth;
+            if(calcItemsWidth >= topElementWidth)
+            {
+                console.log('overflow');
+                moreItems.items.push(this.origItems[i]);
+            }
+            else
+            {
+                currItems.push(this.origItems[i]);
+            }
+        }
+        
+        if(moreItems.items.length > 0)
+        { 
+            currItems.push(moreItems);
+        }
+
+        this.items = currItems;
+        
+
+
     }
 }

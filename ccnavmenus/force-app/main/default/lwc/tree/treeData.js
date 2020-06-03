@@ -64,6 +64,7 @@ export class TreeData {
             target: item.target,
             icon: item.icon,
             iconPosition: item.iconPosition,
+            calcWidth: item.calcWidth,
             disabled: item.disabled,
             items: []
         };

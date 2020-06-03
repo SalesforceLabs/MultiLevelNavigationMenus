@@ -53,6 +53,10 @@ export default class cTreeItem extends LightningElement {
         return this.iconPosition !== undefined && this.iconPosition.trim() === 'right';
     }
 
+    @api get treeItemElements() {
+       return this.template.querySelectorAll('c-tree-item[aria-level="1"]');
+    }
+
     @api get childItems() {
         return this._children;
     }
