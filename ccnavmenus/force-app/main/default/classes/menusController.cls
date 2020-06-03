@@ -198,8 +198,9 @@ public with sharing class menusController {
     {
         treeItem ti = new treeItem();
         ti.id = toc.Id;
+        ti.level = 1;
         ti.label = toc.Name;
-        ti.name = toc.ccnavmenus__URL__c;
+        ti.name = toc.Id;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
@@ -215,8 +216,9 @@ public with sharing class menusController {
     {
         treeItem2 ti = new treeItem2();
         ti.id = toc.Id;
+        ti.level = 2;
         ti.label = toc.Name;
-        ti.name = toc.ccnavmenus__URL__c;
+        ti.name = toc.Id;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
@@ -232,8 +234,9 @@ public with sharing class menusController {
     {
         treeItem3 ti = new treeItem3();
         ti.id = toc.Id;
+        ti.level = 3;
         ti.label = toc.Name;
-        ti.name = toc.ccnavmenus__URL__c;
+        ti.name = toc.Id;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
@@ -249,8 +252,9 @@ public with sharing class menusController {
     {
         treeItem4 ti = new treeItem4();
         ti.id = toc.Id;
+        ti.level = 4;
         ti.label = toc.Name;
-        ti.name = toc.ccnavmenus__URL__c;
+        ti.name = toc.Id;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
@@ -266,8 +270,9 @@ public with sharing class menusController {
     {
         treeItem5 ti = new treeItem5();
         ti.id = toc.Id;
+        ti.level = 5;
         ti.label = toc.Name;
-        ti.name = toc.ccnavmenus__URL__c;
+        ti.name = toc.Id;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
@@ -283,8 +288,9 @@ public with sharing class menusController {
     {
         treeItem6 ti = new treeItem6();
         ti.id = toc.Id;
+        ti.level = 6;
         ti.label = toc.Name;
-        ti.name = toc.ccnavmenus__URL__c;
+        ti.name = toc.Id;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
@@ -309,6 +315,8 @@ public class treeItem
 
     public string href;
 
+    public Integer level;
+
     public string target;
 
     public boolean expanded;
@@ -331,6 +339,8 @@ public class treeItem2
     public string iconPosition;
 
     public string href;
+
+    public Integer level;
 
     public string target;
 
@@ -355,6 +365,8 @@ public class treeItem3
 
     public string href;
 
+    public Integer level;
+
     public string target;
 
     public boolean expanded;
@@ -377,6 +389,8 @@ public class treeItem4
     public string iconPosition;
 
     public string href;
+
+    public Integer level;
 
     public boolean expanded;
 
@@ -402,6 +416,8 @@ public class treeItem5
 
     public string href;
 
+    public Integer level;
+
     public string target;
 
     public boolean expanded;
@@ -425,6 +441,8 @@ public class treeItem6
     public string iconPosition;
 
     public string href;
+
+    public Integer level;
 
     public string target;
 

@@ -7,9 +7,11 @@ export default class NavMenu extends LightningElement {
 
     @api menuId;
     @api isVertical = false;
+    @api uuid = Date.now();
 
     @track items = [];
     @track url = '';
+    
 
     //wire functions
     wireFetchMenu;
@@ -38,6 +40,7 @@ export default class NavMenu extends LightningElement {
     {
         this.url = window.location.href.split('?')[0];
         loadStyle(this, navMenuCSS);
+        
     }
 
 }

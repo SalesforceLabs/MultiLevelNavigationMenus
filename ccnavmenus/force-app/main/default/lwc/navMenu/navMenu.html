@@ -1,11 +1,11 @@
 <template>
 
     <template if:true={isVertical}>
-        <c-tree items={items} selected-item={url} selected-contains="true"></c-tree>
+        <c-tree items={items} selected-item={url} selected-contains="true" is-vertical={isVertical} uuid={uuid} class="vertical-menu"></c-tree>
     </template>
 
     <template if:false={isVertical}>
-        <c-tree items={items} selected-item={url} selected-contains="true" class="horizontal-menu"></c-tree>
+        <c-tree items={items} selected-item={url} selected-contains="true" class="horizontal-menu" is-vertical={isVertical} uuid={uuid}></c-tree>
     </template>
     
 </template>

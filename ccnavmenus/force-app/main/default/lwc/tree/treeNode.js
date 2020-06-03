@@ -17,6 +17,7 @@ function computeKey(parentKey, childNum) {
 
 export function getTreeNode(node, level, parentKey, childNum) {
     return {
+        id: node.id,
         name: node.name,
         label: node.label,
         metatext: node.metatext,
@@ -24,6 +25,7 @@ export function getTreeNode(node, level, parentKey, childNum) {
         key: computeKey(parentKey, childNum),
         // eslint-disable-next-line no-script-url
         href: node.href || 'javascript:void(0)',
+        level: node.level,
         target: node.target,
         icon: node.icon,
         iconPosition: node.iconPosition,

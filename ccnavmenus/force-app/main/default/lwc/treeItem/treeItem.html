@@ -29,6 +29,8 @@
                     nodename={item.node.name}
                     is-leaf={item.node.isLeaf}
                     child-items={item.node.children}
+                    level={level}
+                    is-vertical={isVertical}
                 >
                 </c-tree-item>
             </template>
@@ -55,6 +57,8 @@
                     child-items={item.node.children}
                     aria-label={item.node.label}
                     aria-expanded={item.node.strexpanded}
+                    level={level}
+                    is-vertical={isVertical}
                 >
                 </c-tree-item>
             </template>
@@ -113,7 +117,7 @@
             </span>
         </div>
         <template if:true={showExpanded}>
-            <div role="group">
+            <div role="group" class={groupDivClass}>
                 <template for:each={children} for:item="item">
                     <template if:true={item.node.isLeaf}>
                         <c-tree-item
@@ -136,6 +140,8 @@
                             nodename={item.node.name}
                             is-leaf={item.node.isLeaf}
                             child-items={item.node.children}
+                            level={level}
+                            is-vertical={isVertical}
                         >
                         </c-tree-item>
                     </template>
@@ -162,6 +168,8 @@
                             child-items={item.node.children}
                             aria-label={item.node.label}
                             aria-expanded={item.node.strexpanded}
+                            level={level}
+                            is-vertical={isVertical}
                         >
                         </c-tree-item>
                     </template>

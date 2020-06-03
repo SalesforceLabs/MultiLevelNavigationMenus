@@ -2,7 +2,7 @@
 [aria-expanded="false"] > .slds-tree__item .slds-button__icon .menu-icon,
 svg.menu-icon {
     transform: none !important;
-}
+} 
 
 a.menuLink {
     display: flex;
@@ -11,3 +11,84 @@ a.menuLink {
 .horizontal-menu c-tree-item[role="tree"] > c-tree-item[role="treeitem"] {
     display: inline-grid;
 }
+
+.horizontal-menu .groupDiv-2 {
+    position: absolute;
+    margin-top: 35px;
+    min-width: 20rem;
+    background-color: white;
+    border: 1px solid gray;
+    z-index: 9999;
+    padding-right: 1rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+}
+
+.horizontal-menu .groupDiv-2:after, .horizontal-menu .groupDiv-2:before {
+	bottom: 100%;
+	left: 2.7rem;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.horizontal-menu .groupDiv-2:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #ffffff;
+	border-width: 9px;
+    margin-left: -9px;
+}
+.horizontal-menu .groupDiv-2:before {
+	border-color: rgba(0, 0, 0, 0);
+	border-bottom-color: #000000;
+	border-width: 10px;
+	margin-left: -10px;
+}
+
+.horizontal-menu > div.slds-tree_container {
+    max-width: none;
+}
+
+.horizontal-menu c-tree-item[aria-level="1"] {
+    margin-right: 40px;
+}
+
+.horizontal-menu [aria-level="2"] > .slds-tree__item {
+    padding-left: 1rem;
+}
+
+.horizontal-menu [aria-level="3"] > .slds-tree__item {
+    padding-left: 2rem;
+}
+
+.horizontal-menu [aria-level="4"] > .slds-tree__item {
+    padding-left: 3rem;
+}
+
+.horizontal-menu [aria-level="5"] > .slds-tree__item {
+    padding-left: 4rem;
+}
+
+.horizontal-menu [aria-level="6"] > .slds-tree__item {
+    padding-left: 5rem;
+}
+
+@media (max-width: 500px)
+{
+    .horizontal-menu c-tree-item[role="tree"] > c-tree-item[role="treeitem"] {
+        display: block;
+    }
+
+    .horizontal-menu .groupDiv-2 {
+        position: relative;
+        margin-top: 0;
+    }
+
+    .horizontal-menu c-tree-item[aria-level="1"] {
+        margin-right: 0;
+    }
+}
+ 

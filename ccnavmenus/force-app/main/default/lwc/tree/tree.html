@@ -6,7 +6,7 @@
  -->
 
  <template>
-    <div class="slds-tree_container">
+    <div class="slds-tree_container" onclick={handleDropDownClose}>
         <h4 class="slds-tree__group-header" id="treeheading">{header}</h4>
 
         <c-tree-item
@@ -18,6 +18,8 @@
             node-key={rootElement}
             child-items={children}
             focused-child={focusedChild}
+            is-vertical={isVertical}
+            uuid={uuid}
         >
         </c-tree-item>
     </div>

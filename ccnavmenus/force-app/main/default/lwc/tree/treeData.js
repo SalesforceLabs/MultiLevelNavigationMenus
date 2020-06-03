@@ -54,11 +54,13 @@ export class TreeData {
 
     cloneItems(item) {
         const newItem = {
+            id: item.id,
             label: item.label,
             name: item.name,
             expanded: item.expanded,
             metatext: item.metatext,
             href: item.href,
+            level: item.level,
             target: item.target,
             icon: item.icon,
             iconPosition: item.iconPosition,
@@ -115,7 +117,7 @@ export class TreeData {
                     
                     if (node.name === selected 
                         //added by George
-                        || (selectedContains && selected.includes(node.name))) {
+                        || (selectedContains && selected.includes(node.href))) {
                         this.syncDataToSelected(
                             node,
                             indexedObj.index,

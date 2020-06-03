@@ -18,6 +18,7 @@ export default class cTreeItem extends LightningElement {
     @track _children = [];
     @track _tabindexes = {};
     @track _selected = {};
+    
 
     _focusedChild = null;
 
@@ -35,6 +36,14 @@ export default class cTreeItem extends LightningElement {
     @api nodeKey;
     @api isLeaf;
     @api selected;
+    @api level = 0;
+    @api isVertical = false;
+    @api uuid;
+
+    @api get groupDivClass()
+    {
+        return 'groupDiv-' + this.level;
+    }
 
     @api get iconPositionLeft() {
         return this.iconPosition !== undefined && this.iconPosition.trim() === 'left';
@@ -69,6 +78,8 @@ export default class cTreeItem extends LightningElement {
     }
 
     connectedCallback() {
+        this.level = this.level +1;
+        
         this.dispatchEvent(
             new CustomEvent('privateregisteritem', {
                 composed: true,
@@ -101,7 +112,7 @@ export default class cTreeItem extends LightningElement {
         return i18n.expandBranch;
     }
 
-    get showExpanded() {
+    get showExpanded() { 
         if (!this.nodeRef) {
             return false;
         }
@@ -146,7 +157,8 @@ export default class cTreeItem extends LightningElement {
             let target = 'anchor';
             if (
                 event.target.tagName === 'BUTTON' ||
-                event.target.tagName === 'C-PRIMITIVE-ICON'
+                event.target.tagName === 'C-PRIMITIVE-ICON' ||
+                ((this.href === 'javascript:void(0)' || this.href === 'javascript:void(0);') && this.isLeaf === false)
             ) {
                 target = 'chevron';
             }
@@ -260,4 +272,5 @@ export default class cTreeItem extends LightningElement {
             'c-tree-item:nth-of-type(' + n + ')'
         );
     }
+
 }
