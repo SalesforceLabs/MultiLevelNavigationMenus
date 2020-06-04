@@ -39,6 +39,7 @@ export default class cTreeItem extends LightningElement {
     @api level = 0;
     @api isVertical = false;
     @api uuid;
+    @api urlSubMapJson;
 
     @api get groupDivClass()
     {
@@ -46,11 +47,11 @@ export default class cTreeItem extends LightningElement {
     }
 
     @api get iconPositionLeft() {
-        return this.iconPosition !== undefined && this.iconPosition.trim() === 'left';
+        return this.iconPosition !== undefined && this.iconPosition !== null && this.iconPosition.trim() === 'left';
     }
 
     @api get iconPositionRight() {
-        return this.iconPosition !== undefined && this.iconPosition.trim() === 'right';
+        return this.iconPosition !== undefined && this.iconPosition !== null && this.iconPosition.trim() === 'right';
     }
 
     @api get treeItemElements() {
@@ -97,6 +98,8 @@ export default class cTreeItem extends LightningElement {
         );
 
         this.addEventListener('keydown', this.handleKeydown.bind(this));
+
+        this.handleUrlReplace();
 
     }
 
@@ -275,6 +278,40 @@ export default class cTreeItem extends LightningElement {
         return this.template.querySelector(
             'c-tree-item:nth-of-type(' + n + ')'
         );
+    }
+
+    handleUrlReplace()
+    {
+        try {
+
+            if(this.urlSubMapJson !== undefined && this.urlSubMapJson !== null && this.urlSubMapJson.trim() !== '')
+            {
+                
+                let urlSubMap = JSON.parse(this.urlSubMapJson);
+
+                if(urlSubMap !== undefined && urlSubMap !== null && urlSubMap.length > 0)
+                {
+                    for(let i=0;i<urlSubMap.length;i++)
+                    {
+                        if(urlSubMap[i].replaceThis === undefined || urlSubMap[i].replaceThis === null || urlSubMap[i].replaceThis.trim() === ''
+                            || urlSubMap[i].replaceWith === undefined || urlSubMap[i].replaceWith === null || urlSubMap[i].replaceWith.trim() === '')
+                        {
+                            continue;
+                        }
+
+                        let searchMask = this.escapeRegex(urlSubMap[i].replaceThis);
+                        let regEx = new RegExp(searchMask, "ig");
+                        let replaceMask = urlSubMap[i].replaceWith;
+                        this.href = (this.href !== undefined && this.href !== null) ? this.href.replace(regEx, replaceMask) : this.href;
+                    }
+                }
+            }
+
+        } catch(e) {}
+    }
+
+    escapeRegex(string) {
+        return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     }
 
 }

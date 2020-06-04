@@ -8,6 +8,8 @@ export default class NavMenu extends LightningElement {
     @api menuId;
     @api isVertical = false;
     @api uuid = Date.now();
+    /* [{"replaceThis":"[!recordId]","replaceWith":"{!recordId}"}] */ 
+    @api urlSubMapJson;
 
     @track items = [];
     @track url = '';

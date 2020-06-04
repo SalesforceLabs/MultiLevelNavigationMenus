@@ -18,6 +18,9 @@
             <property name="isVertical" type="Boolean" label="Vertical?" required="false" default="false"
             description="Check to display menu in vertical mode."/>
 
+            <property name="urlSubMapJson" type="String" label="URL Substition Map JSON" required="false" 
+            description="Define JSON substitution map as such (Example):  [{ &#x22;replaceThis&#x22;: &#x22;[!recordId]&#x22;, &#x22;replaceWith&#x22;: &#x22;{!recordId}&#x22; }]"/>
+
         </targetConfig>
     </targetConfigs> 
 </LightningComponentBundle>
