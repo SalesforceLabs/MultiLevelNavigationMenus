@@ -223,6 +223,7 @@ public with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.level = 1;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
@@ -243,6 +244,7 @@ public with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.level = 2;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
@@ -263,6 +265,7 @@ public with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.level = 3;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
@@ -283,6 +286,7 @@ public with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.level = 4;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
@@ -303,6 +307,7 @@ public with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.level = 5;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
@@ -323,6 +328,7 @@ public with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.level = 6;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
@@ -343,6 +349,8 @@ public class treeItem
     public string label;
 
     public string name;
+
+    public Integer level;
 
     public string icon;
 
@@ -373,6 +381,8 @@ public class treeItem2
 
     public string name;
 
+    public Integer level;
+
     public string icon;
 
     public string iconPosition;
@@ -402,6 +412,8 @@ public class treeItem3
 
     public string name;
 
+    public Integer level;
+
     public string icon;
 
     public string iconPosition;
@@ -430,6 +442,8 @@ public class treeItem4
     public string label;
 
     public string name;
+
+    public Integer level;
 
     public string icon;
 
@@ -461,6 +475,8 @@ public class treeItem5
 
     public string name;
 
+    public Integer level;
+
     public string icon;
 
     public string iconPosition;
@@ -490,6 +506,8 @@ public class treeItem6
     public string label;
 
     public string name;
+
+    public Integer level;
 
     public string icon;
 

@@ -10,7 +10,6 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 
 const MENU_ITEM_ACTIONS = [
-    { label: 'Create Child Menu Item', name: 'createMenuItem' },
     { label: 'Edit Menu Item', name: 'editMenuItem' },
     { label: 'Delete Menu Item', name: 'deleteMenuItem' }
 ];
@@ -63,14 +62,6 @@ const MENU_ITEM_COLUMNS_DEFINITION = [
         fieldName: 'isPublic',
         label: 'Public',
         initialWidth: 100,
-    },
-    { 
-        type: 'action', 
-        typeAttributes: 
-        { 
-            rowActions: MENU_ITEM_ACTIONS, 
-            menuAlignment: 'left' 
-        } 
     }
 ];
 
@@ -95,7 +86,8 @@ export default class MenusManager extends LightningElement {
     @track selectedMenuItemLabelForDelete;
     @track error;
 
-    MENU_ITEM_COLUMNS_DEFINITION = MENU_ITEM_COLUMNS_DEFINITION;
+    @track MENU_ITEM_COLUMNS_DEFINITION = MENU_ITEM_COLUMNS_DEFINITION;
+    @track MENU_ITEM_ACTIONS = MENU_ITEM_ACTIONS;
 
 
     //wire functions
@@ -145,6 +137,15 @@ export default class MenusManager extends LightningElement {
 
     connectedCallback() 
     {
+        this.MENU_ITEM_COLUMNS_DEFINITION.push({
+            'type': 'action', 
+            'typeAttributes': 
+            { 
+                'rowActions': this.getRowActions.bind(this),
+                'menuAlignment': 'left' 
+            } 
+        });
+
         loadStyle(this, menusManagerCSS);
     }
 
@@ -294,6 +295,23 @@ export default class MenusManager extends LightningElement {
         
         refreshApex(this.menuItemListResult);        
 
+    }
+
+    getRowActions(row, doneCallback)
+    {
+        let actions = [];
+        if(row.level !== 6)
+        {
+            actions.push({
+                'label': 'Create Child Menu Item', 
+                'name': 'createMenuItem'
+            });
+        }
+        actions = actions.concat(this.MENU_ITEM_ACTIONS);
+
+        setTimeout(() => {
+            doneCallback(actions);
+        }, 200);
     }
 
     handleRowAction(event) {
