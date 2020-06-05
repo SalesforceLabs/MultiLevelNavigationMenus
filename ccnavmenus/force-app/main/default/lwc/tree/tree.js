@@ -15,16 +15,30 @@ export default class cTree extends LightningElement {
     @api isVertical = false;
     @api uuid;
     @api urlSubMapJson;
+    
 
     @track _currentFocusedItem = null;
     @track _childNodes;
     @track _key;
     @track _focusedChild = null;
-    @track _items = [];
+    @track _items = []
+    @track widthCalculated = false;
     
 
     @track origItems = [];
     @track resizeId;
+    @track moreItems = {
+        id: 'more',
+        label: 'More',
+        name: 'more',
+        key: 'more',
+        expanded: false,
+        href: 'javascript:void(0);',
+        level: 1,
+        initWidth: 130,
+        calcWidth: undefined,
+        items: []
+    };
 
     _defaultFocused = { key: '1', parent: '0' };
     _selected = null;
@@ -63,6 +77,15 @@ export default class cTree extends LightningElement {
             );
         }
 
+    }
+
+    @api get childrenFirstLevel() {
+        let itemsFirstLevel = JSON.parse(JSON.stringify(this._childNodes));
+        for(let i=0;i<itemsFirstLevel.length;i++)
+        {
+            itemsFirstLevel[i].items = [];
+        }
+        return itemsFirstLevel;
     }
 
     @api get items() {
@@ -177,9 +200,9 @@ export default class cTree extends LightningElement {
             this.hasDetachedListeners = false;
         }
         
-        if(this.origItems === undefined || this.origItems === null || this.origItems.length === 0)
+        if(!this.widthCalculated)
         {
-            this.handleMenuResize();
+            this.handleWidthCalculations();
         }
 
     }
@@ -455,67 +478,68 @@ export default class cTree extends LightningElement {
         this.resizeId = setTimeout(this.handleMenuResize(e), 500);
     }
 
+    handleWidthCalculations()
+    {
+        try{
+            if(this.isVertical || this.checkMobile())
+            {
+                this.widthCalculated = true;
+            }
+            else
+            {
+                this.origItems = (this.origItems === undefined || this.origItems === null || this.origItems.length === 0) ? this.items : this.origItems; 
+                let treeItemElementsObjects = this.template.querySelector('c-tree-item');
+                let treeItemElements = (treeItemElementsObjects !== undefined && treeItemElementsObjects !== null) ? treeItemElementsObjects.treeItemElements : [];
+
+                if(treeItemElements.length > 0)
+                {
+                    for(let i=0;i<treeItemElements.length;i++)
+                    {
+                        if(treeItemElements[i].key !== 'more')
+                        {
+                            let computedWidth = treeItemElements[i].offsetWidth + parseInt(getComputedStyle(treeItemElements[i]).marginLeft) + parseInt(getComputedStyle(treeItemElements[i]).marginRight);
+                            this.origItems[i].calcWidth = (this.origItems[i].calcWidth === undefined || this.origItems[i].calcWidth === null || this.origItems[i].calcWidth > computedWidth) ? computedWidth : this.origItems[i].calcWidth;
+                        }
+                        else
+                        {
+                            this.moreItems.calcWidth = (this.moreItems.calcWidth === undefined) ? treeItemElements[i].offsetWidth + parseInt(getComputedStyle(treeItemElements[i]).marginLeft) + parseInt(getComputedStyle(treeItemElements[i]).marginRight) : this.moreItems.calcWidth;
+                        }
+                    }
+                    this.widthCalculated = true;
+                    this.handleMenuResize();
+                }
+            }
+        }catch(e){}
+
+    }
+    
     handleMenuResize(e)
     {
         try {
-            if(this.isVertical || this.checkMobile())
+            if(!this.isVertical && !this.checkMobile() && this.widthCalculated)
             {
-                return;
-            }
+                this.origItems = (this.origItems === undefined || this.origItems === null || this.origItems.length === 0) ? this.items : this.origItems; 
+                
+                let topElement = this.template.querySelector('.slds-tree_container');
+                let topElementWidth = topElement.offsetWidth + parseInt(getComputedStyle(topElement).marginLeft) + parseInt(getComputedStyle(topElement).marginRight);
+                
+                let currItems = [];
 
-            let moreLabel = 'More';
+                this.moreItems.items = [];
 
-            this.origItems = (this.origItems === undefined || this.origItems === null || this.origItems.length === 0) ? this.items : this.origItems; 
-            
-            let topElement = this.template.querySelector('.slds-tree_container');
-            let topElementWidth = topElement.offsetWidth + parseInt(getComputedStyle(topElement).marginLeft) + parseInt(getComputedStyle(topElement).marginRight);
-            let treeItemElementsObjects = this.template.querySelector('c-tree-item');
-
-            let treeItemElements = (treeItemElementsObjects !== undefined && treeItemElementsObjects !== null) ? treeItemElementsObjects.treeItemElements : [];
-
-            let currItems = [];
-
-            let moreItems = {
-                id: 'more',
-                label: moreLabel,
-                name: 'more',
-                key: 'more',
-                expanded: false,
-                href: 'javascript:void(0);',
-                level: 1,
-                calcWidth: 130,
-                items: []
-            };
-
-            if(treeItemElements.length > 0)
-            {
-
-                for(let i=0;i<treeItemElements.length;i++)
-                {
-                    if(treeItemElements[i].key !== 'more')
-                    {
-                        this.origItems[i].calcWidth = treeItemElements[i].offsetWidth + parseInt(getComputedStyle(treeItemElements[i]).marginLeft) + parseInt(getComputedStyle(treeItemElements[i]).marginRight);
-                    }
-                    else
-                    {
-                        moreItems.calcWidth = treeItemElements[i].offsetWidth + parseInt(getComputedStyle(treeItemElements[i]).marginLeft) + parseInt(getComputedStyle(treeItemElements[i]).marginRight);
-                    }
-                }
-
-                    
-
-                let calcItemsWidth = moreItems.calcWidth;
+                let calcItemsWidth = (this.moreItems.calcWidth === undefined) ? this.moreItems.initWidth : this.moreItems.calcWidth;
                 for(let i=0;i<this.origItems.length;i++)
                 {
-                    if(i === treeItemElements.length-1 && this.origItems[i].key === 'more')
+                    if(this.origItems[i].key === 'more')
                     {
                         continue;
                     }
 
-                    calcItemsWidth += this.origItems[i].calcWidth;
+                    calcItemsWidth += (this.origItems[i].calcWidth !== undefined && this.origItems[i].calcWidth !== null) ? this.origItems[i].calcWidth : 0;
                     if(calcItemsWidth >= topElementWidth)
                     {
-                        moreItems.items.push(this.origItems[i]);
+                        var origItem = JSON.parse(JSON.stringify(this.origItems[i]));
+                        this.moreItems.items.push(origItem);
                     }
                     else
                     {
@@ -523,15 +547,31 @@ export default class cTree extends LightningElement {
                     }
                 }
                 
-                if(moreItems.items.length > 0)
+                if(this.moreItems.items.length > 0)
                 { 
-                    currItems.push(moreItems);
+                    this.recursiveUpdateLevel(this.moreItems.items, 2);
+                    currItems.push(this.moreItems);
                 }
-
+                
                 this.items = currItems;
-        }
+            }
         
         } catch(e){}
 
+    }
+
+    recursiveUpdateLevel(items, level)
+    {
+        if(items !== undefined && items !== null && items.length > 0)
+        {
+            for(let i=0;i<items.length;i++)
+            {
+                items[i].level = level;
+                if(items[i].items !== undefined && items[i].items !== null && items[i].items.length > 0)
+                {
+                    this.recursiveUpdateLevel(items[i].items, level+1);
+                }
+            }
+        }
     }
 }

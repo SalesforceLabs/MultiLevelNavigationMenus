@@ -76,7 +76,7 @@ a.menuLink {
     padding-left: 5rem;
 }
 
-@media (max-width: 500px)
+@media (max-width: 499px)
 {
     .horizontal-menu c-tree-item[role="tree"] > c-tree-item[role="treeitem"] {
         display: block;
