@@ -23,6 +23,11 @@ a.menuLink
     font-family: var(--ccnavmenus-fontFamily);
 }
 
+a.menuLink:focus
+{
+    text-decoration: none;
+}
+
 .slds-tree__item > button
 {
     color: var(--ccnavmenus-brandNavigationColorText, blue);
