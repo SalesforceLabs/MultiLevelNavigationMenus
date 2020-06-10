@@ -1,7 +1,7 @@
 public with sharing class menusController {
 
     @AuraEnabled(cacheable=true)
-    public static String getMenu(Id menuId, String url)
+    public static String getMenu(Id menuId)
     {
         Map<String,Object> resultMap = new Map<String,Object>();
         List<treeItem> listTOCLevel1 = new List<treeItem>();
