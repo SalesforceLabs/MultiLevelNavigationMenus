@@ -41,9 +41,17 @@ export default class cTreeItem extends LightningElement {
     @api uuid;
     @api urlSubMapJson;
 
+    //styling inputs
+    @api brandNavigationColorText;
+    @api brandNavigationBarBackgroundColor;
+    @api brandNavigationBackgroundColor;
+    @api textTransform;
+    @api fontFamily;
+
     @api get groupDivClass()
     {
-        return 'groupDiv-' + this.level;
+        let groupDivClass = (this.isVertical) ? 'vertical-' : 'horizontal-';
+        return groupDivClass + 'groupDiv-' + this.level;
     }
 
     @api get iconPositionLeft() {
@@ -83,7 +91,6 @@ export default class cTreeItem extends LightningElement {
     }
 
     connectedCallback() {
-        this.level = this.level +1;
         
         this.dispatchEvent(
             new CustomEvent('privateregisteritem', {
@@ -110,6 +117,36 @@ export default class cTreeItem extends LightningElement {
                 child.tabIndex = '0';
             }
         }
+
+        if(this.brandNavigationColorText !== undefined && this.brandNavigationColorText !== null && this.brandNavigationColorText.trim() !== '')
+        {
+            this.template.host.style.setProperty('--ccnavmenus-brandNavigationColorText', this.brandNavigationColorText);
+        }
+
+        if(this.brandNavigationBarBackgroundColor !== undefined && this.brandNavigationBarBackgroundColor !== null && this.brandNavigationBarBackgroundColor.trim() !== '')
+        {
+            this.template.host.style.setProperty('--ccnavmenus-brandNavigationBarBackgroundColor', this.brandNavigationBarBackgroundColor);
+        }
+
+        if(this.brandNavigationBackgroundColor !== undefined && this.brandNavigationBackgroundColor !== null && this.brandNavigationBackgroundColor.trim() !== '')
+        {
+            this.template.host.style.setProperty('--ccnavmenus-brandNavigationBackgroundColor', this.brandNavigationBackgroundColor);
+        }
+
+        if(this.fontFamily !== undefined && this.fontFamily !== null && this.fontFamily.trim() !== '')
+        {
+            this.template.host.style.setProperty('--ccnavmenus-fontFamily', this.fontFamily);
+        }
+
+        if(this.textTransform === undefined || this.textTransform === null || this.textTransform.trim() === '' || this.textTransform.trim() === 'inherit')
+        {   
+            this.textTransform = getComputedStyle(document.documentElement).getPropertyValue('--lwc-textTransform');
+        }
+        if(this.textTransform !== undefined && this.textTransform !== null && this.textTransform.trim() !== '')
+        {
+            this.template.host.style.setProperty('--ccnavmenus-textTransform', this.textTransform);
+        }
+        
     }
 
     get buttonLabel() {
@@ -127,7 +164,9 @@ export default class cTreeItem extends LightningElement {
     }
 
     get computedButtonClass() {
-        return classSet('slds-button slds-button_icon slds-m-right_x-small ')
+        let buttonClasses = 'slds-button slds-button_icon';
+        buttonClasses += (this.computedIconPositionLeft) ? ' slds-m-right_x-small ' : ' slds-m-left_x-small ';
+        return classSet(buttonClasses)
             .add({
                 'slds-is-disabled': this.isLeaf || this.isDisabled
             })
@@ -135,9 +174,26 @@ export default class cTreeItem extends LightningElement {
     }
 
     get computedIconName() {
-        return document.dir === 'rtl'
+        let iconName = document.dir === 'rtl'
             ? 'utility:chevronleft'
             : 'utility:chevronright';
+        iconName = (this.computedIconPositionLeft) ? iconName : 'utility:chevrondown' ;
+        return iconName;
+    }
+
+    get computedIconPositionLeft()
+    {
+        return (this.isVertical || this.level !== 1);
+    }
+
+    get computedIconPositionRight()
+    {
+        return (!this.isVertical && this.level === 1);
+    }
+
+    get nextLevel()
+    {
+        return this.level + 1;
     }
 
     get children() {

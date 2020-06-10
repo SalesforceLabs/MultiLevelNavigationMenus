@@ -6,7 +6,7 @@
  -->
 
  <template>
-    <div class="slds-tree_container" onclick={handleDropDownClose} id="treeDiv">
+    <div class={treeContainerClasses} onclick={handleDropDownClose} id="treeDiv" role="treeContainer">
         <h4 class="slds-tree__group-header" id="treeheading">{header}</h4>
         
         <template if:true={widthCalculated}>
@@ -22,6 +22,12 @@
                 is-vertical={isVertical}
                 uuid={uuid}
                 url-sub-map-json={urlSubMapJson}
+
+                brand-navigation-color-text={brandNavigationColorText}
+                brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
+                brand-navigation-background-color={brandNavigationBackgroundColor}
+                font-family={fontFamily}
+                text-transform={textTransform}
             >
             </c-tree-item>
        </template>
@@ -39,6 +45,12 @@
                 is-vertical={isVertical}
                 uuid={uuid}
                 url-sub-map-json={urlSubMapJson}
+
+                brand-navigation-color-text={brandNavigationColorText}
+                brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
+                brand-navigation-background-color={brandNavigationBackgroundColor}
+                font-family={fontFamily}
+                text-transform={textTransform}
             >
             </c-tree-item>
         </template>

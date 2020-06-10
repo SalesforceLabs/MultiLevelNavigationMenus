@@ -1,0 +1,137 @@
+:host
+{
+    --ccnavmenus-brandNavigationColorText: var(--lwc-brandNavigationColorText, blue);
+    --ccnavmenus-brandNavigationBarBackgroundColor: var(--lwc-brandNavigationBarBackgroundColor, #c9c9c9);
+    --ccnavmenus-brandNavigationBackgroundColor: var(--lwc-brandNavigationBackgroundColor, white);
+    --ccnavmenus-textTransform: 'none';
+    --ccnavmenus-fontFamily: var(--lwc-fontFamily, 'Salesforce Sans');
+}
+
+
+[aria-expanded="true"] > .slds-tree__item .slds-button__icon .menu-icon,
+[aria-expanded="false"] > .slds-tree__item .slds-button__icon .menu-icon,
+.menu-icon
+{
+    transform: none !important;
+}
+
+a.menuLink
+{
+    color: var(--ccnavmenus-brandNavigationColorText, blue);
+    display: flex;
+    text-transform: var(--ccnavmenus-textTransform);
+    font-family: var(--ccnavmenus-fontFamily);
+}
+
+.slds-tree__item > button
+{
+    color: var(--ccnavmenus-brandNavigationColorText, blue);
+}
+
+c-tree-item[role="treeitem"][data-is-vertical="false"] {
+    display: inline-grid;
+}
+
+.horizontal-groupDiv-1 c-tree-item[role="treeitem"][data-is-vertical="false"] {
+    display: block;
+}
+
+.slds-tree__item:hover {
+    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor, #c9c9c9);
+    box-shadow: inset 0 0px 0 20px rgba(255, 255, 255, 0.7);
+}
+
+c-tree-item[role="treeitem"][aria-selected="true"] > .slds-tree__item {
+    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor, white);
+    box-shadow: inset var(--ccnavmenus-brandNavigationBarBackgroundColor, white) 4px 0px 0px, 
+                inset 0 0px 0 20px rgba(255, 255, 255, 0.7);
+}
+
+c-tree-item[aria-level="1"] > div.slds-tree__item
+{
+    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor, white);
+}
+
+.vertical-groupDiv-1 {
+    background-color: var(--ccnavmenus-brandNavigationBackgroundColor, white);
+}
+
+.horizontal-groupDiv-1 {
+    position: absolute;
+    margin-top: 35px;
+    min-width: 20rem;
+    background-color: var(--ccnavmenus-brandNavigationBackgroundColor, white);
+    border: 1px solid gray;
+    z-index: 9999;
+    padding-right: 1rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+}
+
+.horizontal-groupDiv-1:after, 
+.horizontal-groupDiv-1:before {
+	bottom: 100%;
+	left: 2.7rem;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.horizontal-groupDiv-1:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: var(--ccnavmenus-brandNavigationBackgroundColor, white);
+	border-width: 9px;
+    margin-left: -9px;
+}
+.horizontal-groupDiv-1:before {
+	border-color: rgba(0, 0, 0, 0);
+	border-bottom-color: #000000;
+	border-width: 10px;
+	margin-left: -10px;
+}
+
+c-tree-item[aria-level="1"][data-is-vertical="false"] {
+    margin-right: 40px;
+}
+
+[aria-level="2"][data-is-vertical="false"] > .slds-tree__item {
+    padding-left: 1rem;
+}
+
+[aria-level="3"][data-is-vertical="false"] > .slds-tree__item {
+    padding-left: 2rem;
+}
+
+[aria-level="4"][data-is-vertical="false"] > .slds-tree__item {
+    padding-left: 3rem;
+}
+
+[aria-level="5"][data-is-vertical="false"] > .slds-tree__item {
+    padding-left: 4rem;
+}
+
+[aria-level="6"][data-is-vertical="false"] > .slds-tree__item {
+    padding-left: 5rem;
+}
+
+
+@media (max-width: 499px)
+{
+
+    c-tree-item[role="treeitem"][data-is-vertical="false"] {
+        display: block;
+    }
+
+    .horizontal-groupDiv-2 {
+        position: relative;
+        margin-top: 0;
+    }
+
+    c-tree-item[aria-level="1"][data-is-vertical="false"] {
+        margin-right: 0;
+    }
+
+}

@@ -15,7 +15,13 @@ export default class cTree extends LightningElement {
     @api isVertical = false;
     @api uuid;
     @api urlSubMapJson;
-    
+
+    //styling inputs
+    @api brandNavigationColorText;
+    @api brandNavigationBarBackgroundColor;
+    @api brandNavigationBackgroundColor;
+    @api fontFamily;
+    @api textTransform;    
 
     @track _currentFocusedItem = null;
     @track _childNodes;
@@ -117,6 +123,12 @@ export default class cTree extends LightningElement {
         return this._focusedChild;
     }
 
+    @api get treeContainerClasses() {
+        let treeContainerClasses = 'slds-tree_container';
+        treeContainerClasses += (this.isVertical) ? ' slds-tree_container-vertical' : ' slds-tree_container-horizontal';
+        return treeContainerClasses;
+    }
+
     syncSelected() {
         if (this.treedata && this._childNodes.length > 0) {
             this._selectedItem = this.treedata.syncSelectedToData(
@@ -189,13 +201,15 @@ export default class cTree extends LightningElement {
         }
         if (this.hasDetachedListeners) {
             const container = this.template.querySelector(
-                '.slds-tree_container'
+                '[role="treeContainer"]'
             );
 
+        
             container.addEventListener(
                 'focus',
                 this.handleTreeFocusIn.bind(this)
             );
+            
 
             this.hasDetachedListeners = false;
         }
@@ -203,6 +217,11 @@ export default class cTree extends LightningElement {
         if(!this.widthCalculated)
         {
             this.handleWidthCalculations();
+        }
+
+        if(this.brandNavigationBarBackgroundColor !== undefined && this.brandNavigationBarBackgroundColor !== null && this.brandNavigationBarBackgroundColor.trim() !== '')
+        {
+            this.template.host.style.setProperty('--ccnavmenus-brandNavigationBarBackgroundColor', this.brandNavigationBarBackgroundColor);
         }
 
     }
@@ -520,7 +539,7 @@ export default class cTree extends LightningElement {
             {
                 this.origItems = (this.origItems === undefined || this.origItems === null || this.origItems.length === 0) ? this.items : this.origItems; 
                 
-                let topElement = this.template.querySelector('.slds-tree_container');
+                let topElement = this.template.querySelector('[role="treeContainer"]');
                 let topElementWidth = topElement.offsetWidth + parseInt(getComputedStyle(topElement).marginLeft) + parseInt(getComputedStyle(topElement).marginRight);
                 
                 let currItems = [];

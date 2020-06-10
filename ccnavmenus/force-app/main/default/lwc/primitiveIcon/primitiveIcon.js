@@ -19,6 +19,7 @@ export default class cPrimitiveIcon extends LightningElement {
     @api svgClass;
     @api size = 'medium';
     @api variant;
+    @api noTransform = false;
 
     privateIconSvgTemplates = getIconSvgTemplates();
 
@@ -85,6 +86,11 @@ export default class cPrimitiveIcon extends LightningElement {
 
         if (normalizedSize !== 'medium') {
             classes.add(`slds-icon_${normalizedSize}`);
+        }
+
+        if(this.noTransform)
+        {
+            classes.add('no-transform');
         }
 
         return classes.toString();

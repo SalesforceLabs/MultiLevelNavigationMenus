@@ -1,4 +1,15 @@
+:host
+{
+    --ccnavmenus-brandNavigationBarBackgroundColor: var(--lwc-brandNavigationBarBackgroundColor, #c9c9c9);
+}
+
 c-tree-item.slds-tree-hidden
 {
     visibility: hidden;
+}
+
+.slds-tree_container-horizontal
+{
+    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor);
+    max-width: none;
 }

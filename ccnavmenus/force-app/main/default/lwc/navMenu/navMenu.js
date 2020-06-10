@@ -11,6 +11,13 @@ export default class NavMenu extends LightningElement {
     /* [{"replaceThis":"[!recordId]","replaceWith":"{!recordId}"}] */ 
     @api urlSubMapJson;
 
+    //styling inputs
+    @api brandNavigationColorText;
+    @api brandNavigationBarBackgroundColor;
+    @api brandNavigationBackgroundColor;
+    @api fontFamily;
+    @api textTransform;
+
     @track items = [];
     @track url = '';
     

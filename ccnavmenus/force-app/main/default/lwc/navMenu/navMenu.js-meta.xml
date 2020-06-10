@@ -21,6 +21,21 @@
             <property name="urlSubMapJson" type="String" label="URL Substition Map JSON" required="false" 
             description="Define JSON substitution map as such (Example):  [{ &#x22;replaceThis&#x22;: &#x22;[!recordId]&#x22;, &#x22;replaceWith&#x22;: &#x22;{!recordId}&#x22; }]"/>
 
+            <property name="brandNavigationColorText" type="Color" label="Override Navigation Text Color" required="false"
+            description="Override the Navigation Text Color token that is inherited from the theme with this value."/>
+
+            <property name="brandNavigationBarBackgroundColor" type="Color" label="Override Navigation Bar Background Color" required="false"
+            description="Override the Navigation Bar Background Color token that is inherited from the theme with this value."/>
+
+            <property name="brandNavigationBackgroundColor" type="Color" label="Override Navigation Background Color" required="false"
+            description="Override the Navigation Background Color token that is inherited from the theme with this value."/>
+
+            <property name="fontFamily" type="String" label="Override Font Family" required="false"
+            description="Override the Font Family token that is inherited from the theme with this value."/>
+
+            <property name="textTransform" type="String" label="Override Text Case" required="false" datasource="inherit,none,capitalize,uppercase,lowercase" default="inherit"
+            description="Override the Text Case token that is inherited from the theme with this value."/>
+
         </targetConfig>
     </targetConfigs> 
 </LightningComponentBundle>

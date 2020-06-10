@@ -16,3 +16,8 @@ _:-ms-lang(x),
 svg {
     pointer-events: none;
 }
+
+.no-transform
+{
+    transform: none !important;
+}
