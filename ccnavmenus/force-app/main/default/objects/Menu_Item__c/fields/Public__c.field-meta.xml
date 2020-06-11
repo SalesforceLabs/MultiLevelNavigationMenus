@@ -2,7 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Public__c</fullName>
     <defaultValue>false</defaultValue>
+    <description>Public</description>
     <externalId>false</externalId>
+    <inlineHelpText>If checked, the menu item will be shown to unauthenticated guest users, assuming that the guest user has access to the parent menu record.</inlineHelpText>
     <label>Public</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

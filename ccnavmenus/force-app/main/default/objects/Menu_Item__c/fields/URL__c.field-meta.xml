@@ -2,7 +2,10 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>URL__c</fullName>
     <defaultValue>&quot;javascript:void(0);&quot;</defaultValue>
+    <description>Menu Item URL</description>
     <externalId>false</externalId>
+    <inlineHelpText>URL for menu item. This can be a fully qualified url, or a relative url in a community.
+Example: &quot;https://www.salesforce.com&quot; or &quot;/s/my-custom-page&quot; or &quot;my-custom-page&quot; etc.</inlineHelpText>
     <label>URL</label>
     <length>255</length>
     <required>true</required>

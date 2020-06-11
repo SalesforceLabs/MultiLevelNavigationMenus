@@ -82,7 +82,7 @@
                         <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Create New Menu</h2>
                     </header>
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                        <center>
+                        
                             <lightning-record-form
                                 object-api-name="ccnavmenus__Menu__c"
                                 layout-type="Full"
@@ -91,7 +91,7 @@
                                 onsuccess={createMenuSuccess}>
                             </lightning-record-form>
 
-                        </center>
+                        
                     </div>
                     <footer class="slds-modal__footer">
                     </footer>
@@ -115,7 +115,7 @@
                             <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Edit Menu</h2>
                         </header>
                         <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
-                            <center>
+                            
 
                                 <lightning-record-form
                                     record-id={menuId}
@@ -126,7 +126,7 @@
                                     onsuccess={editMenuSuccess}>
                                 </lightning-record-form>
     
-                            </center>
+                            
                         </div>
                         <footer class="slds-modal__footer">
                         </footer>
@@ -186,7 +186,7 @@
                                 Menu Item {selectedMenuItemLabelForEdit}</h2>
                         </header>
                         <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4" style="height: 800px;">
-                            <center>
+                            
                                 <lightning-record-edit-form record-id={selectedMenuItemIdForEdit}
                                 object-api-name="ccnavmenus__Menu_Item__c" onsuccess={handleCreateEditSuccess}>
                                     <lightning-messages>
@@ -238,7 +238,7 @@
                                     </div>
                                 </lightning-record-edit-form>
     
-                            </center>
+                            
                         </div>
                         <footer class="slds-modal__footer">
                         </footer>

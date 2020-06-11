@@ -2,7 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Menu_Item__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
+    <description>Parent Menu Item</description>
     <externalId>false</externalId>
+    <inlineHelpText>Parent Menu Item which the current menu item falls under in the hierarchy.</inlineHelpText>
     <label>Menu Item</label>
     <lookupFilter>
         <active>true</active>

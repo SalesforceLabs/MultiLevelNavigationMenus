@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Menu__c</fullName>
+    <description>Parent Menu</description>
     <externalId>false</externalId>
+    <inlineHelpText>Parent Menu the menu item belongs to.</inlineHelpText>
     <label>Menu</label>
     <referenceTo>Menu__c</referenceTo>
     <relationshipLabel>Menu Items</relationshipLabel>

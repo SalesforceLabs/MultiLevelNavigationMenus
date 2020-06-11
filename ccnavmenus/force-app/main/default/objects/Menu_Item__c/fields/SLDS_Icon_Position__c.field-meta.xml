@@ -2,7 +2,9 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>SLDS_Icon_Position__c</fullName>
     <defaultValue>&quot;left&quot;</defaultValue>
+    <description>SLDS Icon Position</description>
     <externalId>false</externalId>
+    <inlineHelpText>Position of the SLDS icon to the left or the right of the menu label, if an icon is rendered.</inlineHelpText>
     <label>SLDS Icon Position</label>
     <required>true</required>
     <trackTrending>false</trackTrending>
