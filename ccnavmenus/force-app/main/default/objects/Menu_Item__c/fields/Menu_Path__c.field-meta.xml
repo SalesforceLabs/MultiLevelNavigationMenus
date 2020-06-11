@@ -4,20 +4,6 @@
     <externalId>false</externalId>
     <formula>Menu__r.Name + &quot; - &quot; +
 RPAD(
-LPAD(
-IF( NOT(ISBLANK( TEXT(
-Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c))), 
-TEXT(Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c), &quot;&quot;),3,&quot;0&quot;) +
-
-LPAD(
-IF( NOT(ISBLANK( TEXT(
-Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c))),
-TEXT(Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c),&quot;&quot;),3,&quot;0&quot;) +
-
-LPAD(  
-IF( NOT(ISBLANK( TEXT(
-Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c))),
-TEXT(Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Position__c), &quot;&quot;),3,&quot;0&quot;) + 
 
 LPAD(
 IF(NOT(ISBLANK( TEXT(

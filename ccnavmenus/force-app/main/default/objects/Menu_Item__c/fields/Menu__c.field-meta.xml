@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Menu__c</fullName>
-    <deleteConstraint>Restrict</deleteConstraint>
     <externalId>false</externalId>
     <label>Menu</label>
     <referenceTo>Menu__c</referenceTo>
     <relationshipLabel>Menu Items</relationshipLabel>
     <relationshipName>Menu_Items</relationshipName>
-    <required>true</required>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>true</reparentableMasterDetail>
     <trackTrending>false</trackTrending>
-    <type>Lookup</type>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
 </CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Too_Many_Levels</fullName>
+    <active>true</active>
+    <errorConditionFormula>NOT(ISBLANK(
+Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__r.Menu_Item__c
+))</errorConditionFormula>
+    <errorDisplayField>Menu_Item__c</errorDisplayField>
+    <errorMessage>You&apos;ve reached the maximum allowed number of levels in depth.</errorMessage>
+</ValidationRule>
