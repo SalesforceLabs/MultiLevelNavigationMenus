@@ -1,14 +1,14 @@
 public with sharing class menusController {
 
     @AuraEnabled(cacheable=true)
-    public static String getMenu(Id menuId)
+    public static String getMenu(Id menuId, String language)
     {
         Map<String,Object> resultMap = new Map<String,Object>();
         List<treeItem> listTOCLevel1 = new List<treeItem>();
 
         try {
             Boolean expanded = false;
-            Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId);
+            Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId, language);
 
             listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
             resultMap.put('menu',listTOCLevel1);
@@ -19,16 +19,21 @@ public with sharing class menusController {
         return System.JSON.serialize(resultMap);
     }
 
-    private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(Id menuId)
+    private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(Id menuId, String language)
     {
+
+        language = (language == null || language.trim() == '') ? null : language;
+        language = (language != null) ? '\'' + language + '\'' : language;
+        language = (language != null || System.UserInfo.getUserType() == 'Guest') ? language : '\'' + System.UserInfo.getLanguage() + '\',\'' + System.UserInfo.getLocale() + '\'';
+
         String query = 'SELECT Id, Name, ccnavmenus__URL__c, ccnavmenus__Menu_Path__c, ccnavmenus__Open_in_New_Window__c,';
         query += 'ccnavmenus__SLDS_Icon__c, ccnavmenus__SLDS_Icon_Position__c, ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
         query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
         query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
-        query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
-        query += '(SELECT Id FROM ccnavmenus__Menu_Items__r)';
+        query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c ';
         query += ' FROM ccnavmenus__Menu_Item__c WHERE ';
-        query += ' ccnavmenus__Menu__c = :menuId';
+        query += ' ccnavmenus__Menu__c = :menuId AND ';
+        query += (language != null) ? '(ccnavmenus__Language__c = NULL OR ccnavmenus__Language__c includes (' + language + '))' : 'ccnavmenus__Language__c = NULL';
 
         if(System.UserInfo.getUserType() == 'Guest')
         {

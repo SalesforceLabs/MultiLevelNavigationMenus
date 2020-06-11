@@ -185,7 +185,7 @@
                                 <span if:false={selectedMenuItemIdForEdit}> Create </span>
                                 Menu Item {selectedMenuItemLabelForEdit}</h2>
                         </header>
-                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4" style="height: 640px;">
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4" style="height: 800px;">
                             <center>
                                 <lightning-record-edit-form record-id={selectedMenuItemIdForEdit}
                                 object-api-name="ccnavmenus__Menu_Item__c" onsuccess={handleCreateEditSuccess}>
@@ -225,15 +225,17 @@
                                     <span class="slds-form-element__label">Language - Empty for all languages or select applicable languages</span>
                                     <lightning-input-field field-name="ccnavmenus__Language__c" variant="label-hidden">
                                     </lightning-input-field>
-                                    <lightning-button
-                                        class="slds-m-top_small"
-                                        variant="brand"
-                                        type="submit"
-                                        name="save"
-                                        label="Save">
-                                    </lightning-button>
-                                    <lightning-button label="Cancel" title="Cancel"
-                                            onclick={closeCreateEditModal}></lightning-button>
+
+                                    <div class="slds-m-top_medium">
+                                        <lightning-button
+                                            variant="brand"
+                                            type="submit"
+                                            name="save"
+                                            label="Save">
+                                        </lightning-button>
+                                        <lightning-button label="Cancel" title="Cancel"
+                                                onclick={closeCreateEditModal}></lightning-button>
+                                    </div>
                                 </lightning-record-edit-form>
     
                             </center>

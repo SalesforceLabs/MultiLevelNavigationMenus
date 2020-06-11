@@ -27,13 +27,13 @@ public with sharing class menusManagerController {
     {
         List<treeItem> listTOCLevel1 = new List<treeItem>();
 
-        try {
+        //try {
             Boolean expanded = false;
             Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId, language);
 
             listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
 
-        } catch(Exception e){}
+        //} catch(Exception e){}
 
         return System.JSON.serialize(listTOCLevel1).replaceAll('"items"','"_children"');
     }
@@ -75,19 +75,68 @@ public with sharing class menusManagerController {
     {
         language = (language == null || language.trim() == '') ? null : language;
 
-        String query = 'SELECT Id, Name, ccnavmenus__URL__c, ccnavmenus__Menu_Path__c, ccnavmenus__Open_in_New_Window__c, ccnavmenus__Position__c,';
-        query += 'ccnavmenus__Public__c,ccnavmenus__SLDS_Icon__c,ccnavmenus__SLDS_Icon_Position__c,ccnavmenus__Language__c,ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
-        query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
-        query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
-        query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
-        query += '(SELECT Id FROM ccnavmenus__Menu_Items__r) ';
+        String fields = 'SELECT Id, Name, ccnavmenus__URL__c, ccnavmenus__Menu_Path__c, ccnavmenus__Open_in_New_Window__c, ccnavmenus__Position__c,';
+        fields += 'ccnavmenus__Public__c,ccnavmenus__SLDS_Icon__c,ccnavmenus__SLDS_Icon_Position__c,ccnavmenus__Language__c,ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
+        fields += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
+        fields += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
+        fields += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c ';
+
+        String query = fields;
         query += 'FROM ccnavmenus__Menu_Item__c WHERE ccnavmenus__Menu__c = :menuId';
         query += (language != null) ? ' AND (ccnavmenus__Language__c includes (\'' + language + '\'))' : '';
         query += ' ORDER BY ccnavmenus__Menu_Path__c ASC';
 
-        return new Map<Id, ccnavmenus__Menu_Item__c>(
-        (List<ccnavmenus__Menu_Item__c>)Database.query(query)
-        );
+        Map<Id, ccnavmenus__Menu_Item__c> miMap = new Map<Id, ccnavmenus__Menu_Item__c>(
+            (List<ccnavmenus__Menu_Item__c>)Database.query(query)
+            );
+
+        
+
+        if(language != null)
+        {
+            Set<Id> miIdSet = new Set<Id>();
+
+            for(ccnavmenus__Menu_Item__c mi : miMap.values())
+            {
+                miIdSet.add(mi.Id);
+                if(mi.ccnavmenus__Menu_Item__c != null)
+                {
+                    miIdSet.add(mi.ccnavmenus__Menu_Item__c);
+                    if(mi.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c != null)
+                    {
+                        miIdSet.add(mi.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
+                        if(mi.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c != null)
+                        {
+                            miIdSet.add(mi.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
+                            if(mi.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c != null)
+                            {
+                                miIdSet.add(mi.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
+                                if(mi.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c != null)
+                                {
+                                    miIdSet.add(mi.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
+                                    if(mi.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c != null)
+                                    {
+                                        miIdSet.add(mi.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }   
+            }
+            
+            String query2 = fields;
+            query2 += 'FROM ccnavmenus__Menu_Item__c WHERE ccnavmenus__Menu__c = :menuId';
+            query2 += ' AND Id IN :miIdSet';
+            query2 += ' ORDER BY ccnavmenus__Menu_Path__c ASC';
+
+            miMap = new Map<Id, ccnavmenus__Menu_Item__c>(
+                (List<ccnavmenus__Menu_Item__c>)Database.query(query2)
+                );
+
+        }
+
+        return miMap;
     }
 
     private static List<treeItem> populateTreeItemsByParent(Map<Id,ccnavmenus__Menu_Item__c> tocMap, Boolean expanded)

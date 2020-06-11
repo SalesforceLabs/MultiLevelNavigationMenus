@@ -36,6 +36,9 @@
             <property name="textTransform" type="String" label="Override Text Case" required="false" datasource="inherit,none,capitalize,uppercase,lowercase" default="inherit"
             description="Override the Text Case token that is inherited from the theme with this value."/>
 
+            <property name="language" type="String" label="Language" required="false" datasource="apex://languagePicklist"
+            description="Choose language menu to display"/>
+
         </targetConfig>
     </targetConfigs> 
 </LightningComponentBundle>
