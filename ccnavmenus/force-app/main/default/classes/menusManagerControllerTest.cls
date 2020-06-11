@@ -53,14 +53,17 @@ public class menusManagerControllerTest {
 
     public static testMethod void test_success_menusManagerController()
     {
-        
+        String languagesJSON = menusManagerController.getLanguages();
+        List<String> languageList = (List<String>)System.JSON.deserialize(languagesJSON, List<String>.class);
+        System.assert(languageList.size() > 0);
+
         String menusJSON = menusManagerController.getMenus();
         List<ccnavmenus__Menu__c> menuList = (List<ccnavmenus__Menu__c>) System.JSON.deserialize(menusJSON,List<ccnavmenus__Menu__c>.class);
         System.assert(menuList.size() > 0);
 
         String menuId = menuList[0].Id;
 
-        String menuJSON = menusManagerController.getMenu(menuId);
+        String menuJSON = menusManagerController.getMenu(menuId, null);
         List<menusManagerController.treeItem> menuItemList = (List<menusManagerController.treeItem>)System.JSON.deserialize(menuJSON,List<menusManagerController.treeItem>.class);
         System.assert(menuItemList.size() > 0);
 

@@ -1,5 +1,6 @@
 import { LightningElement, track, wire } from 'lwc';
 import fetchMenus from '@salesforce/apex/menusManagerController.getMenus';
+import fetchLanguages from '@salesforce/apex/menusManagerController.getLanguages';
 import deleteMenu from '@salesforce/apex/menusManagerController.deleteMenu';
 import fetchMenu from '@salesforce/apex/menusManagerController.getMenu';
 import deleteMenuItem from '@salesforce/apex/menusManagerController.deleteMenuItem';
@@ -62,6 +63,12 @@ const MENU_ITEM_COLUMNS_DEFINITION = [
         fieldName: 'isPublic',
         label: 'Public',
         initialWidth: 100,
+    },
+    {
+        type: 'text',
+        fieldName: 'language',
+        label: 'Language',
+        initialWidth: 100,
     }
 ];
 
@@ -75,9 +82,13 @@ export default class MenusManager extends LightningElement {
     @track menuList;
     @track menuListResult;
     @track menuOptions;
+    @track languageList;
+    @track languageListResult;
+    @track languageOptions;
     @track menuItemList;
     @track menuItemListResult;
     @track menuId = null;
+    @track languageFilter = '';
     @track menuName;
     @track selectedMenuItemIdForCreate;
     @track selectedMenuItemIdForEdit;
@@ -92,7 +103,7 @@ export default class MenusManager extends LightningElement {
 
     //wire functions
     wireFetchMenu;
-    @wire(fetchMenu,{menuId: '$menuId'})
+    @wire(fetchMenu,{menuId: '$menuId', language: '$languageFilter'})
     fetchMenuImperativeWiring(result) 
     {
         if (result.data) {
@@ -132,6 +143,29 @@ export default class MenusManager extends LightningElement {
         }
     }
 
+    wireFetchLanguages;
+    @wire(fetchLanguages)
+    fetchLanguagesImperativeWiring(result) 
+    {
+        if (result.data) {
+            this.languageListResult = result;
+            this.languageList = JSON.parse(result.data);
+            this.languageOptions = new Array();
+            for(let i=0; i<this.languageList.length;i++)
+            {
+                let tmpLanguageOption = {};
+                tmpLanguageOption.label = this.languageList[i];
+                tmpLanguageOption.value = this.languageList[i];
+                tmpLanguageOption.value = (tmpLanguageOption.value === 'all') ? '' : tmpLanguageOption.value ;
+                this.languageOptions.push(tmpLanguageOption);
+            }
+            this.error = undefined;
+        } else if (result.error) {
+            this.languageListResult = result;
+            this.error = result.error;
+            this.languageList = undefined;
+        }
+    }
     
     
 
@@ -295,6 +329,24 @@ export default class MenusManager extends LightningElement {
         
         refreshApex(this.menuItemListResult);        
 
+    }
+
+    handleLanguageChange(e) 
+    {
+        this.languageFilter = e.detail.value;
+        this.languageFilter = (this.languageFilter === 'all') ? '' : this.languageFilter ;
+        
+        setTimeout(() => {
+            refreshApex(this.menuItemListResult);
+        }, 500);
+          
+    
+
+    }
+
+    handleRefreshMenuItems(e)
+    {
+        refreshApex(this.menuItemListResult);
     }
 
     getRowActions(row, doneCallback)

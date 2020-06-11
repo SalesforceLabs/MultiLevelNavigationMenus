@@ -23,13 +23,13 @@ public with sharing class menusManagerController {
     }
 
     @AuraEnabled(cacheable=true)
-    public static String getMenu(Id menuId)
+    public static String getMenu(Id menuId, String language)
     {
         List<treeItem> listTOCLevel1 = new List<treeItem>();
 
         try {
             Boolean expanded = false;
-            Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId);
+            Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId, language);
 
             listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
 
@@ -56,17 +56,38 @@ public with sharing class menusManagerController {
         return result;
     }
 
-    private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(Id menuId)
+    @AuraEnabled(cacheable=true)
+    public static String getLanguages()
     {
-        return new Map<Id, ccnavmenus__Menu_Item__c>([SELECT Id, Name, ccnavmenus__URL__c, ccnavmenus__Menu_Path__c, ccnavmenus__Open_in_New_Window__c, ccnavmenus__Position__c,
-        ccnavmenus__Public__c,ccnavmenus__SLDS_Icon__c,ccnavmenus__SLDS_Icon_Position__c,ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, 
-        ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,
-        ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, 
-        ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,
-        (SELECT Id FROM ccnavmenus__Menu_Items__r)
-        FROM ccnavmenus__Menu_Item__c WHERE 
-        ccnavmenus__Menu__c = :menuId 
-        ORDER BY ccnavmenus__Menu_Path__c ASC]);
+        List<String> languageList = new List<String>();
+        languageList.add('all');
+        Schema.DescribeFieldResult F = ccnavmenus__Menu_Item__c.ccnavmenus__Language__c.getDescribe();
+        Schema.sObjectField T = F.getSObjectField();
+        List<PicklistEntry> entries = T.getDescribe().getPicklistValues();
+        for(PicklistEntry pe : entries)
+        {
+            languageList.add(pe.getValue());
+        }
+        return System.JSON.serialize(languageList);
+    }
+
+    private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(Id menuId, String language)
+    {
+        language = (language == null || language.trim() == '') ? null : language;
+
+        String query = 'SELECT Id, Name, ccnavmenus__URL__c, ccnavmenus__Menu_Path__c, ccnavmenus__Open_in_New_Window__c, ccnavmenus__Position__c,';
+        query += 'ccnavmenus__Public__c,ccnavmenus__SLDS_Icon__c,ccnavmenus__SLDS_Icon_Position__c,ccnavmenus__Language__c,ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
+        query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
+        query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
+        query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
+        query += '(SELECT Id FROM ccnavmenus__Menu_Items__r) ';
+        query += 'FROM ccnavmenus__Menu_Item__c WHERE ccnavmenus__Menu__c = :menuId';
+        query += (language != null) ? ' AND (ccnavmenus__Language__c includes (\'' + language + '\'))' : '';
+        query += ' ORDER BY ccnavmenus__Menu_Path__c ASC';
+
+        return new Map<Id, ccnavmenus__Menu_Item__c>(
+        (List<ccnavmenus__Menu_Item__c>)Database.query(query)
+        );
     }
 
     private static List<treeItem> populateTreeItemsByParent(Map<Id,ccnavmenus__Menu_Item__c> tocMap, Boolean expanded)
@@ -234,6 +255,7 @@ public with sharing class menusManagerController {
         ti.expanded = expanded;
         ti.items = new List<treeItem2>();
         ti.itemsMap = new Map<String, treeItem2>();
+        ti.language = toc.ccnavmenus__Language__c;
         
         return ti;
     }
@@ -255,6 +277,7 @@ public with sharing class menusManagerController {
         ti.expanded = expanded;
         ti.items = new List<treeItem3>();
         ti.itemsMap = new Map<String, treeItem3>();
+        ti.language = toc.ccnavmenus__Language__c;
         
         return ti;
     }
@@ -276,6 +299,7 @@ public with sharing class menusManagerController {
         ti.expanded = expanded;
         ti.items = new List<treeItem4>();
         ti.itemsMap = new Map<String, treeItem4>();
+        ti.language = toc.ccnavmenus__Language__c;
         
         return ti;
     }
@@ -297,6 +321,7 @@ public with sharing class menusManagerController {
         ti.expanded = expanded;
         ti.items = new List<treeItem5>();
         ti.itemsMap = new Map<String, treeItem5>();
+        ti.language = toc.ccnavmenus__Language__c;
         
         return ti;
     }
@@ -318,6 +343,7 @@ public with sharing class menusManagerController {
         ti.expanded = expanded;
         ti.items = new List<treeItem6>();
         ti.itemsMap = new Map<String, treeItem6>();
+        ti.language = toc.ccnavmenus__Language__c;
         
         return ti;
     }
@@ -337,6 +363,7 @@ public with sharing class menusManagerController {
         ti.openInNewWindow = (toc.ccnavmenus__Open_in_New_Window__c) ? 'Yes' : 'No';
         ti.isPublic = (toc.ccnavmenus__Public__c) ? 'Yes' : 'No' ;
         ti.expanded = expanded;
+        ti.language = toc.ccnavmenus__Language__c;
         
         return ti;
     }
@@ -371,6 +398,9 @@ public class treeItem
     public List<treeItem2> items;
 
     public Map<String, treeItem2> itemsMap;
+
+    public string language;
+
 }
 
 public class treeItem2
@@ -402,6 +432,9 @@ public class treeItem2
     public List<treeItem3> items;
 
     public Map<String, treeItem3> itemsMap;
+
+    public string language;
+
 }
 
 public class treeItem3
@@ -433,6 +466,9 @@ public class treeItem3
     public List<treeItem4> items;
 
     public Map<String, treeItem4> itemsMap;
+
+    public string language;
+
 }
 
 public class treeItem4
@@ -464,6 +500,8 @@ public class treeItem4
     public List<treeItem5> items;
 
     public Map<String, treeItem5> itemsMap;
+
+    public string language;
 
 }
 
@@ -497,6 +535,8 @@ public class treeItem5
 
     public Map<String, treeItem6> itemsMap;
 
+    public string language;
+
 }
 
 public class treeItem6
@@ -524,6 +564,8 @@ public class treeItem6
     public string isPublic;
 
     public boolean expanded;
+
+    public string language;
 
 }
 

@@ -3,7 +3,7 @@
         <div class="slds-align_absolute-center slds-p-vertical_large">
             <div class="slds-size_1-of-3 ">
                 <lightning-combobox
-                    name="progress"
+                    name="menus"
                     label="Choose Menu"
                     value=""
                     placeholder="Select a Menu"
@@ -43,6 +43,19 @@
             </div>
         </div>
         <div if:true={menuId}>
+            <div class="slds-m-bottom_medium slds-m-left_medium menuItem-filters">
+                <lightning-combobox
+                        name="languages"
+                        label="Filter By Language"
+                        value=""
+                        placeholder="Select a Language"
+                        options={languageOptions}
+                        onchange={handleLanguageChange}
+                    ></lightning-combobox>
+                <lightning-button-icon icon-name="utility:refresh"  variant="border-filled" alternative-text="Refresh" title="Refresh" onclick={handleRefreshMenuItems}
+                                        class="slds-m-top_large slds-m-left_medium"
+                ></lightning-button-icon>
+            </div>
             <lightning-tree-grid class="menuItemstreegrid"
                 hide-checkbox-column
                 columns={MENU_ITEM_COLUMNS_DEFINITION}
@@ -207,6 +220,10 @@
 
                                     <span class="slds-form-element__label">Position - Relative to Level</span>
                                     <lightning-input-field field-name="ccnavmenus__Position__c" variant="label-hidden" required>
+                                    </lightning-input-field>
+
+                                    <span class="slds-form-element__label">Language - Empty for all languages or select applicable languages</span>
+                                    <lightning-input-field field-name="ccnavmenus__Language__c" variant="label-hidden">
                                     </lightning-input-field>
                                     <lightning-button
                                         class="slds-m-top_small"
