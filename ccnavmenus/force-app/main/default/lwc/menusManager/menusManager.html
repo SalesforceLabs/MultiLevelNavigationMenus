@@ -9,6 +9,7 @@
                     placeholder="Select a Menu"
                     options={menuOptions}
                     onchange={handleMenuChange}
+                    data-name="menus"
                     required
                 ></lightning-combobox>
                 <lightning-button-group>
@@ -51,6 +52,7 @@
                         placeholder="Select a Language"
                         options={languageOptions}
                         onchange={handleLanguageChange}
+                        data-name="languages"
                     ></lightning-combobox>
                 <lightning-button-icon icon-name="utility:refresh"  variant="border-filled" alternative-text="Refresh" title="Refresh" onclick={handleRefreshMenuItems}
                                         class="slds-m-top_large slds-m-left_medium"
@@ -192,50 +194,48 @@
                                     <lightning-messages>
                                     </lightning-messages>
 
-                                    <lightning-input-field field-name="ccnavmenus__Menu__c" value={menuId} disabled readonly>
+                                    <lightning-input-field field-name="ccnavmenus__Menu__c" value={menuId} variant="label-inline" disabled readonly>
                                     </lightning-input-field>
 
-                                    <lightning-input-field if:true={selectedMenuItemIdForCreate} field-name="ccnavmenus__Menu_Item__c" value={selectedMenuItemIdForCreate} disabled readonly>
+                                    <lightning-input-field if:true={selectedMenuItemIdForCreate} field-name="ccnavmenus__Menu_Item__c" value={selectedMenuItemIdForCreate} variant="label-inline" disabled readonly>
                                     </lightning-input-field>
 
-                                    <lightning-input-field field-name="Name" required>
+                                    <lightning-input-field field-name="Name" variant="label-inline" required>
                                     </lightning-input-field>
 
-                                    <lightning-input-field field-name="ccnavmenus__URL__c" required>
+                                    <lightning-input-field field-name="ccnavmenus__URL__c" variant="label-inline" required>
                                     </lightning-input-field>
 
-                                    <lightning-input-field field-name="ccnavmenus__SLDS_Icon__c">
+                                    <lightning-input-field field-name="ccnavmenus__SLDS_Icon__c" variant="label-inline">
                                     </lightning-input-field>
 
-                                    <lightning-input-field field-name="ccnavmenus__SLDS_Icon_Position__c">
+                                    <lightning-input-field field-name="ccnavmenus__SLDS_Icon_Position__c" variant="label-inline">
                                     </lightning-input-field>
 
-                                    <span class="slds-form-element__label">Open in New Window</span>
-                                    <lightning-input-field field-name="ccnavmenus__Open_in_New_Window__c" variant="label-hidden">
+                                    <lightning-input-field field-name="ccnavmenus__Open_in_New_Window__c" variant="label-inline">
                                     </lightning-input-field>
 
-                                    <span class="slds-form-element__label">Public</span>
-                                    <lightning-input-field field-name="ccnavmenus__Public__c" variant="label-hidden">
+                                    <lightning-input-field field-name="ccnavmenus__Public__c" variant="label-inline">
                                     </lightning-input-field>
 
-                                    <span class="slds-form-element__label">Position - Relative to Level</span>
-                                    <lightning-input-field field-name="ccnavmenus__Position__c" variant="label-hidden" required>
+                                    <lightning-input-field field-name="ccnavmenus__Position__c" variant="label-inline" required>
                                     </lightning-input-field>
 
-                                    <span class="slds-form-element__label">Language - Empty for all languages or select applicable languages</span>
-                                    <lightning-input-field field-name="ccnavmenus__Language__c" variant="label-hidden">
+                                    <lightning-input-field field-name="ccnavmenus__Language__c" variant="label-inline">
                                     </lightning-input-field>
 
-                                    <div class="slds-m-top_medium">
-                                        <lightning-button
-                                            variant="brand"
-                                            type="submit"
-                                            name="save"
-                                            label="Save">
-                                        </lightning-button>
-                                        <lightning-button label="Cancel" title="Cancel"
-                                                onclick={closeCreateEditModal}></lightning-button>
-                                    </div>
+                                    <center>
+                                        <div class="slds-m-top_medium">
+                                            <lightning-button
+                                                variant="brand"
+                                                type="submit"
+                                                name="save"
+                                                label="Save">
+                                            </lightning-button>
+                                            <lightning-button label="Cancel" title="Cancel"
+                                                    onclick={closeCreateEditModal}></lightning-button>
+                                        </div>
+                                    </center>
                                 </lightning-record-edit-form>
     
                             

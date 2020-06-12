@@ -60,7 +60,7 @@ public with sharing class menusManagerController {
     public static String getLanguages()
     {
         List<String> languageList = new List<String>();
-        languageList.add('all');
+        languageList.add('none');
         Schema.DescribeFieldResult F = ccnavmenus__Menu_Item__c.ccnavmenus__Language__c.getDescribe();
         Schema.sObjectField T = F.getSObjectField();
         List<PicklistEntry> entries = T.getDescribe().getPicklistValues();

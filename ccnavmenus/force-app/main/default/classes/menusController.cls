@@ -22,7 +22,7 @@ public with sharing class menusController {
     private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(Id menuId, String language)
     {
 
-        language = (language == null || language.trim() == '') ? null : language;
+        language = (language == null || language.trim() == '' || language.trim() == 'none') ? null : language;
         language = (language != null) ? '\'' + language + '\'' : language;
         language = (language != null || System.UserInfo.getUserType() == 'Guest') ? language : '\'' + System.UserInfo.getLanguage() + '\',\'' + System.UserInfo.getLocale() + '\'';
 
@@ -32,8 +32,17 @@ public with sharing class menusController {
         query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
         query += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c ';
         query += ' FROM ccnavmenus__Menu_Item__c WHERE ';
-        query += ' ccnavmenus__Menu__c = :menuId AND ';
-        query += (language != null) ? '(ccnavmenus__Language__c = NULL OR ccnavmenus__Language__c includes (' + language + '))' : 'ccnavmenus__Language__c = NULL';
+        query += ' ccnavmenus__Menu__c = :menuId';
+
+        if(language != null)
+        {
+            query += ' AND (ccnavmenus__Language__c = NULL OR ccnavmenus__Language__c includes (' + language + '))';
+            query += ' AND (ccnavmenus__Menu_Item__r.ccnavmenus__Language__c = NULL OR ccnavmenus__Menu_Item__r.ccnavmenus__Language__c includes (' + language + '))';
+            query += ' AND (ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Language__c = NULL OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Language__c includes (' + language + '))';
+            query += ' AND (ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Language__c = NULL OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Language__c includes (' + language + '))';
+            query += ' AND (ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Language__c = NULL OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Language__c includes (' + language + '))';
+            query += ' AND (ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Language__c = NULL OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Language__c includes (' + language + '))';
+        }
 
         if(System.UserInfo.getUserType() == 'Guest')
         {

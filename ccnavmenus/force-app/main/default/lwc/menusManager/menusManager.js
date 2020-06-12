@@ -156,7 +156,7 @@ export default class MenusManager extends LightningElement {
                 let tmpLanguageOption = {};
                 tmpLanguageOption.label = this.languageList[i];
                 tmpLanguageOption.value = this.languageList[i];
-                tmpLanguageOption.value = (tmpLanguageOption.value === 'all') ? '' : tmpLanguageOption.value ;
+                tmpLanguageOption.value = (tmpLanguageOption.value === 'none') ? '' : tmpLanguageOption.value ;
                 this.languageOptions.push(tmpLanguageOption);
             }
             this.error = undefined;
@@ -327,20 +327,26 @@ export default class MenusManager extends LightningElement {
             }
         }
         
-        refreshApex(this.menuItemListResult);        
+        refreshApex(this.menuItemListResult);  
+        
+        try{
+            this.template.querySelector('[data-name="menus"]').blur();
+        } catch(e){}
 
     }
 
     handleLanguageChange(e) 
     {
         this.languageFilter = e.detail.value;
-        this.languageFilter = (this.languageFilter === 'all') ? '' : this.languageFilter ;
+        this.languageFilter = (this.languageFilter === 'none') ? '' : this.languageFilter ;
         
         setTimeout(() => {
             refreshApex(this.menuItemListResult);
         }, 500);
-          
-    
+        
+        try {
+            this.template.querySelector('[data-name="languages"]').blur();
+        } catch(e){}
 
     }
 
