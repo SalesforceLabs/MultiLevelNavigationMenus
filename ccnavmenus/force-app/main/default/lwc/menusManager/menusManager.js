@@ -4,6 +4,7 @@ import fetchLanguages from '@salesforce/apex/menusManagerController.getLanguages
 import deleteMenu from '@salesforce/apex/menusManagerController.deleteMenu';
 import fetchMenu from '@salesforce/apex/menusManagerController.getMenu';
 import deleteMenuItem from '@salesforce/apex/menusManagerController.deleteMenuItem';
+import doImportMenu from '@salesforce/apex/menusManagerController.importMenu';
 import { refreshApex } from '@salesforce/apex';
 import {loadStyle} from 'lightning/platformResourceLoader';
 import menusManagerCSS from '@salesforce/resourceUrl/menusManager';
@@ -72,8 +73,12 @@ const MENU_ITEM_COLUMNS_DEFINITION = [
     }
 ];
 
+const cleanMenuItemFields = ['position','openInNewWindow','level','language','label','_children','isPublic','iconPosition','icon','href'];
+
+
 export default class MenusManager extends LightningElement {
 
+    @track importModalOpen = false;
     @track createModalOpen = false;
     @track editModalOpen = false;
     @track deleteModalOpen = false;
@@ -87,7 +92,7 @@ export default class MenusManager extends LightningElement {
     @track languageOptions;
     @track menuItemList;
     @track menuItemListResult;
-    @track menuId = null;
+    @track menuId = '';
     @track languageFilter = '';
     @track menuName;
     @track selectedMenuItemIdForCreate;
@@ -189,6 +194,16 @@ export default class MenusManager extends LightningElement {
             let grid =  this.template.querySelector( ".menuItemstreegrid" );
             grid.expandAll();
         }catch(e){}
+    }
+
+    openImportModal() 
+    {
+        this.importModalOpen = true;
+    }
+    
+    closeImportModal() 
+    {
+        this.importModalOpen = false;
     }
 
     openCreateModal() 
@@ -335,6 +350,13 @@ export default class MenusManager extends LightningElement {
 
     }
 
+    handleExportMenu(e)
+    {
+        let menu = {name: this.menuName, _children: this.menuItemList};
+        menu = this.cleanExport(menu);
+        this.download(this.menuName + '.json', JSON.stringify(menu, undefined, 4));
+    }
+
     handleLanguageChange(e) 
     {
         this.languageFilter = e.detail.value;
@@ -353,6 +375,57 @@ export default class MenusManager extends LightningElement {
     handleRefreshMenuItems(e)
     {
         refreshApex(this.menuItemListResult);
+    }
+
+    handleImportMenu(e)
+    {
+        let fileElement = this.template.querySelector('input[data-name="importMenuFile"]');
+        let file = fileElement.files.item(0);
+        if(file === undefined || file === null)
+        {
+            this.showNotification('Import Menu Error', 'No file selected.', 'error');
+        }
+        else 
+        {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                let JSONMenuImportString = e.target.result;
+                let JSONMenuImport;
+                try {
+                    JSONMenuImport = JSON.parse(JSONMenuImportString);
+                } catch(e) {
+                    this.showNotification('Import Menu Error', 'Error parsing JSON: ' + e, 'error');
+                }
+
+                doImportMenu({
+                    menuJSON: JSONMenuImportString
+                })
+                .then((result) => {
+                    let res = JSON.parse(result);
+                    if(res.menuId !== undefined && res.menuId !== null)
+                    {
+                        
+                        this.menuItemList = undefined;
+                        refreshApex(this.menuListResult);
+                        this.menuId = res.menuId;
+                        this.menuName = (JSONMenuImport.name !== undefined && JSONMenuImport.name !== null && JSONMenuImport.name.trim() !== '') ? JSONMenuImport.name : this.menuName;
+                        this.showNotification('Import Menu Success', 'Menu Imported Successfully!','success');
+                        this.closeImportModal();
+                    }
+                    else 
+                    {
+                        this.showNotification('Import Menu Error', res.error,'error');
+                    }
+                })
+                .catch((error) => {
+                    let message = 'Error received: code' + error.errorCode + ', ' +
+                        'message ' + error.body.message;
+                    this.showNotification('Import Menu Error', message, 'error');
+                });
+
+            };
+            reader.readAsText(file);
+        }
     }
 
     getRowActions(row, doneCallback)
@@ -403,6 +476,47 @@ export default class MenusManager extends LightningElement {
             variant: variant,
         });
         this.dispatchEvent(evt);
+    }
+
+    download(filename, text) {
+        var element = this.template.querySelector('a[data-name="exportMenu"]');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+            
+        element.click();
+      
+        element.setAttribute('href','');
+        element.setAttribute('download', '');
+    }
+
+    cleanExport(menu)
+    {   
+        if(menu !== undefined && menu !== null && menu._children !== undefined && menu._children !== null && menu._children.length > 0)
+        {
+            for(let i = 0; i < menu._children.length;i++)
+            {
+                menu._children[i] = this.cleanMenuItem(menu._children[i]);
+                if(menu._children[i]._children !== undefined && menu._children[i]._children !== null)
+                {
+                    menu._children[i] = this.cleanExport(menu._children[i]);
+                }
+            }
+        }
+
+        return menu;
+    }
+
+    cleanMenuItem(menuItem)
+    {
+        var menuItemClean = new Object();
+
+        for(let i=0;i<cleanMenuItemFields.length;i++)
+        {
+            menuItemClean[cleanMenuItemFields[i]] = (menuItem[cleanMenuItemFields[i]] !== undefined && cleanMenuItemFields[i] !== null) ? menuItem[cleanMenuItemFields[i]] : null;
+        }
+        
+
+        return menuItemClean;
     }
 
 }

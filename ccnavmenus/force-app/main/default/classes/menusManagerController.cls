@@ -23,7 +23,7 @@ public with sharing class menusManagerController {
     }
 
     @AuraEnabled(cacheable=true)
-    public static String getMenu(Id menuId, String language)
+    public static String getMenu(String menuId, String language)
     {
         List<treeItem> listTOCLevel1 = new List<treeItem>();
 
@@ -71,7 +71,37 @@ public with sharing class menusManagerController {
         return System.JSON.serialize(languageList);
     }
 
-    private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(Id menuId, String language)
+    @AuraEnabled 
+    public static String importMenu(String menuJSON)
+    {
+        Savepoint sp = Database.setSavepoint();
+        Map<String,String> resultMap = new Map<String,String>();
+        try {
+
+            Map<String,Object> menuMap = (Map<String,Object>)System.JSON.deserializeUntyped(menuJSON);
+            String menuName = (String)menuMap.get('name');
+            menuName = (menuName != null && menuName.trim() != '') ? menuName : 'NoName - ' + System.now().getTime(); 
+
+            ccnavmenus__Menu__c menu = new ccnavmenus__Menu__c(Name=menuName);
+            insert menu;
+
+            Object children = (Object)menuMap.get('_children');
+            String childrenJSON = System.JSON.serialize(children);
+            childrenJSON = childrenJSON.replaceAll('"_children"','"items"');
+
+            List<treeItem> treeItemList = (List<treeItem>)System.JSON.deserialize(childrenJSON, List<treeItem>.class);
+            createMenuItems(menu.Id, treeItemList);
+            resultMap.put('menuId', menu.Id);
+            resultMap.put('error', '');
+        } catch(Exception e) {
+            Database.rollback(sp);
+            resultMap.put('error', e+'');
+        }
+
+        return System.JSON.serialize(resultMap);
+    }
+
+    private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(String menuId, String language)
     {
         language = (language == null || language.trim() == '') ? null : language;
 
@@ -285,6 +315,205 @@ public with sharing class menusManagerController {
 
         return treeItemMapTop.values();
 
+    }
+
+    private static void createMenuItems(String menuId, List<treeItem> treeItemList)
+    {
+        List<ccnavmenus__Menu_Item__c> miList1 = new List<ccnavmenus__Menu_Item__c>();
+        List<ccnavmenus__Menu_Item__c> miList2 = new List<ccnavmenus__Menu_Item__c>();
+        List<ccnavmenus__Menu_Item__c> miList3 = new List<ccnavmenus__Menu_Item__c>();
+        List<ccnavmenus__Menu_Item__c> miList4 = new List<ccnavmenus__Menu_Item__c>();
+        List<ccnavmenus__Menu_Item__c> miList5 = new List<ccnavmenus__Menu_Item__c>();
+        List<ccnavmenus__Menu_Item__c> miList6 = new List<ccnavmenus__Menu_Item__c>();
+        
+        for(treeItem ti :  treeItemList)
+        {
+            ti.id = ti.label + '-' + System.now().getTime();
+            ti.id = ti.id.replace(' ','-');
+            ccnavmenus__Menu_Item__c mi = createMenuItem(ti, menuId, null);
+            miList1.add(mi);
+
+            if(ti.items != null)
+            {
+                for(treeItem2 ti2 : ti.items)
+                {
+                    ti2.id = ti2.label + '-' + System.now().getTime();
+                    ti2.id = ti2.id.replace(' ','-');
+                    ccnavmenus__Menu_Item__c mi2 = createMenuItem2(ti2, menuId, ti.id);
+                    miList2.add(mi2);
+
+                    if(ti2.items != null)
+                    {
+                        for(treeItem3 ti3 : ti2.items)
+                        {
+                            ti3.id = ti3.label + '-' + System.now().getTime();
+                            ti3.id = ti3.id.replace(' ','-');
+                            ccnavmenus__Menu_Item__c mi3 = createMenuItem3(ti3, menuId, ti2.id);
+                            miList3.add(mi3);
+
+                            if(ti3.items != null)
+                            {
+                                for(treeItem4 ti4 : ti3.items)
+                                {
+                                    ti4.id = ti4.label + '-' + System.now().getTime();
+                                    ti4.id = ti4.id.replace(' ','-');
+                                    ccnavmenus__Menu_Item__c mi4 = createMenuItem4(ti4, menuId, ti3.id);
+                                    miList4.add(mi4);
+
+                                    if(ti4.items != null)
+                                    {
+                                        for(treeItem5 ti5 : ti4.items)
+                                        {
+                                            ti5.id = ti5.label + '-' + System.now().getTime();
+                                            ti5.id = ti5.id.replace(' ','-');
+                                            ccnavmenus__Menu_Item__c mi5 = createMenuItem5(ti5, menuId, ti4.id);
+                                            miList5.add(mi5);
+
+                                            if(ti5.items != null)
+                                            {
+                                                for(treeItem6 ti6 : ti5.items)
+                                                {
+                                                    ti6.id = ti6.label + '-' + System.now().getTime();
+                                                    ti6.id = ti6.id.replace(' ','-');
+                                                    ccnavmenus__Menu_Item__c mi6 = createMenuItem6(ti6, menuId, ti5.id);
+                                                    miList6.add(mi6);
+                                                }
+                                            } 
+                                            
+                                        }
+                                    } 
+                                    
+                                }
+                            } 
+                            
+                        }
+                    } 
+
+                }
+            }    
+        }
+
+        insert miList1;
+        insert miList2;
+        insert miList3;
+        insert miList4;
+        insert miList5;
+        insert miList6;
+
+    }
+
+    private static ccnavmenus__Menu_Item__c createMenuItem(treeItem ti, String menuId, String parentMenuItemExtId)
+    {
+        ccnavmenus__Menu_Item__c parentMenuItem = (parentMenuItemExtId != null) ? new ccnavmenus__Menu_Item__c(ccnavmenus__External_Id__c=parentMenuItemExtId) : null; 
+
+        ccnavmenus__Menu_Item__c mi = new ccnavmenus__Menu_Item__c();
+        mi.Name = ti.label;
+        mi.ccnavmenus__Menu__c = menuId;
+        mi.ccnavmenus__URL__c = (ti.href != null) ? ti.href : 'javascript:void(0);';
+        mi.ccnavmenus__SLDS_Icon__c = ti.icon;
+        mi.ccnavmenus__SLDS_Icon_Position__c = (ti.iconPosition != null) ? ti.iconPosition : 'left';
+        mi.ccnavmenus__Position__c = ti.position;
+        mi.ccnavmenus__Menu_Item__r = (parentMenuItem != null) ? parentMenuItem: null ;
+        mi.ccnavmenus__Open_in_New_Window__c = ti.openInNewWindow != null && ti.openInNewWindow == 'Yes';
+        mi.ccnavmenus__Public__c = ti.isPublic != null && ti.isPublic == 'Yes';
+        mi.ccnavmenus__Language__c = ti.language;
+        mi.ccnavmenus__External_Id__c = (ti.id != null ) ? ti.id : null;
+        return mi;
+    }
+
+    private static ccnavmenus__Menu_Item__c createMenuItem2(treeItem2 ti, String menuId, String parentMenuItemExtId)
+    {
+        ccnavmenus__Menu_Item__c parentMenuItem = (parentMenuItemExtId != null) ? new ccnavmenus__Menu_Item__c(ccnavmenus__External_Id__c=parentMenuItemExtId) : null;
+
+        ccnavmenus__Menu_Item__c mi = new ccnavmenus__Menu_Item__c();
+        mi.Name = ti.label;
+        mi.ccnavmenus__Menu__c = menuId;
+        mi.ccnavmenus__URL__c = (ti.href != null) ? ti.href : 'javascript:void(0);';
+        mi.ccnavmenus__SLDS_Icon__c = ti.icon;
+        mi.ccnavmenus__SLDS_Icon_Position__c = (ti.iconPosition != null) ? ti.iconPosition : 'left';
+        mi.ccnavmenus__Position__c = ti.position;
+        mi.ccnavmenus__Menu_Item__r = (parentMenuItem != null) ? parentMenuItem: null ;
+        mi.ccnavmenus__Open_in_New_Window__c = ti.openInNewWindow != null && ti.openInNewWindow == 'Yes';
+        mi.ccnavmenus__Public__c = ti.isPublic != null && ti.isPublic == 'Yes';
+        mi.ccnavmenus__Language__c = ti.language;
+        mi.ccnavmenus__External_Id__c = (ti.id != null ) ? ti.id : null;
+        return mi;
+    }
+
+    private static ccnavmenus__Menu_Item__c createMenuItem3(treeItem3 ti, String menuId, String parentMenuItemExtId)
+    {
+        ccnavmenus__Menu_Item__c parentMenuItem = (parentMenuItemExtId != null) ? new ccnavmenus__Menu_Item__c(ccnavmenus__External_Id__c=parentMenuItemExtId) : null;
+
+        ccnavmenus__Menu_Item__c mi = new ccnavmenus__Menu_Item__c();
+        mi.Name = ti.label;
+        mi.ccnavmenus__Menu__c = menuId;
+        mi.ccnavmenus__URL__c = (ti.href != null) ? ti.href : 'javascript:void(0);';
+        mi.ccnavmenus__SLDS_Icon__c = ti.icon;
+        mi.ccnavmenus__SLDS_Icon_Position__c = (ti.iconPosition != null) ? ti.iconPosition : 'left';
+        mi.ccnavmenus__Position__c = ti.position;
+        mi.ccnavmenus__Menu_Item__r = (parentMenuItem != null) ? parentMenuItem: null ;
+        mi.ccnavmenus__Open_in_New_Window__c = ti.openInNewWindow != null && ti.openInNewWindow == 'Yes';
+        mi.ccnavmenus__Public__c = ti.isPublic != null && ti.isPublic == 'Yes';
+        mi.ccnavmenus__Language__c = ti.language;
+        mi.ccnavmenus__External_Id__c = (ti.id != null ) ? ti.id : null;
+        return mi;
+    }
+
+    private static ccnavmenus__Menu_Item__c createMenuItem4(treeItem4 ti, String menuId, String parentMenuItemExtId)
+    {
+        ccnavmenus__Menu_Item__c parentMenuItem = (parentMenuItemExtId != null) ? new ccnavmenus__Menu_Item__c(ccnavmenus__External_Id__c=parentMenuItemExtId) : null;
+
+        ccnavmenus__Menu_Item__c mi = new ccnavmenus__Menu_Item__c();
+        mi.Name = ti.label;
+        mi.ccnavmenus__Menu__c = menuId;
+        mi.ccnavmenus__URL__c = (ti.href != null) ? ti.href : 'javascript:void(0);';
+        mi.ccnavmenus__SLDS_Icon__c = ti.icon;
+        mi.ccnavmenus__SLDS_Icon_Position__c = (ti.iconPosition != null) ? ti.iconPosition : 'left';
+        mi.ccnavmenus__Position__c = ti.position;
+        mi.ccnavmenus__Menu_Item__r = (parentMenuItem != null) ? parentMenuItem: null ;
+        mi.ccnavmenus__Open_in_New_Window__c = ti.openInNewWindow != null && ti.openInNewWindow == 'Yes';
+        mi.ccnavmenus__Public__c = ti.isPublic != null && ti.isPublic == 'Yes';
+        mi.ccnavmenus__Language__c = ti.language;
+        mi.ccnavmenus__External_Id__c = (ti.id != null ) ? ti.id : null;
+        return mi;
+    }
+
+    private static ccnavmenus__Menu_Item__c createMenuItem5(treeItem5 ti, String menuId, String parentMenuItemExtId)
+    {
+        ccnavmenus__Menu_Item__c parentMenuItem = (parentMenuItemExtId != null) ? new ccnavmenus__Menu_Item__c(ccnavmenus__External_Id__c=parentMenuItemExtId) : null;
+        
+        ccnavmenus__Menu_Item__c mi = new ccnavmenus__Menu_Item__c();
+        mi.Name = ti.label;
+        mi.ccnavmenus__Menu__c = menuId;
+        mi.ccnavmenus__URL__c = (ti.href != null) ? ti.href : 'javascript:void(0);';
+        mi.ccnavmenus__SLDS_Icon__c = ti.icon;
+        mi.ccnavmenus__SLDS_Icon_Position__c = (ti.iconPosition != null) ? ti.iconPosition : 'left';
+        mi.ccnavmenus__Position__c = ti.position;
+        mi.ccnavmenus__Menu_Item__r = (parentMenuItem != null) ? parentMenuItem: null ;
+        mi.ccnavmenus__Open_in_New_Window__c = ti.openInNewWindow != null && ti.openInNewWindow == 'Yes';
+        mi.ccnavmenus__Public__c = ti.isPublic != null && ti.isPublic == 'Yes';
+        mi.ccnavmenus__Language__c = ti.language;
+        mi.ccnavmenus__External_Id__c = (ti.id != null ) ? ti.id : null;
+        return mi;
+    }
+
+    private static ccnavmenus__Menu_Item__c createMenuItem6(treeItem6 ti, String menuId, String parentMenuItemExtId)
+    {
+        ccnavmenus__Menu_Item__c parentMenuItem = (parentMenuItemExtId != null) ? new ccnavmenus__Menu_Item__c(ccnavmenus__External_Id__c=parentMenuItemExtId) : null;
+
+        ccnavmenus__Menu_Item__c mi = new ccnavmenus__Menu_Item__c();
+        mi.Name = ti.label;
+        mi.ccnavmenus__Menu__c = menuId;
+        mi.ccnavmenus__URL__c = (ti.href != null) ? ti.href : 'javascript:void(0);';
+        mi.ccnavmenus__SLDS_Icon__c = ti.icon;
+        mi.ccnavmenus__SLDS_Icon_Position__c = (ti.iconPosition != null) ? ti.iconPosition : 'left';
+        mi.ccnavmenus__Position__c = ti.position;
+        mi.ccnavmenus__Menu_Item__r = (parentMenuItem != null) ? parentMenuItem: null ;
+        mi.ccnavmenus__Open_in_New_Window__c = ti.openInNewWindow != null && ti.openInNewWindow == 'Yes';
+        mi.ccnavmenus__Public__c = ti.isPublic != null && ti.isPublic == 'Yes';
+        mi.ccnavmenus__Language__c = ti.language;
+        mi.ccnavmenus__External_Id__c = (ti.id != null ) ? ti.id : null;
+        return mi;
     }
 
     private static treeItem createTreeItem(ccnavmenus__Menu_Item__c toc, Boolean expanded)

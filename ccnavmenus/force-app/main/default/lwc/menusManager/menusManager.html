@@ -1,11 +1,11 @@
 <template>
     <div class="slds-theme_default">
         <div class="slds-align_absolute-center slds-p-vertical_large">
-            <div class="slds-size_1-of-3 ">
+            <div class="slds-size_2-of-4 ">
                 <lightning-combobox
                     name="menus"
                     label="Choose Menu"
-                    value=""
+                    value={menuId}
                     placeholder="Select a Menu"
                     options={menuOptions}
                     onchange={handleMenuChange}
@@ -16,6 +16,9 @@
                     <lightning-button label="New Menu" title="New Menu"
                             onclick={openCreateModal}>
                     </lightning-button>
+                    <lightning-button label="Import Menu" title="Import Menu"
+                            onclick={openImportModal}>
+                    </lightning-button>
 
                     <template if:false={menuId}>
                         <lightning-button label="Edit Menu" title="Edit Menu"
@@ -23,6 +26,9 @@
                         </lightning-button>
                         <lightning-button label="Delete Menu" title="Delete Menu"
                             disabled>
+                        </lightning-button>
+                        <lightning-button label="Export Menu" title="Export Menu"
+                                disabled>
                         </lightning-button>
                         <lightning-button label="Create Menu Item" title="Create Menu Item"
                                 disabled>
@@ -36,11 +42,15 @@
                         <lightning-button label="Delete Menu" title="Delete Menu"
                                 onclick={openDeleteModal}>
                         </lightning-button>
+                        <lightning-button label="Export Menu" title="Export Menu"
+                                onclick={handleExportMenu}>
+                        </lightning-button>
                         <lightning-button label="Create Menu Item" title="Create Menu Item"
                                 onclick={openCreateEditModal}>
                         </lightning-button>
                     </template>
                 </lightning-button-group>
+                <a data-name="exportMenu" class="slds-hide"></a>
             </div>
         </div>
         <div if:true={menuId}>
@@ -69,6 +79,40 @@
 
         
         <!-- MODALS START HERE -->
+
+        <template if:true={importModalOpen}>
+
+            <div class="demo-only" style="height: 640px;">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-00" aria-modal="true" aria-describedby="modal-content-id-0" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeImportModal}>
+                                <lightning-icon icon-name="utility:close" size="medium" variant="inverse">
+                                </lightning-icon>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                            <h2 id="modal-heading-00" class="slds-text-heading_medium slds-hyphenate">Import New Menu</h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-0">
+                            
+                            <label class="slds-form-element__label" for="fileImport">Select Menu Export File (.json)</label> <br/>
+                            <input id="fileImport" type="file" data-name="importMenuFile" accept=".json"/>
+
+                            
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <lightning-button label="Submit" title="Submit" variant="brand" class="slds-m-right_xx-large"
+                            onclick={handleImportMenu}></lightning-button>
+                            <lightning-button label="Cancel" title="Cancel"
+                            onclick={closeImportModal}></lightning-button>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </template>
+
+
 
         <template if:true={createModalOpen}>
 
@@ -160,7 +204,7 @@
                             </center>
                         </div>
                         <footer class="slds-modal__footer">
-                            <lightning-button label="Yes" title="Yes"
+                            <lightning-button label="Yes" title="Yes" variant="destructive" class="slds-m-right_xx-large"
                             onclick={handleDeleteMenu}></lightning-button>
                             <lightning-button label="No" title="No"
                             onclick={closeDeleteModal}></lightning-button>
@@ -228,6 +272,7 @@
                                         <div class="slds-m-top_medium">
                                             <lightning-button
                                                 variant="brand"
+                                                class="slds-m-right_xx-large"
                                                 type="submit"
                                                 name="save"
                                                 label="Save">
@@ -271,7 +316,7 @@
                                 </center>
                             </div>
                             <footer class="slds-modal__footer">
-                                <lightning-button label="Yes" title="Yes"
+                                <lightning-button label="Yes" title="Yes" variant="destructive" class="slds-m-right_xx-large"
                                 onclick={handleDeleteMIMenu}></lightning-button>
                                 <lightning-button label="No" title="No"
                                 onclick={closeDeleteMIModal}></lightning-button>
