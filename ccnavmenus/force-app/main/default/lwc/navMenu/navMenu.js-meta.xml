@@ -12,8 +12,12 @@
     <targetConfigs>
         <targetConfig targets="lightningCommunity__Default">
 
-            <property name="menuId" type="String" label="Menu" required="true" datasource="apex://menusPicklist"
+            <property name="menuId" type="String" label="Menu" required="false" datasource="apex://menusPicklist"
             description="Choose which menu to display"/>
+
+            <property name="nameFilter" type="String" label="Name Filter" required="false" default=""
+            description="If above Menu option is set to [Name Filter], set a value to match a menu's name on. If multiple menus match, the most recently created one will be returned.
+                        Merge fields from community pages can be used here, such as: {!recordId}, {!recordName}, {!urlParameter} - to create dynamic, page-specific menus."/>
 
             <property name="isVertical" type="Boolean" label="Vertical?" required="false" default="false"
             description="Check to display menu in vertical mode."/>

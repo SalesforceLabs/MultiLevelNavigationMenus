@@ -60,7 +60,7 @@ public class menusControllerTest {
 
         String menuId = menuList[0].Id;
 
-        String menuJSON = menusController.getMenu(menuId,'');
+        String menuJSON = menusController.getMenu('nameFilter','','test menu');
         Map<String,Object> menuObjectMap = (Map<String,Object>) System.JSON.deserializeUntyped(menuJSON);
         String treeItemJSON = JSON.serialize(menuObjectMap.get('menu'));
         List<menusController.treeItem> menuItemList = (List<menusController.treeItem>)System.JSON.deserialize(treeItemJSON,List<menusController.treeItem>.class);

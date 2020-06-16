@@ -22,6 +22,8 @@ global class menusPicklist extends VisualEditor.DynamicPickList {
     private static VisualEditor.DynamicPickListRows getPicklistRows() {
 
         VisualEditor.DynamicPickListRows  myValues = new VisualEditor.DynamicPickListRows();
+        VisualEditor.DataRow value2 = new VisualEditor.DataRow('[Name Filter]','nameFilter');
+        myValues.addRow(value2);
         
         for(ccnavmenus__Menu__c menu : [SELECT Id, Name FROM ccnavmenus__Menu__c ORDER BY Name LIMIT 100])
         {

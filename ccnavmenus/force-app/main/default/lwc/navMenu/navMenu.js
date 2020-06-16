@@ -6,6 +6,7 @@ import navMenuCSS from '@salesforce/resourceUrl/navMenu';
 export default class NavMenu extends LightningElement {
 
     @api menuId;
+    @api nameFilter = '';
     @api isVertical = false;
     @api uuid = Date.now();
     /* [{"replaceThis":"[!recordId]","replaceWith":"{!recordId}"}] */ 
@@ -25,7 +26,7 @@ export default class NavMenu extends LightningElement {
 
     //wire functions
     wireFetchMenu;
-    @wire(fetchMenu,{menuId: '$menuId', language: '$language'})
+    @wire(fetchMenu,{menuId: '$menuId', language: '$language', nameFilter: '$nameFilter'})
     fetchMenuImperativeWiring(result) 
     {
         if (result.data) {

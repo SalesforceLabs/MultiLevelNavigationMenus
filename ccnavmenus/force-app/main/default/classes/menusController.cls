@@ -1,13 +1,19 @@
 public with sharing class menusController {
 
     @AuraEnabled(cacheable=true)
-    public static String getMenu(Id menuId, String language)
+    public static String getMenu(String menuId, String language, String nameFilter)
     {
         Map<String,Object> resultMap = new Map<String,Object>();
         List<treeItem> listTOCLevel1 = new List<treeItem>();
 
         try {
             Boolean expanded = false;
+
+            if(menuId == 'nameFilter')
+            {
+                menuId = getMenuIdByNameFilter(nameFilter);
+            }
+
             Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId, language);
 
             listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
@@ -18,8 +24,14 @@ public with sharing class menusController {
 
         return System.JSON.serialize(resultMap);
     }
+    
+    private static String getMenuIdByNameFilter(String nameFilter)
+    {
+        List<ccnavmenus__Menu__c> menuList = [SELECT Id FROM ccnavmenus__Menu__c WHERE Name = :nameFilter ORDER  BY CreatedDate DESC];
+        return (menuList.size() > 0) ? menuList[0].Id : null ;
+    }
 
-    private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(Id menuId, String language)
+    private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(String menuId, String language)
     {
 
         language = (language == null || language.trim() == '' || language.trim() == 'none') ? null : language;
