@@ -29,6 +29,8 @@ export default class cTree extends LightningElement {
     @track _focusedChild = null;
     @track _items = []
     @track widthCalculated = false;
+    @track clickListener;
+    @track resizeListener;
     
 
     @track origItems = [];
@@ -70,20 +72,21 @@ export default class cTree extends LightningElement {
             this.handleRegistration.bind(this)
         );
 
+        this.clickListener = this.handleDropDownClose.bind(this);
+        this.resizeListener = this.handleWindowResize.bind(this);
+
         if(!this.isVertical && this.checkMobile() === false)
         {
             window.addEventListener(
                 'click',
-                this.handleDropDownClose.bind(this)
+                this.clickListener
             );
             
-            if(!this.isInBuilderPreview())
-            {
-                window.addEventListener(
-                    'resize',
-                    this.handleWindowResize.bind(this)
-                );
-            }
+            
+            window.addEventListener(
+                'resize',
+                this.resizeListener
+            );
         }
 
     }
@@ -231,6 +234,8 @@ export default class cTree extends LightningElement {
 
     disconnectedCallback() {
         this.hasDetachedListeners = true;
+        window.removeEventListener('click', this.clickListener);
+        window.removeEventListener('resize', this.resizeListener);
     }
 
     handleClick(event) {
@@ -496,8 +501,10 @@ export default class cTree extends LightningElement {
 
     handleWindowResize(e)
     {
-        clearTimeout(this.resizeId);
-        this.resizeId = setTimeout(this.handleMenuResize(e), 500);
+        try {
+            clearTimeout(this.resizeId);
+            this.resizeId = setTimeout(this.handleMenuResize(e), 500);
+        } catch(e){}
     }
 
     handleWidthCalculations()
@@ -597,8 +604,4 @@ export default class cTree extends LightningElement {
         }
     }
 
-    isInBuilderPreview()
-    {
-        return window.location.host.indexOf('sitepreview') > 0 || window.location.host.indexOf('livepreview') > 0 || window.location.host.indexOf('live.') > 0;
-    }
 }
