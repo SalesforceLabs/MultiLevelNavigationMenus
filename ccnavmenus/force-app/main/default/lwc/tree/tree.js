@@ -76,11 +76,14 @@ export default class cTree extends LightningElement {
                 'click',
                 this.handleDropDownClose.bind(this)
             );
-
-            window.addEventListener(
-                'resize',
-                this.handleWindowResize.bind(this)
-            );
+            
+            if(!this.isInBuilderPreview())
+            {
+                window.addEventListener(
+                    'resize',
+                    this.handleWindowResize.bind(this)
+                );
+            }
         }
 
     }
@@ -592,5 +595,10 @@ export default class cTree extends LightningElement {
                 }
             }
         }
+    }
+
+    isInBuilderPreview()
+    {
+        return window.location.host.indexOf('sitepreview') > 0 || window.location.host.indexOf('livepreview') > 0 || window.location.host.indexOf('live.') > 0;
     }
 }
