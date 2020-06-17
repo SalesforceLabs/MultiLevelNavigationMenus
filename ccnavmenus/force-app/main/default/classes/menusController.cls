@@ -34,9 +34,15 @@ public with sharing class menusController {
     private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(String menuId, String language)
     {
 
-        language = (language == null || language.trim() == '' || language.trim() == 'none') ? null : language;
-        language = (language != null) ? '\'' + language + '\'' : language;
-        language = (language != null || System.UserInfo.getUserType() == 'Guest') ? language : '\'' + System.UserInfo.getLanguage() + '\',\'' + System.UserInfo.getLocale() + '\'';
+        if(language != null && language.trim() != '' && language.trim() != 'none')
+        {
+            language = '\'' + language + '\'';
+            language = (System.UserInfo.getUserType() == 'Guest') ? language : '\'' + System.UserInfo.getLanguage() + '\',\'' + System.UserInfo.getLocale() + '\'';
+        }
+        else 
+        {
+            language = null;
+        }
 
         String query = 'SELECT Id, Name, ccnavmenus__URL__c, ccnavmenus__Menu_Path__c, ccnavmenus__Open_in_New_Window__c,';
         query += 'ccnavmenus__SLDS_Icon__c, ccnavmenus__SLDS_Icon_Position__c, ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
