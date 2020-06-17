@@ -33,7 +33,7 @@ global class languagePicklist extends VisualEditor.DynamicPickList {
             
             if(language == 'none')
             {
-                VisualEditor.DataRow value1 = new VisualEditor.DataRow('{!language}','{!language}');
+                VisualEditor.DataRow value1 = new VisualEditor.DataRow('auto','auto');
                 myValues.addRow(value1);
                 
             }

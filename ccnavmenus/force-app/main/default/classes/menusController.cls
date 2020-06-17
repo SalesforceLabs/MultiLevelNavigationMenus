@@ -34,11 +34,18 @@ public with sharing class menusController {
     private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(String menuId, String language)
     {
 
-        if(language != null && language.trim() != '' && language.trim() != 'none')
+        //language = 'autoen_US' - from variable --> same value if guest, from user record if not
+        if(language != null && language.trim() != '' && language.trim().startsWith('auto'))
+        {
+            language = language.replace('auto', '');
+            language = (language != '' || System.UserInfo.getUserType() == 'Guest') ? '\'' + language + '\'' : '\'' + System.UserInfo.getLanguage() + '\',\'' + System.UserInfo.getLocale() + '\'';
+        }
+        //language = 'en_US' - hardcoded --> same value
+        else if(language != null && language.trim() != '' && !language.trim().startsWith('auto') && language.trim() != 'none')
         {
             language = '\'' + language + '\'';
-            language = (System.UserInfo.getUserType() == 'Guest') ? language : '\'' + System.UserInfo.getLanguage() + '\',\'' + System.UserInfo.getLocale() + '\'';
         }
+        //language = 'none' --> null language
         else 
         {
             language = null;

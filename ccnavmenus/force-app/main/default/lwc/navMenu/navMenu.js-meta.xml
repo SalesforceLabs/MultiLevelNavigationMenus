@@ -41,10 +41,11 @@
             description="Override the Text Case token that is inherited from the theme with this value."/>
 
             <property name="language" type="String" label="Language Filter" required="false" datasource="apex://languagePicklist"
-            description="Choose language menu to display. For unauthenticated / guest users if {!language} is chosen, the language is populated based on the language picker component.
-                        For authenticated users, the language is based on their language / locale selection in their user settings. 
-                        If a hardcoded language is chosen from the picklist of values or {!language} is chosen and a url parameter called 'language' is passed, 
-                        it takes precedence and overrides user settings. If translation is not needed, leave the default 'none' value."/>
+            description="Choose language to filter menu on. 
+                        If 'auto' is chosen, for unauthenticated / guest users the language is populated based on the language picker component ('language' url parameter),
+                        otherwise for authenticated users the language is based on their language / locale selection in their user settings. 
+                        If a hardcoded language is chosen from the picklist of values, the menu is filtered on that chosen language. 
+                        If translation is not needed, leave the default 'none' value."/>
 
         </targetConfig>
     </targetConfigs> 

@@ -54,10 +54,10 @@ export default class NavMenu extends LightningElement {
         this.isVertical = (this.checkMobile()) ? this.checkMobile() : this.isVertical;
         try {
             
-            if(this.language === undefined || this.language === null || this.language.trim() === '')
+            if(this.language !== undefined && this.language !== null && this.language.trim() === 'auto')
             {
                 let lang = this.getURLParameter('language');
-                this.language = (lang !== undefined && lang !== null && lang.trim() !== '') ? lang : '';
+                this.language += (lang !== undefined && lang !== null && lang.trim() !== '') ? lang : '';
             }
         } catch(e){}
         
