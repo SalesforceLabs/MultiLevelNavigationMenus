@@ -21,23 +21,14 @@ global class languagePicklist extends VisualEditor.DynamicPickList {
 
     private static VisualEditor.DynamicPickListRows getPicklistRows() {
 
-        String languagesJSON = menusManagerController.getLanguages();
-        List<String> languageList = (List<String>)System.JSON.deserialize(languagesJSON, List<String>.class);
 
         VisualEditor.DynamicPickListRows  myValues = new VisualEditor.DynamicPickListRows();
-        
-        for(String language : languageList)
-        {
-            VisualEditor.DataRow value = new VisualEditor.DataRow(language,language);
-            myValues.addRow(value);
-            
-            if(language == 'none')
-            {
-                VisualEditor.DataRow value1 = new VisualEditor.DataRow('auto','auto');
-                myValues.addRow(value1);
-                
-            }
-        }
+
+        VisualEditor.DataRow value = new VisualEditor.DataRow('none','none');
+        myValues.addRow(value);
+
+        VisualEditor.DataRow value1 = new VisualEditor.DataRow('auto','auto');
+        myValues.addRow(value1);
         
         return myValues;
 

@@ -2,8 +2,8 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>48.0</apiVersion>
     <isExposed>true</isExposed>
-    <masterLabel>Navigation Menu</masterLabel>
-    <description>Navigation Menu</description>
+    <masterLabel>Multi-Level Navigation Menu</masterLabel>
+    <description>Multi-Level Navigation Menu for Community Cloud</description>
     <targets>
         <target>lightningCommunity__Page</target>
         <target>lightningCommunity__Default</target>
@@ -12,7 +12,7 @@
     <targetConfigs>
         <targetConfig targets="lightningCommunity__Default">
 
-            <property name="menuId" type="String" label="Menu" required="false" datasource="apex://menusPicklist"
+            <property name="menuId" type="String" label="Menu" required="true" datasource="apex://menusPicklist"
             description="Choose which menu to display"/>
 
             <property name="nameFilter" type="String" label="Name Filter" required="false" default=""
@@ -40,11 +40,10 @@
             <property name="textTransform" type="String" label="Override Text Case" required="false" datasource="inherit,none,capitalize,uppercase,lowercase" default="inherit"
             description="Override the Text Case token that is inherited from the theme with this value."/>
 
-            <property name="language" type="String" label="Language Filter" required="false" datasource="apex://languagePicklist"
+            <property name="language" type="String" label="Language Filter" required="true" datasource="apex://languagePicklist"
             description="Choose language to filter menu on. 
                         If 'auto' is chosen, for unauthenticated / guest users the language is populated based on the language picker component ('language' url parameter),
                         otherwise for authenticated users the language is based on their language / locale selection in their user settings. 
-                        If a hardcoded language is chosen from the picklist of values, the menu is filtered on that chosen language. 
                         If translation is not needed, leave the default 'none' value."/>
 
         </targetConfig>
