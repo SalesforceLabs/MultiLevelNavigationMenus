@@ -1,3 +1,27 @@
+:host
+{
+    --ccnavmenus-brandNavigationBarBackgroundColor: var(--lwc-brandNavigationBarBackgroundColor, #c9c9c9);
+}
+
+.toggleDiv 
+{
+    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor);
+    width: fit-content;
+}
+
 [aria-expanded="true"] > .slds-tree__item .slds-button__icon .menu-icon {
     transform: rotate(0deg) !important;
 }
+
+.hamburgerMenuContainer
+{
+    position: absolute;
+    width: 20rem;
+    z-index: 100;
+    margin-top: -1px;
+}
+
+.test > .slds-icon {
+    fill: red;
+}
+

@@ -19,10 +19,12 @@ export default class NavMenu extends LightningElement {
     @api brandNavigationBackgroundColor;
     @api fontFamily;
     @api textTransform;
+    @api hamburgerMenuMode = 'mobile-only'; //on, mobile-only, off
 
     @track items = [];
     @track url = '';
-    
+    @track hamburgerMenuVisible = false;
+    @track hamburgerMenu = false;
 
     //wire functions
     wireFetchMenu;
@@ -49,6 +51,12 @@ export default class NavMenu extends LightningElement {
 
     connectedCallback()
     {
+        this.hamburgerMenu = (this.hamburgerMenuMode !== undefined && this.hamburgerMenuMode !== null
+            && (
+                    (this.hamburgerMenuMode === 'mobile-only' && this.checkMobile()) 
+                    || this.hamburgerMenuMode === 'on')
+                );
+
         this.url = window.location.href.split('?')[0];
         loadStyle(this, navMenuCSS);
         this.isVertical = (this.checkMobile()) ? this.checkMobile() : this.isVertical;
@@ -60,7 +68,22 @@ export default class NavMenu extends LightningElement {
                 this.language += (lang !== undefined && lang !== null && lang.trim() !== '') ? lang : '';
             }
         } catch(e){}
+
+        if(this.brandNavigationColorText !== undefined && this.brandNavigationColorText !== null && this.brandNavigationColorText.trim() !== '')
+        {
+            document.documentElement.style.setProperty('--ccnavmenus-brandNavigationColorText', this.brandNavigationColorText);
+        }
+
+        if(this.brandNavigationBarBackgroundColor !== undefined && this.brandNavigationBarBackgroundColor !== null && this.brandNavigationBarBackgroundColor.trim() !== '')
+        {
+            this.template.host.style.setProperty('--ccnavmenus-brandNavigationBarBackgroundColor', this.brandNavigationBarBackgroundColor);
+        }
         
+    }
+
+    toggleHamburgerMenu()
+    {
+        this.hamburgerMenuVisible = !this.hamburgerMenuVisible;
     }
 
     checkMobile()

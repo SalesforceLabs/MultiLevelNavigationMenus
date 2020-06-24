@@ -45,6 +45,10 @@
                         If 'auto' is chosen, for unauthenticated / guest users the language is populated based on the language picker component ('language' url parameter),
                         otherwise for authenticated users the language is based on their language / locale selection in their user settings. 
                         If translation is not needed, leave the default 'none' value."/>
+            
+            <property name="hamburgerMenuMode" type="String" label="Hamburger Menu Mode" required="false" datasource="mobile-only, on, off" default="mobile-only"
+            description="Mode for when to hide menu behind hamburger. Defaults to 'mobile-only' which will render a hamburger menu only on mobile devices. 
+            'on' will render a hamburger menu all the time. 'off' will never render a hamburger menu."/>
 
         </targetConfig>
     </targetConfigs> 
