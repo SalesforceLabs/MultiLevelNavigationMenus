@@ -25,6 +25,7 @@ export default class NavMenu extends LightningElement {
     @track url = '';
     @track hamburgerMenuVisible = false;
     @track hamburgerMenu = false;
+    @track clickListener;
 
     //wire functions
     wireFetchMenu;
@@ -69,21 +70,35 @@ export default class NavMenu extends LightningElement {
             }
         } catch(e){}
 
-        if(this.brandNavigationColorText !== undefined && this.brandNavigationColorText !== null && this.brandNavigationColorText.trim() !== '')
-        {
-            document.documentElement.style.setProperty('--ccnavmenus-brandNavigationColorText', this.brandNavigationColorText);
-        }
+        this.setStylingProperties();
 
-        if(this.brandNavigationBarBackgroundColor !== undefined && this.brandNavigationBarBackgroundColor !== null && this.brandNavigationBarBackgroundColor.trim() !== '')
+        if(this.hamburgerMenu)
         {
-            this.template.host.style.setProperty('--ccnavmenus-brandNavigationBarBackgroundColor', this.brandNavigationBarBackgroundColor);
+            this.clickListener = this.handleCloseHamburgerMenu.bind(this);
+            window.addEventListener(
+                'click',
+                this.clickListener
+            );
         }
         
+    }
+
+    renderedCallback()
+    {
+        this.setStylingProperties();
     }
 
     toggleHamburgerMenu()
     {
         this.hamburgerMenuVisible = !this.hamburgerMenuVisible;
+    }
+
+    handleCloseHamburgerMenu(e)
+    {
+        if(e.target.tagName !== 'CCNAVMENUS-NAV-MENU' || (e.target.tagName === 'CCNAVMENUS-NAV-MENU' && e.target.uuid !== this.uuid))
+        {
+            this.hamburgerMenuVisible = false;
+        }
     }
 
     checkMobile()
@@ -96,5 +111,18 @@ export default class NavMenu extends LightningElement {
     getURLParameter(name) {
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
       }
+
+    setStylingProperties()
+    {
+        if(this.brandNavigationColorText !== undefined && this.brandNavigationColorText !== null && this.brandNavigationColorText.trim() !== '')
+        {
+            this.template.host.style.setProperty('--ccnavmenus-brandNavigationColorText', this.brandNavigationColorText);
+        }
+
+        if(this.brandNavigationBarBackgroundColor !== undefined && this.brandNavigationBarBackgroundColor !== null && this.brandNavigationBarBackgroundColor.trim() !== '')
+        {
+            this.template.host.style.setProperty('--ccnavmenus-brandNavigationBarBackgroundColor', this.brandNavigationBarBackgroundColor);
+        }
+    }
 
 }

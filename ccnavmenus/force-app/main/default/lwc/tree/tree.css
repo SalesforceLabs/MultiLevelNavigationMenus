@@ -10,6 +10,10 @@ c-tree-item.slds-tree-hidden
 
 .slds-tree_container-horizontal
 {
-    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor);
     max-width: none;
+}
+
+.slds-tree_container
+{
+    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor);
 }

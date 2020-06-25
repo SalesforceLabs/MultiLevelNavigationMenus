@@ -1,12 +1,31 @@
 :host
 {
     --ccnavmenus-brandNavigationBarBackgroundColor: var(--lwc-brandNavigationBarBackgroundColor, #c9c9c9);
+    --ccnavmenus-brandNavigationColorText: var(--lwc-brandNavigationColorText, white);
 }
 
-.toggleDiv 
+.ccnavmenu-hamburger-icon
 {
-    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor);
+    fill: var(--ccnavmenus-brandNavigationColorText, var(--lwc-brandNavigationColorText, white));
+}
+
+.ccnavmenu-hamburger-button 
+{
+    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor, var(--lwc-brandNavigationBarBackgroundColor, white));
     width: fit-content;
+    border-radius: 0px;
+}
+
+.ccnavmenu-hamburger-button:focus 
+{
+    border: 0px;
+    box-shadow: none;
+}
+
+.ccnavmenu-hamburger-button-close
+{
+    top: -32px;
+    right: 0;
 }
 
 [aria-expanded="true"] > .slds-tree__item .slds-button__icon .menu-icon {
@@ -18,10 +37,5 @@
     position: absolute;
     width: 20rem;
     z-index: 100;
-    margin-top: -1px;
-}
-
-.test > .slds-icon {
-    fill: red;
 }
 

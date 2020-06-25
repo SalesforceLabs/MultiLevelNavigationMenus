@@ -1,7 +1,0 @@
-:root {
-    --ccnavmenus-brandNavigationColorText: var(--lwc-brandNavigationColorText, white);
-}
-.ccnavmenu svg.slds-icon
-{
-    fill: var(--ccnavmenus-brandNavigationColorText, white);
-}

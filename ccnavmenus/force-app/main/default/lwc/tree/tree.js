@@ -72,11 +72,12 @@ export default class cTree extends LightningElement {
             this.handleRegistration.bind(this)
         );
 
-        this.clickListener = this.handleDropDownClose.bind(this);
-        this.resizeListener = this.handleWindowResize.bind(this);
+        
 
         if(!this.isVertical && this.checkMobile() === false)
         {
+            this.clickListener = this.handleDropDownClose.bind(this);
+            this.resizeListener = this.handleWindowResize.bind(this);
             window.addEventListener(
                 'click',
                 this.clickListener
