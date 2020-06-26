@@ -176,14 +176,26 @@ export default class MenusManager extends LightningElement {
 
     connectedCallback() 
     {
-        this.MENU_ITEM_COLUMNS_DEFINITION.push({
-            'type': 'action', 
-            'typeAttributes': 
-            { 
-                'rowActions': this.getRowActions.bind(this),
-                'menuAlignment': 'left' 
-            } 
-        });
+        let hasAction = false;
+        for(let i=0;i<this.MENU_ITEM_COLUMNS_DEFINITION;i++)
+        {
+            if(this.MENU_ITEM_COLUMNS_DEFINITION[i].type === 'action')
+            {
+                hasAction = true;
+            }
+        }
+
+        if(!hasAction)
+        {
+            this.MENU_ITEM_COLUMNS_DEFINITION.push({
+                'type': 'action', 
+                'typeAttributes': 
+                { 
+                    'rowActions': this.getRowActions.bind(this),
+                    'menuAlignment': 'left' 
+                } 
+            });
+        }
 
         loadStyle(this, menusManagerCSS);
     }
