@@ -6,7 +6,18 @@
 
 .ccnavmenu-hamburger-icon
 {
-    fill: var(--ccnavmenus-brandNavigationColorText, var(--lwc-brandNavigationColorText, white));
+    color: var(--ccnavmenus-brandNavigationColorText, var(--lwc-brandNavigationColorText, white));
+    font-weight: 100;
+}
+
+.ccnavmenu-hamburger-icon-toggle
+{
+    font-size: 30px;
+}
+
+.ccnavmenu-hamburger-icon-close
+{
+    font-size: 40px;
 }
 
 .ccnavmenu-hamburger-button 
@@ -14,6 +25,8 @@
     background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor, var(--lwc-brandNavigationBarBackgroundColor, white));
     width: fit-content;
     border-radius: 0px;
+    height: 40px;
+    width: 40px;
 }
 
 .ccnavmenu-hamburger-button:focus 
@@ -24,7 +37,7 @@
 
 .ccnavmenu-hamburger-button-close
 {
-    top: -32px;
+    top: -40px;
     right: 0;
 }
 

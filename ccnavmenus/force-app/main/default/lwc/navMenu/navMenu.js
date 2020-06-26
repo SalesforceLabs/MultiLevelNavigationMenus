@@ -95,7 +95,12 @@ export default class NavMenu extends LightningElement {
 
     handleCloseHamburgerMenu(e)
     {
-        if(e.target.tagName !== 'CCNAVMENUS-NAV-MENU' || (e.target.tagName === 'CCNAVMENUS-NAV-MENU' && e.target.uuid !== this.uuid))
+        if(e.target !== undefined && e.target !== null && 
+                (
+                    e.target.tagName !== 'CCNAVMENUS-NAV-MENU' || 
+                    (e.target.tagName === 'CCNAVMENUS-NAV-MENU' && e.target.uuid !== this.uuid)
+                )
+            )
         {
             this.hamburgerMenuVisible = false;
         }
