@@ -267,6 +267,8 @@ export default class cTree extends LightningElement {
                 this._selectedItem = item;
                 this.dispatchSelectEvent(item.treeNode);
                 this.setFocusToItem(item);
+                event.target.forceClose = true;
+                this.handleDropDownClose(event);
             }
         }
     }
@@ -478,13 +480,15 @@ export default class cTree extends LightningElement {
     handleDropDownClose(e)
     {
         try {
-            if(this.isVertical || this.checkMobile() === true || (e.target.tagName === 'C-TREE-ITEM' && e.target.uuid === this.uuid))
+            if(this.isVertical || this.checkMobile() === true || (e.target.tagName === 'C-TREE-ITEM' && e.target.uuid === this.uuid && e.target.forceClose === undefined))
             {
                 return;
             }
-
-            if((e.target.tagName === 'CCNAVMENUS-NAV-MENU'  && e.target.uuid !== this.uuid) || e.target.uuid === undefined )
+            else if( (e.target.tagName === 'CCNAVMENUS-NAV-MENU'  && e.target.uuid !== this.uuid) || 
+                        e.target.uuid === undefined || 
+                    (e.target.forceClose !== undefined && e.target.forceClose === true) )
             {
+                e.target.forceClose = undefined;
                 for(let i=0; i < this.items.length;i++)
                 {
                     if(this.items[i].level === 1)
