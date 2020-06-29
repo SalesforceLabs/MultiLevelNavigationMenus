@@ -64,7 +64,9 @@ public class menusManagerControllerTest {
         String menuId = menuList[0].Id;
 
         String menuJSON = menusManagerController.getMenu(menuId, null);
-        List<menusManagerController.treeItem> menuItemList = (List<menusManagerController.treeItem>)System.JSON.deserialize(menuJSON,List<menusManagerController.treeItem>.class);
+        Map<String,Object> menuMap = (Map<String,Object>)System.JSON.deserializeUntyped(menuJSON);
+        String menuItemListJSONString = System.JSON.serialize(menuMap.get('itemsList'));
+        List<menusManagerController.treeItem> menuItemList = (List<menusManagerController.treeItem>)System.JSON.deserialize(menuItemListJSONString,List<menusManagerController.treeItem>.class);
         System.assert(menuItemList.size() > 0);
 
         List<ccnavmenus__Menu_Item__c> miList = [SELECT Id FROM ccnavmenus__Menu_Item__c WHERE Name = 'MI 6'];
@@ -90,7 +92,9 @@ public class menusManagerControllerTest {
         System.assertNotEquals('', menuId);
 
         String menuJSON2 = menusManagerController.getMenu(menuId, 'fr');
-        List<menusManagerController.treeItem> menuItemList = (List<menusManagerController.treeItem>)System.JSON.deserialize(menuJSON2,List<menusManagerController.treeItem>.class);
+        Map<String,Object> menuMap = (Map<String,Object>)System.JSON.deserializeUntyped(menuJSON2);
+        String menuItemListJSONString = System.JSON.serialize(menuMap.get('itemsList'));
+        List<menusManagerController.treeItem> menuItemList = (List<menusManagerController.treeItem>)System.JSON.deserialize(menuItemListJSONString,List<menusManagerController.treeItem>.class);
         System.assert(menuItemList.size() > 0);
 
     }

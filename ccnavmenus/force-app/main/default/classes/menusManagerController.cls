@@ -25,6 +25,7 @@ public with sharing class menusManagerController {
     @AuraEnabled(cacheable=true)
     public static String getMenu(String menuId, String language)
     {
+        Map<String,Object> resultMap = new Map<String,Object>();
         List<treeItem> listTOCLevel1 = new List<treeItem>();
 
         //try {
@@ -32,10 +33,12 @@ public with sharing class menusManagerController {
             Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId, language);
 
             listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
+            resultMap.put('itemsList',listTOCLevel1);
+            resultMap.put('itemsMap',tocMap);
 
         //} catch(Exception e){}
 
-        return System.JSON.serialize(listTOCLevel1).replaceAll('"items"','"_children"');
+        return System.JSON.serialize(resultMap).replaceAll('"items"','"_children"');
     }
 
     @AuraEnabled

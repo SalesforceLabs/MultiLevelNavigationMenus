@@ -266,9 +266,14 @@
 
                                     <lightning-input-field field-name="ccnavmenus__Position__c" variant="label-inline" required>
                                     </lightning-input-field>
-
-                                    <lightning-input-field field-name="ccnavmenus__Language__c" variant="label-inline">
-                                    </lightning-input-field>
+                                    
+                                    <lightning-accordion active-section-name={activeLanguageSections}
+                                        allow-multiple-sections-open>
+                                        <lightning-accordion-section name="language" label="Language" onclick={handleLanguageSectionToggle}>
+                                            <lightning-input-field field-name="ccnavmenus__Language__c" variant="label-inline">
+                                            </lightning-input-field>
+                                        </lightning-accordion-section>
+                                    </lightning-accordion>
 
                                     <center>
                                         <div class="slds-m-top_medium">

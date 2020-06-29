@@ -91,6 +91,7 @@ export default class MenusManager extends LightningElement {
     @track languageListResult;
     @track languageOptions;
     @track menuItemList;
+    @track menuItemMap;
     @track menuItemListResult;
     @track menuId = '';
     @track languageFilter = '';
@@ -101,6 +102,7 @@ export default class MenusManager extends LightningElement {
     @track selectedMenuItemIdForDelete;
     @track selectedMenuItemLabelForDelete;
     @track error;
+    @track activeLanguageSections = [];
 
     @track MENU_ITEM_COLUMNS_DEFINITION = JSON.parse(JSON.stringify(MENU_ITEM_COLUMNS_DEFINITION));
     @track MENU_ITEM_ACTIONS = JSON.parse(JSON.stringify(MENU_ITEM_ACTIONS));
@@ -114,13 +116,16 @@ export default class MenusManager extends LightningElement {
         if (result.data) {
             try {
                 this.menuItemListResult = result;
-                this.menuItemList = JSON.parse(result.data);
+                let menuItemResult = JSON.parse(result.data);
+                this.menuItemList = menuItemResult.itemsList;
+                this.menuItemMap = menuItemResult.itemsMap;
                 this.error = undefined;
             }catch(e){}
         } else if (result.error) {
             this.menuItemListResult = result;
             this.error = result.error;
             this.menuItemList = undefined;
+            this.menuItemMap = undefined;
         }
 
     }
@@ -280,6 +285,23 @@ export default class MenusManager extends LightningElement {
 
     openCreateEditModal() 
     {
+        if(this.selectedMenuItemIdForEdit !== undefined && this.selectedMenuItemIdForEdit !== null && this.selectedMenuItemIdForEdit.trim() !== '')
+        {
+            let mi = this.menuItemMap[this.selectedMenuItemIdForEdit];
+            if(mi !== undefined && mi !== null && mi.ccnavmenus__Language__c !== undefined && mi.ccnavmenus__Language__c !== null &&
+                mi.ccnavmenus__Language__c.trim() !== '')
+            {
+                this.activeLanguageSections.push('language');
+            }
+            else
+            {
+                this.activeLanguageSections = [];
+            }
+        }
+        else
+        {
+            this.activeLanguageSections = [];
+        }
         this.createEditModalOpen = true;
     }
     
@@ -470,6 +492,19 @@ export default class MenusManager extends LightningElement {
                 this.openDeleteMIModal();
                 break;
         }
+    }
+
+    handleLanguageSectionToggle(e)
+    {
+        if(this.activeLanguageSections !== undefined && this.activeLanguageSections.length === 0)
+        {
+            this.activeLanguageSections.push('language');
+        }
+        else
+        {
+            this.activeLanguageSections = [];
+        }
+        
     }
 
     showNotification(title, message, variant) {
