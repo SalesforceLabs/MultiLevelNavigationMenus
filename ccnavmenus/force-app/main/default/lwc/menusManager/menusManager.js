@@ -102,8 +102,8 @@ export default class MenusManager extends LightningElement {
     @track selectedMenuItemLabelForDelete;
     @track error;
 
-    @track MENU_ITEM_COLUMNS_DEFINITION = MENU_ITEM_COLUMNS_DEFINITION;
-    @track MENU_ITEM_ACTIONS = MENU_ITEM_ACTIONS;
+    @track MENU_ITEM_COLUMNS_DEFINITION = JSON.parse(JSON.stringify(MENU_ITEM_COLUMNS_DEFINITION));
+    @track MENU_ITEM_ACTIONS = JSON.parse(JSON.stringify(MENU_ITEM_ACTIONS));
 
 
     //wire functions
@@ -176,26 +176,17 @@ export default class MenusManager extends LightningElement {
 
     connectedCallback() 
     {
-        let hasAction = false;
-        for(let i=0;i<this.MENU_ITEM_COLUMNS_DEFINITION;i++)
-        {
-            if(this.MENU_ITEM_COLUMNS_DEFINITION[i].type === 'action')
-            {
-                hasAction = true;
-            }
-        }
-
-        if(!hasAction)
-        {
-            this.MENU_ITEM_COLUMNS_DEFINITION.push({
-                'type': 'action', 
-                'typeAttributes': 
-                { 
-                    'rowActions': this.getRowActions.bind(this),
-                    'menuAlignment': 'left' 
-                } 
-            });
-        }
+        this.MENU_ITEM_COLUMNS_DEFINITION = JSON.parse(JSON.stringify(MENU_ITEM_COLUMNS_DEFINITION));
+        
+        this.MENU_ITEM_COLUMNS_DEFINITION.push({
+            'type': 'action', 
+            'typeAttributes': 
+            { 
+                'rowActions': this.getRowActions.bind(this),
+                'menuAlignment': 'right' 
+            } 
+        });
+        
 
         loadStyle(this, menusManagerCSS);
     }

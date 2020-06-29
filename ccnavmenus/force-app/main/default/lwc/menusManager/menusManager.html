@@ -68,13 +68,15 @@
                                         class="slds-m-top_large slds-m-left_medium"
                 ></lightning-button-icon>
             </div>
-            <lightning-tree-grid class="menuItemstreegrid"
-                hide-checkbox-column
-                columns={MENU_ITEM_COLUMNS_DEFINITION}
-                data={menuItemList}
-                key-field="id"
-                onrowaction={handleRowAction}>
-            </lightning-tree-grid>
+            <div class="">
+                <lightning-tree-grid class="menuItemstreegrid"
+                    hide-checkbox-column
+                    columns={MENU_ITEM_COLUMNS_DEFINITION}
+                    data={menuItemList}
+                    key-field="id"
+                    onrowaction={handleRowAction}>
+                </lightning-tree-grid>
+            </div>
         </div>
 
         
