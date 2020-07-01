@@ -1,4 +1,4 @@
-public with sharing class menusManagerController {
+global with sharing class menusManagerController {
     
     @AuraEnabled(cacheable=true)
     public static String getMenus()
@@ -8,7 +8,7 @@ public with sharing class menusManagerController {
     }
 
     @AuraEnabled
-    public static String deleteMenu(Id menuId)
+    global static String deleteMenu(Id menuId)
     {
         String result = 'success';
         try {
@@ -23,7 +23,7 @@ public with sharing class menusManagerController {
     }
 
     @AuraEnabled(cacheable=true)
-    public static String getMenu(String menuId, String language)
+    global static String getMenu(String menuId, String language)
     {
         Map<String,Object> resultMap = new Map<String,Object>();
         List<treeItem> listTOCLevel1 = new List<treeItem>();
@@ -42,7 +42,7 @@ public with sharing class menusManagerController {
     }
 
     @AuraEnabled
-    public static String deleteMenuItem(Id menuItemId)
+    global static String deleteMenuItem(Id menuItemId)
     {
         String result = 'success';
         try {
@@ -60,7 +60,7 @@ public with sharing class menusManagerController {
     }
 
     @AuraEnabled(cacheable=true)
-    public static String getLanguages()
+    global static String getLanguages()
     {
         List<String> languageList = new List<String>();
         languageList.add('none');
@@ -75,7 +75,7 @@ public with sharing class menusManagerController {
     }
 
     @AuraEnabled 
-    public static String importMenu(String menuJSON)
+    global static String importMenu(String menuJSON)
     {
         Savepoint sp = Database.setSavepoint();
         Map<String,String> resultMap = new Map<String,String>();

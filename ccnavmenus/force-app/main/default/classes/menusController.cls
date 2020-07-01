@@ -1,7 +1,7 @@
-public with sharing class menusController {
+global with sharing class menusController {
 
     @AuraEnabled(cacheable=true)
-    public static String getMenu(String menuId, String language, String nameFilter)
+    global static String getMenu(String menuId, String language, String nameFilter)
     {
         Map<String,Object> resultMap = new Map<String,Object>();
         List<treeItem> listTOCLevel1 = new List<treeItem>();
