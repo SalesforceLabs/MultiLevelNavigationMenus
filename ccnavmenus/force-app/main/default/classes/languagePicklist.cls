@@ -24,11 +24,13 @@ global class languagePicklist extends VisualEditor.DynamicPickList {
 
         VisualEditor.DynamicPickListRows  myValues = new VisualEditor.DynamicPickListRows();
 
+        VisualEditor.DataRow value1 = new VisualEditor.DataRow('auto','auto');
+        myValues.addRow(value1);
+
         VisualEditor.DataRow value = new VisualEditor.DataRow('none','none');
         myValues.addRow(value);
 
-        VisualEditor.DataRow value1 = new VisualEditor.DataRow('auto','auto');
-        myValues.addRow(value1);
+        
         
         return myValues;
 

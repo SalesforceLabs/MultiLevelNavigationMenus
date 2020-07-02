@@ -22,6 +22,16 @@
             <property name="isVertical" type="Boolean" label="Vertical?" required="false" default="false"
             description="Check to display menu in vertical mode."/>
 
+            <property name="language" type="String" label="Language Filter" required="true" datasource="apex://languagePicklist"
+            description="Choose language to filter menu on. 
+                        If 'auto' is chosen, for unauthenticated / guest users the language is populated based on the language picker component ('language' url parameter),
+                        otherwise for authenticated users the language is based on their language / locale selection in their user settings. 
+                        If translation is not needed, leave the default 'none' value."/>
+            
+            <property name="hamburgerMenuMode" type="String" label="Hamburger Menu Mode" required="false" datasource="mobile-only, on, off" default="mobile-only"
+            description="Mode for when to hide menu behind hamburger. Defaults to 'mobile-only' which will render a hamburger menu only on mobile devices. 
+            'on' will render a hamburger menu all the time. 'off' will never render a hamburger menu."/>
+
             <property name="urlSubMapJson" type="String" label="URL Substition Map JSON" required="false" 
             description="Define JSON substitution map as such (Example):  [{ &#x22;replaceThis&#x22;: &#x22;[!recordId]&#x22;, &#x22;replaceWith&#x22;: &#x22;{!recordId}&#x22; }]"/>
 
@@ -39,16 +49,6 @@
 
             <property name="textTransform" type="String" label="Override Text Case" required="false" datasource="inherit,none,capitalize,uppercase,lowercase" default="inherit"
             description="Override the Text Case token that is inherited from the theme with this value."/>
-
-            <property name="language" type="String" label="Language Filter" required="true" datasource="apex://languagePicklist"
-            description="Choose language to filter menu on. 
-                        If 'auto' is chosen, for unauthenticated / guest users the language is populated based on the language picker component ('language' url parameter),
-                        otherwise for authenticated users the language is based on their language / locale selection in their user settings. 
-                        If translation is not needed, leave the default 'none' value."/>
-            
-            <property name="hamburgerMenuMode" type="String" label="Hamburger Menu Mode" required="false" datasource="mobile-only, on, off" default="mobile-only"
-            description="Mode for when to hide menu behind hamburger. Defaults to 'mobile-only' which will render a hamburger menu only on mobile devices. 
-            'on' will render a hamburger menu all the time. 'off' will never render a hamburger menu."/>
 
         </targetConfig>
     </targetConfigs> 

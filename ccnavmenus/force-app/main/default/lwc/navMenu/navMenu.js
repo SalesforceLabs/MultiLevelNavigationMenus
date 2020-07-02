@@ -11,7 +11,7 @@ export default class NavMenu extends LightningElement {
     @api uuid = Date.now();
     /* [{"replaceThis":"[!recordId]","replaceWith":"{!recordId}"}] */ 
     @api urlSubMapJson;
-    @api language = 'none';
+    @api language = 'auto';
 
     //styling inputs
     @api brandNavigationColorText;
