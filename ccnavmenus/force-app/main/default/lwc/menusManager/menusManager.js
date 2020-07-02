@@ -287,6 +287,7 @@ export default class MenusManager extends LightningElement {
     {
         if(this.selectedMenuItemIdForEdit !== undefined && this.selectedMenuItemIdForEdit !== null && this.selectedMenuItemIdForEdit.trim() !== '')
         {
+            this.activeLanguageSections = [];
             let mi = this.menuItemMap[this.selectedMenuItemIdForEdit];
             if(mi !== undefined && mi !== null && mi.ccnavmenus__Language__c !== undefined && mi.ccnavmenus__Language__c !== null &&
                 mi.ccnavmenus__Language__c.trim() !== '')
@@ -492,19 +493,6 @@ export default class MenusManager extends LightningElement {
                 this.openDeleteMIModal();
                 break;
         }
-    }
-
-    handleLanguageSectionToggle(e)
-    {
-        if(this.activeLanguageSections !== undefined && this.activeLanguageSections.length === 0)
-        {
-            this.activeLanguageSections.push('language');
-        }
-        else
-        {
-            this.activeLanguageSections = [];
-        }
-        
     }
 
     showNotification(title, message, variant) {
