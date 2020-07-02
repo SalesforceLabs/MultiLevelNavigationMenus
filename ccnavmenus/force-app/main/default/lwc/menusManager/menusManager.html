@@ -268,8 +268,9 @@
                                     </lightning-input-field>
                                     
                                     <lightning-accordion active-section-name={activeLanguageSections}
+                                        onsectiontoggle={handleLanguageSectionToggle}
                                         allow-multiple-sections-open>
-                                        <lightning-accordion-section name="language" label="Language" onclick={handleLanguageSectionToggle}>
+                                        <lightning-accordion-section name="language" label="Language">
                                             <lightning-input-field field-name="ccnavmenus__Language__c" variant="label-inline">
                                             </lightning-input-field>
                                         </lightning-accordion-section>
