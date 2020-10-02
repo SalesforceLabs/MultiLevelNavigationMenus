@@ -58,7 +58,9 @@ public class menusManagerControllerTest {
         System.assert(languageList.size() > 0);
 
         String menusJSON = menusManagerController.getMenus();
-        List<ccnavmenus__Menu__c> menuList = (List<ccnavmenus__Menu__c>) System.JSON.deserialize(menusJSON,List<ccnavmenus__Menu__c>.class);
+        Map<String,Object> menuMapObj = (Map<String,Object>) System.JSON.deserializeUntyped(menusJSON);
+        String menuListString = System.JSON.serialize(menuMapObj.get('menuList'));
+        List<ccnavmenus__Menu__c> menuList = (List<ccnavmenus__Menu__c>) System.JSON.deserialize(menuListString,List<ccnavmenus__Menu__c>.class);
         System.assert(menuList.size() > 0);
 
         String menuId = menuList[0].Id;

@@ -117,9 +117,18 @@ export default class MenusManager extends LightningElement {
             try {
                 this.menuItemListResult = result;
                 let menuItemResult = JSON.parse(result.data);
+                if(menuItemResult.itemsList)
+                {
                 this.menuItemList = menuItemResult.itemsList;
                 this.menuItemMap = menuItemResult.itemsMap;
                 this.error = undefined;
+                }
+                else if(menuItemResult.error)
+                {
+                    this.error = menuItemResult.error;
+                    this.menuItemList = undefined;
+                    this.menuItemMap = undefined;
+                }
             }catch(e){}
         } else if (result.error) {
             this.menuItemListResult = result;
@@ -137,15 +146,24 @@ export default class MenusManager extends LightningElement {
         if (result.data) {
             this.menuListResult = result;
             this.menuList = JSON.parse(result.data);
-            this.menuOptions = new Array();
-            for(let i=0; i<this.menuList.length;i++)
+            if(this.menuList.menuList)
             {
-                let tmpMenuOption = {};
-                tmpMenuOption.label = this.menuList[i].Name;
-                tmpMenuOption.value = this.menuList[i].Id;
-                this.menuOptions.push(tmpMenuOption);
+                this.menuOptions = new Array();
+                for(let i=0; i<this.menuList.menuList.length;i++)
+                {
+                    let tmpMenuOption = {};
+                    tmpMenuOption.label = this.menuList.menuList[i].Name;
+                    tmpMenuOption.value = this.menuList.menuList[i].Id;
+                    this.menuOptions.push(tmpMenuOption);
+                }
+                this.error = undefined;
             }
-            this.error = undefined;
+            else if(this.menuList.error)
+            {
+                this.menuListResult = result;
+                this.error = this.menuList.error;
+                this.menuList = undefined;
+            }
         } else if (result.error) {
             this.menuListResult = result;
             this.error = result.error;

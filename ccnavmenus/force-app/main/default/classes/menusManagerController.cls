@@ -3,8 +3,24 @@ global with sharing class menusManagerController {
     @AuraEnabled(cacheable=true)
     public static String getMenus()
     {
-       List<ccnavmenus__Menu__c> menuList = [SELECT Id, Name FROM ccnavmenus__Menu__c ORDER BY Name LIMIT 100];
-       return System.JSON.serialize(menuList);
+        Map<String,Object> resultMap = new Map<String,Object>();
+        try {
+            if(ccnavmenus__Menu__c.sObjectType.getDescribe().isAccessible()
+                && Schema.sObjectType.ccnavmenus__Menu__c.fields.Name.isAccessible()
+            )
+            {
+                List<ccnavmenus__Menu__c> menuList = [SELECT Id, Name FROM ccnavmenus__Menu__c ORDER BY Name LIMIT 100];
+                resultMap.put('menuList', menuList);
+            }
+            else 
+            {
+                resultMap.put('error', 'CRUD or FLS checks failed on the Menu object. Please review the user\'s permissions.');
+            }
+        }
+        catch(Exception e) {
+            resultMap.put('error', e+'');
+        }
+        return System.JSON.serialize(resultMap);
     }
 
     @AuraEnabled
@@ -12,10 +28,17 @@ global with sharing class menusManagerController {
     {
         String result = 'success';
         try {
-        List<ccnavmenus__Menu_Item__c> menuItemList = [SELECT Id FROM ccnavmenus__Menu_Item__c WHERE ccnavmenus__Menu__c = :menuId];
-        delete menuItemList;
-        ccnavmenus__Menu__c menu = new ccnavmenus__Menu__c(Id=menuId);
-        delete menu;
+            if(ccnavmenus__Menu__c.sObjectType.getDescribe().isDeletable())
+            {
+                List<ccnavmenus__Menu_Item__c> menuItemList = [SELECT Id FROM ccnavmenus__Menu_Item__c WHERE ccnavmenus__Menu__c = :menuId];
+                delete menuItemList;
+                ccnavmenus__Menu__c menu = new ccnavmenus__Menu__c(Id=menuId);
+                delete menu;
+            }
+            else 
+            {
+                result = 'CRUD checks failed on the Menu object. Please review the user\'s permissions.';
+            }
         } catch(Exception e) {
             result = e+'';
         }
@@ -28,15 +51,27 @@ global with sharing class menusManagerController {
         Map<String,Object> resultMap = new Map<String,Object>();
         List<treeItem> listTOCLevel1 = new List<treeItem>();
 
-        //try {
-            Boolean expanded = false;
-            Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId, language);
+        try {
+            if(ccnavmenus__Menu__c.sObjectType.getDescribe().isAccessible() && ccnavmenus__Menu_Item__c.sObjectType.getDescribe().isAccessible()
+                && Schema.sObjectType.ccnavmenus__Menu__c.fields.Name.isAccessible()
+                && checkMenuItemsFLSisAccessible()
+            )
+            {
+                Boolean expanded = false;
+                Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId, language);
 
-            listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
-            resultMap.put('itemsList',listTOCLevel1);
-            resultMap.put('itemsMap',tocMap);
+                listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
+                resultMap.put('itemsList',listTOCLevel1);
+                resultMap.put('itemsMap',tocMap);
+            }
+            else 
+            {
+                resultMap.put('error', 'CRUD or FLS checks failed on the Menu and/or Menu Item object(s). Please review the user\'s permissions.');
+            }
 
-        //} catch(Exception e){}
+        } catch(Exception e){
+            resultMap.put('error', e+'');
+        }
 
         return System.JSON.serialize(resultMap).replaceAll('"items"','"_children"');
     }
@@ -46,13 +81,21 @@ global with sharing class menusManagerController {
     {
         String result = 'success';
         try {
-            List<ccnavmenus__Menu_Item__c> menuItemList = [SELECT Id FROM ccnavmenus__Menu_Item__c WHERE 
-            Id =: menuItemId OR ccnavmenus__Menu_Item__c = :menuItemId OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c = :menuItemId
-            OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c  = :menuItemId 
-            OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c = :menuItemId
-            OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c = :menuItemId 
-            OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c  = :menuItemId];
-            delete menuItemList;
+            if(ccnavmenus__Menu_Item__c.sObjectType.getDescribe().isAccessible()
+                && ccnavmenus__Menu_Item__c.sObjectType.getDescribe().isDeletable())
+            {
+                List<ccnavmenus__Menu_Item__c> menuItemList = [SELECT Id FROM ccnavmenus__Menu_Item__c WHERE 
+                Id =: menuItemId OR ccnavmenus__Menu_Item__c = :menuItemId OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c = :menuItemId
+                OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c  = :menuItemId 
+                OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c = :menuItemId
+                OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c = :menuItemId 
+                OR ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c  = :menuItemId];
+                delete menuItemList;
+            } 
+            else 
+            {
+                result = 'CRUD checks failed on the Menu Item object. Please review the user\'s permissions.';
+            }
         } catch(Exception e) {
             result = e+'';
         }
@@ -63,13 +106,17 @@ global with sharing class menusManagerController {
     global static String getLanguages()
     {
         List<String> languageList = new List<String>();
-        languageList.add('none');
-        Schema.DescribeFieldResult F = ccnavmenus__Menu_Item__c.ccnavmenus__Language__c.getDescribe();
-        Schema.sObjectField T = F.getSObjectField();
-        List<PicklistEntry> entries = T.getDescribe().getPicklistValues();
-        for(PicklistEntry pe : entries)
+        if(ccnavmenus__Menu_Item__c.sObjectType.getDescribe().isAccessible() 
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Language__c.isAccessible())
         {
-            languageList.add(pe.getValue());
+            languageList.add('none');
+            Schema.DescribeFieldResult F = ccnavmenus__Menu_Item__c.ccnavmenus__Language__c.getDescribe();
+            Schema.sObjectField T = F.getSObjectField();
+            List<PicklistEntry> entries = T.getDescribe().getPicklistValues();
+            for(PicklistEntry pe : entries)
+            {
+                languageList.add(pe.getValue());
+            }
         }
         return System.JSON.serialize(languageList);
     }
@@ -81,21 +128,32 @@ global with sharing class menusManagerController {
         Map<String,String> resultMap = new Map<String,String>();
         try {
 
-            Map<String,Object> menuMap = (Map<String,Object>)System.JSON.deserializeUntyped(menuJSON);
-            String menuName = (String)menuMap.get('name');
-            menuName = (menuName != null && menuName.trim() != '') ? menuName : 'NoName - ' + System.now().getTime(); 
+            if(ccnavmenus__Menu__c.sObjectType.getDescribe().isCreateable() && ccnavmenus__Menu_Item__c.sObjectType.getDescribe().isCreateable()
+                && Schema.sObjectType.ccnavmenus__Menu__c.fields.Name.isCreateable()
+                && checkMenuItemsFLSisCreateable()
+            )
+            {
+                Map<String,Object> menuMap = (Map<String,Object>)System.JSON.deserializeUntyped(menuJSON);
+                String menuName = (String)menuMap.get('name');
+                menuName = (menuName != null && menuName.trim() != '') ? menuName : 'NoName - ' + System.now().getTime(); 
 
-            ccnavmenus__Menu__c menu = new ccnavmenus__Menu__c(Name=menuName);
-            insert menu;
+                ccnavmenus__Menu__c menu = new ccnavmenus__Menu__c(Name=menuName);
+                insert menu;
 
-            Object children = (Object)menuMap.get('_children');
-            String childrenJSON = System.JSON.serialize(children);
-            childrenJSON = childrenJSON.replaceAll('"_children"','"items"');
+                Object children = (Object)menuMap.get('_children');
+                String childrenJSON = System.JSON.serialize(children);
+                childrenJSON = childrenJSON.replaceAll('"_children"','"items"');
 
-            List<treeItem> treeItemList = (List<treeItem>)System.JSON.deserialize(childrenJSON, List<treeItem>.class);
-            createMenuItems(menu.Id, treeItemList);
-            resultMap.put('menuId', menu.Id);
-            resultMap.put('error', '');
+                List<treeItem> treeItemList = (List<treeItem>)System.JSON.deserialize(childrenJSON, List<treeItem>.class);
+                createMenuItems(menu.Id, treeItemList);
+                resultMap.put('menuId', menu.Id);
+                resultMap.put('error', '');
+            }
+            else 
+            {
+                resultMap.put('error', 'CRUD or FLS checks failed on the Menu and/or Menu Item object(s). Please review the user\'s permissions.');
+            }
+
         } catch(Exception e) {
             Database.rollback(sp);
             resultMap.put('error', e+'');
@@ -647,6 +705,57 @@ global with sharing class menusManagerController {
         ti.language = toc.ccnavmenus__Language__c;
         
         return ti;
+    }
+
+    private static Boolean checkMenuItemsFLSisCreateable()
+    {
+        return (
+            Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.Name.isCreateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Menu__c.isCreateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__URL__c.isCreateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__SLDS_Icon__c.isCreateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__SLDS_Icon_Position__c.isCreateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Position__c.isCreateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Menu_Item__c.isCreateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Open_in_New_Window__c.isCreateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Public__c.isCreateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Language__c.isCreateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__External_Id__c.isCreateable()
+        );
+    }
+
+    private static Boolean checkMenuItemsFLSisAccessible()
+    {
+        return (
+            Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.Name.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Menu__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__URL__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__SLDS_Icon__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__SLDS_Icon_Position__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Position__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Menu_Item__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Open_in_New_Window__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Public__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Language__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__External_Id__c.isAccessible()
+        );
+    }
+
+    private static Boolean checkMenuItemsFLSisUpdateable()
+    {
+        return (
+            Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.Name.isUpdateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Menu__c.isUpdateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__URL__c.isUpdateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__SLDS_Icon__c.isUpdateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__SLDS_Icon_Position__c.isUpdateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Position__c.isUpdateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Menu_Item__c.isUpdateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Open_in_New_Window__c.isUpdateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Public__c.isUpdateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Language__c.isUpdateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__External_Id__c.isUpdateable()
+        );
     }
 
 

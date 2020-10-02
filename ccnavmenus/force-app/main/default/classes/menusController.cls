@@ -7,20 +7,32 @@ global with sharing class menusController {
         List<treeItem> listTOCLevel1 = new List<treeItem>();
 
         try {
-            Boolean expanded = false;
+            if(ccnavmenus__Menu__c.sObjectType.getDescribe().isAccessible() && ccnavmenus__Menu_Item__c.sObjectType.getDescribe().isAccessible()
+                && Schema.sObjectType.ccnavmenus__Menu__c.fields.Name.isAccessible()
+                && checkMenuItemsFLSisAccessible()
+            )
+                {
+                Boolean expanded = false;
 
-            if(menuId == 'nameFilter')
+                if(menuId == 'nameFilter')
+                {
+                    menuId = getMenuIdByNameFilter(nameFilter);
+                }
+
+                Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId, language);
+
+                listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
+                resultMap.put('menu',listTOCLevel1);
+            } 
+            else 
             {
-                menuId = getMenuIdByNameFilter(nameFilter);
+                resultMap.put('error', 'CRUD or FLS checks failed on the Menu and/or Menu Item object(s). Please review the user\'s permissions.');
             }
 
-            Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId, language);
 
-            listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
-            resultMap.put('menu',listTOCLevel1);
-
-
-        } catch(Exception e){}
+        } catch(Exception e){
+            resultMap.put('error',e+'');
+        }
 
         return System.JSON.serialize(resultMap);
     }
@@ -337,6 +349,22 @@ global with sharing class menusController {
         ti.expanded = expanded;
         
         return ti;
+    }
+
+    private static Boolean checkMenuItemsFLSisAccessible()
+    {
+        return (
+            Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.Name.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Menu__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__URL__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__SLDS_Icon__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__SLDS_Icon_Position__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Position__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Menu_Item__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Open_in_New_Window__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Public__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Language__c.isAccessible()
+        );
     }
 
 

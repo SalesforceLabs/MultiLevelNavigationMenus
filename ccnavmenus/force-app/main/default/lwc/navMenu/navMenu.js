@@ -42,6 +42,11 @@ export default class NavMenu extends LightningElement {
                     this.error = undefined;
                 }catch(e){}
             }
+            else if(!resData.menu && resData.error)
+            {
+                this.error = resData.error;
+                this.items = undefined;
+            }
         } else if (result.error) {
            // this.menuItemListResult = result;
             this.error = result.error;
