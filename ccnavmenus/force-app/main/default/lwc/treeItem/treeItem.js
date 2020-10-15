@@ -47,6 +47,7 @@ export default class cTreeItem extends LightningElement {
     @api brandNavigationBackgroundColor;
     @api textTransform;
     @api fontFamily;
+    @api topLevelItemSpacing = 20;
 
     @api get groupDivClass()
     {
@@ -145,6 +146,11 @@ export default class cTreeItem extends LightningElement {
         if(this.textTransform !== undefined && this.textTransform !== null && this.textTransform.trim() !== '')
         {
             this.template.host.style.setProperty('--ccnavmenus-textTransform', this.textTransform);
+        }
+
+        if(this.topLevelItemSpacing !== undefined && this.topLevelItemSpacing !== null)
+        {
+            this.template.host.style.setProperty('--ccnavmenus-topLevelItemSpacing', this.topLevelItemSpacing +'px');
         }
         
     }

@@ -5,6 +5,7 @@
     --ccnavmenus-brandNavigationBackgroundColor: var(--lwc-brandNavigationBackgroundColor, white);
     --ccnavmenus-textTransform: 'none';
     --ccnavmenus-fontFamily: var(--lwc-fontFamily, 'Salesforce Sans');
+    --ccnavmenus-topLevelItemSpacing: '20px';
 }
 
 
@@ -99,7 +100,7 @@ c-tree-item[aria-level="1"] > div.slds-tree__item
 }
 
 c-tree-item[aria-level="1"][data-is-vertical="false"] {
-    margin-right: 40px;
+    margin-right: var(--ccnavmenus-topLevelItemSpacing);
 }
 
 [aria-level="2"][data-is-vertical="false"] > .slds-tree__item {

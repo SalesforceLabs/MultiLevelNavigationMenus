@@ -19,6 +19,7 @@ export default class NavMenu extends LightningElement {
     @api brandNavigationBackgroundColor;
     @api fontFamily;
     @api textTransform;
+    @api topLevelItemSpacing = 20;
     @api hamburgerMenuMode = 'mobile-only'; //on, mobile-only, off
 
     @track items = [];

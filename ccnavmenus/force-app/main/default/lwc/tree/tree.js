@@ -21,7 +21,8 @@ export default class cTree extends LightningElement {
     @api brandNavigationBarBackgroundColor;
     @api brandNavigationBackgroundColor;
     @api fontFamily;
-    @api textTransform;    
+    @api textTransform;  
+    @api topLevelItemSpacing = 20;  
 
     @track _currentFocusedItem = null;
     @track _childNodes;
@@ -43,7 +44,7 @@ export default class cTree extends LightningElement {
         expanded: false,
         href: 'javascript:void(0);',
         level: 1,
-        initWidth: 130,
+        initWidth: 70,
         calcWidth: undefined,
         items: []
     };
@@ -561,7 +562,8 @@ export default class cTree extends LightningElement {
 
                 this.moreItems.items = [];
 
-                let calcItemsWidth = (this.moreItems.calcWidth === undefined) ? this.moreItems.initWidth : this.moreItems.calcWidth;
+                let MoreItemsWidth = (this.moreItems.calcWidth === undefined) ? this.moreItems.initWidth + this.topLevelItemSpacing : this.moreItems.calcWidth;
+                let calcItemsWidth = MoreItemsWidth;
                 for(let i=0;i<this.origItems.length;i++)
                 {
                     if(this.origItems[i].key === 'more')
@@ -570,7 +572,11 @@ export default class cTree extends LightningElement {
                     }
 
                     calcItemsWidth += (this.origItems[i].calcWidth !== undefined && this.origItems[i].calcWidth !== null) ? this.origItems[i].calcWidth : 0;
-                    if(calcItemsWidth >= topElementWidth)
+                    if(i === (this.origItems.length - 1) &&  (calcItemsWidth - MoreItemsWidth)  <= topElementWidth)
+                    {
+                        currItems.push(this.origItems[i]);
+                    }
+                    else if(calcItemsWidth >= topElementWidth)
                     {
                         var origItem = JSON.parse(JSON.stringify(this.origItems[i]));
                         this.moreItems.items.push(origItem);

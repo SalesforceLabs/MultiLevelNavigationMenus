@@ -50,6 +50,9 @@
             <property name="textTransform" type="String" label="Override Text Case" required="false" datasource="inherit,none,capitalize,uppercase,lowercase" default="inherit"
             description="Override the Text Case token that is inherited from the theme with this value."/>
 
+            <property name="topLevelItemSpacing" type="Integer" label="Top Level Item Spacing" required="true" default="20"
+            description="Set spacing in pixels between Top Level Menu Items."/>
+
         </targetConfig>
     </targetConfigs> 
 </LightningComponentBundle>
