@@ -99,6 +99,10 @@ c-tree-item[aria-level="1"] > div.slds-tree__item
 	margin-left: -10px;
 }
 
+button[title='Expand Tree Branch'].slds-is-disabled {
+    display: none;
+}
+
 c-tree-item[aria-level="1"][data-is-vertical="false"] {
     margin-right: var(--ccnavmenus-topLevelItemSpacing);
 }
