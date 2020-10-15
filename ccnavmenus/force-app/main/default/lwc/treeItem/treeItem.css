@@ -103,8 +103,9 @@ button[title='Expand Tree Branch'].slds-is-disabled {
     display: none;
 }
 
-c-tree-item[aria-level="1"][data-is-vertical="false"] {
-    margin-right: var(--ccnavmenus-topLevelItemSpacing);
+c-tree-item[aria-level="1"][data-is-vertical="false"] > div {
+    padding-right: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
+    padding-left: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
 }
 
 [aria-level="2"][data-is-vertical="false"] > .slds-tree__item {
