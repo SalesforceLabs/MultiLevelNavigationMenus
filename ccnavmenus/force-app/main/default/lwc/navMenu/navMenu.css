@@ -25,6 +25,7 @@
     background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor, var(--lwc-brandNavigationBarBackgroundColor, white));
     width: fit-content;
     border-radius: 0px;
+    height: 40px;
     width: 40px;
 }
 
