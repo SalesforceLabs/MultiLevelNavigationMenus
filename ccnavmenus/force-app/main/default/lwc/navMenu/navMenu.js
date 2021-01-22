@@ -115,8 +115,13 @@ export default class NavMenu extends LightningElement {
                 )
             )
         {
-            this.hamburgerMenuVisible = false;
+            this.closeHamburgerMenu();
         }
+    }
+
+    closeHamburgerMenu()
+    {
+        this.hamburgerMenuVisible = false;
     }
 
     checkMobile()

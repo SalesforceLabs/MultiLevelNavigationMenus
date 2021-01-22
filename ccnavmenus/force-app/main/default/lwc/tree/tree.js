@@ -15,6 +15,7 @@ export default class cTree extends LightningElement {
     @api isVertical = false;
     @api uuid;
     @api urlSubMapJson;
+    @api hamburgerMenu = false;
 
     //styling inputs
     @api brandNavigationColorText;
@@ -481,7 +482,7 @@ export default class cTree extends LightningElement {
     handleDropDownClose(e)
     {
         try {
-            if(this.isVertical || this.checkMobile() === true || (e.target.tagName === 'C-TREE-ITEM' && e.target.uuid === this.uuid && e.target.forceClose === undefined))
+            if(this.hamburgerMenu === false && (this.isVertical || this.checkMobile() === true || (e.target.tagName === 'C-TREE-ITEM' && e.target.uuid === this.uuid && e.target.forceClose === undefined)))
             {
                 return;
             }
@@ -490,16 +491,25 @@ export default class cTree extends LightningElement {
                     (e.target.forceClose !== undefined && e.target.forceClose === true) )
             {
                 e.target.forceClose = undefined;
-                for(let i=0; i < this.items.length;i++)
+                if(this.hamburgerMenu === false)
                 {
-                    if(this.items[i].level === 1)
+                    for(let i=0; i < this.items.length;i++)
                     {
-                        let itemToCollapse = this.treedata.getItemFromName(this.items[i].name);
-                        if(itemToCollapse.treeNode.isExpanded)
+                        if(this.items[i].level === 1)
                         {
-                            this.collapseBranch(itemToCollapse.treeNode);
+                            let itemToCollapse = this.treedata.getItemFromName(this.items[i].name);
+                            if(itemToCollapse.treeNode.isExpanded)
+                            {
+                                this.collapseBranch(itemToCollapse.treeNode);
+                            }
                         }
                     }
+                }
+                else
+                {
+                    const custEvent = new CustomEvent(
+                        'closehamburgermenu', {});
+                    this.dispatchEvent(custEvent);
                 }
             }
         } catch(e){}
