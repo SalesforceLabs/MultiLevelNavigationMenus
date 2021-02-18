@@ -6,242 +6,244 @@
  -->
 
  <template>
-    <template if:true={isRoot}>
-        <template for:each={children} for:item="item" for:index="index">
-            <template if:true={item.node.isLeaf}>
-                <c-tree-item
-                    role="treeitem"
-                    data-key={item.node.key}
-                    key={item.node.key}
-                    node-key={item.node.key}
-                    aria-selected={item.selected}
-                    aria-level={item.node.level}
-                    label={item.node.label}
-                    href={item.node.href}
-                    target={item.node.target}
-                    icon={item.node.icon}
-                    icon-position={item.node.iconPosition}
-                    metatext={item.node.metatext}
-                    node-ref={item.node.nodeRef}
-                    is-expanded={item.node.isExpanded}
-                    is-disabled={item.node.isDisabled}
-                    focused-child={item.node.focusedChild}
-                    nodename={item.node.name}
-                    is-leaf={item.node.isLeaf}
-                    child-items={item.node.children}
-                    level={nextLevel}
-                    is-vertical={isVertical}
-                    url-sub-map-json={urlSubMapJson}
+    <div role="ccnavMenu-treeItemCSS">
+        <template if:true={isRoot}>
+            <template for:each={children} for:item="item" for:index="index">
+                <template if:true={item.node.isLeaf}>
+                    <c-tree-item
+                        role="treeitem"
+                        data-key={item.node.key}
+                        key={item.node.key}
+                        node-key={item.node.key}
+                        aria-selected={item.selected}
+                        aria-level={item.node.level}
+                        label={item.node.label}
+                        href={item.node.href}
+                        target={item.node.target}
+                        icon={item.node.icon}
+                        icon-position={item.node.iconPosition}
+                        metatext={item.node.metatext}
+                        node-ref={item.node.nodeRef}
+                        is-expanded={item.node.isExpanded}
+                        is-disabled={item.node.isDisabled}
+                        focused-child={item.node.focusedChild}
+                        nodename={item.node.name}
+                        is-leaf={item.node.isLeaf}
+                        child-items={item.node.children}
+                        level={nextLevel}
+                        is-vertical={isVertical}
+                        url-sub-map-json={urlSubMapJson}
 
-                    brand-navigation-color-text={brandNavigationColorText}
-                    brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
-                    brand-navigation-background-color={brandNavigationBackgroundColor}
-                    font-family={fontFamily}
-                    text-transform={textTransform}
-                    top-level-item-spacing={topLevelItemSpacing}
+                        brand-navigation-color-text={brandNavigationColorText}
+                        brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
+                        brand-navigation-background-color={brandNavigationBackgroundColor}
+                        font-family={fontFamily}
+                        text-transform={textTransform}
+                        top-level-item-spacing={topLevelItemSpacing}
 
-                    data-is-vertical={isVertical}
-                    data-level={nextLevel}
-                    data-role="treeitem"
-                >
-                </c-tree-item>
-            </template>
-            <template if:false={item.node.isLeaf}>
-                <c-tree-item
-                    role="treeitem"
-                    data-key={item.node.key}
-                    key={item.node.key}
-                    node-key={item.node.key}
-                    aria-selected={item.selected}
-                    aria-level={item.node.level}
-                    label={item.node.label}
-                    href={item.node.href}
-                    target={item.node.target}
-                    icon={item.node.icon}
-                    icon-position={item.node.iconPosition}
-                    metatext={item.node.metatext}
-                    node-ref={item.node.nodeRef}
-                    is-expanded={item.node.isExpanded}
-                    is-disabled={item.node.isDisabled}
-                    focused-child={item.node.focusedChild}
-                    nodename={item.node.name}
-                    is-leaf={item.node.isLeaf}
-                    child-items={item.node.children}
-                    aria-label={item.node.label}
-                    aria-expanded={item.node.strexpanded}
-                    level={nextLevel}
-                    is-vertical={isVertical}
-                    url-sub-map-json={urlSubMapJson}
-
-                    brand-navigation-color-text={brandNavigationColorText}
-                    brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
-                    brand-navigation-background-color={brandNavigationBackgroundColor}
-                    font-family={fontFamily}
-                    top-level-item-spacing={topLevelItemSpacing}
-
-                    data-is-vertical={isVertical}
-                    data-level={nextLevel}
-                    data-role="treeitem"
-                >
-                </c-tree-item>
-            </template>
-        </template>
-    </template>
-    <template if:false={isRoot}>
-        <div class="slds-tree__item" data-is-vertical={isVertical} onclick={handleClick}>
-            <button if:true={computedIconPositionLeft}
-                type="button"
-                class={computedButtonClass}
-                tabindex="-1"
-                aria-hidden="true"
-                title={buttonLabel}
-            >
-                <c-primitive-icon
-                    icon-name={computedIconName}
-                    variant="bare"
-                    svg-class="slds-button__icon slds-button__icon_small"
-                >
-                </c-primitive-icon>
-                <span class="slds-assistive-text">
-                    {buttonLabel}
-                </span>
-            </button>
-            <span class="slds-has-flexi-truncate">
-                <a href={href} tabindex="-1" role="presentation" target={target} class="menuLink">
-                    <template if:true={icon}>
-                        <c-primitive-icon if:true={iconPositionLeft}
-                        icon-name={icon}
-                        variant="bare"
-                        svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
-                        no-transform="true"
-                        >
-                        </c-primitive-icon>
-                    </template>
-                    <span
-                        class="slds-tree__item-label slds-truncate"
-                        title={label}
-                        >{label}</span>
-                    <template if:true={icon}>
-                        <c-primitive-icon if:true={iconPositionRight}
-                        icon-name={icon}
-                        variant="bare"
-                        svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
-                        no-transform="true"
-                        >
-                        </c-primitive-icon>
-                    </template>
-                    <template if:true={metatext}>
-                        <span
-                            class="slds-tree__item-meta slds-truncate"
-                            title={metatext}
-                        >
-                            <span class="slds-assistive-text">:</span>{metatext}
-                        </span>
-                    </template>
-                </a>
-            </span>
-            <button if:true={computedIconPositionRight}
-                type="button"
-                class={computedButtonClass}
-                tabindex="-1"
-                aria-hidden="true"
-                title={buttonLabel}
-            >
-                <c-primitive-icon if:true={level}
-                    icon-name={computedIconName}
-                    variant="bare"
-                    svg-class="slds-button__icon slds-button__icon_small"
-                    no-transform="true"
-                >
-                </c-primitive-icon>
-                <span class="slds-assistive-text">
-                    {buttonLabel}
-                </span>
-            </button>
-        </div>
-        <template if:true={showExpanded}>
-            <div role="group" class={groupDivClass}>
-                <template for:each={children} for:item="item">
-                    <template if:true={item.node.isLeaf}>
-                        <c-tree-item
-                            role="treeitem"
-                            data-key={item.node.key}
-                            key={item.node.key}
-                            node-key={item.node.key}
-                            aria-selected={item.selected}
-                            aria-level={item.node.level}
-                            label={item.node.label}
-                            href={item.node.href}
-                            target={item.node.target}
-                            icon={item.node.icon}
-                            icon-position={item.node.iconPosition}
-                            metatext={item.node.metatext}
-                            node-ref={item.node.nodeRef}
-                            is-expanded={item.node.isExpanded}
-                            is-disabled={item.node.isDisabled}
-                            focused-child={item.node.focusedChild}
-                            nodename={item.node.name}
-                            is-leaf={item.node.isLeaf}
-                            child-items={item.node.children}
-                            level={nextLevel}
-                            is-vertical={isVertical}
-                            url-sub-map-json={urlSubMapJson}
-                            
-                            brand-navigation-color-text={brandNavigationColorText}
-                            brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
-                            brand-navigation-background-color={brandNavigationBackgroundColor}
-                            font-family={fontFamily}
-                            text-transform={textTransform}
-                            top-level-item-spacing={topLevelItemSpacing}
-
-                            data-is-vertical={isVertical}
-                            data-level={nextLevel}
-                            data-role="treeitem"
-                        >
-                        </c-tree-item>
-                    </template>
-                    <template if:false={item.node.isLeaf}>
-                        <c-tree-item
-                            role="treeitem"
-                            data-key={item.node.key}
-                            key={item.node.key}
-                            node-key={item.node.key}
-                            aria-selected={item.selected}
-                            aria-level={item.node.level}
-                            label={item.node.label}
-                            href={item.node.href}
-                            target={item.node.target}
-                            icon={item.node.icon}
-                            icon-position={item.node.iconPosition}
-                            metatext={item.node.metatext}
-                            node-ref={item.node.nodeRef}
-                            is-expanded={item.node.isExpanded}
-                            is-disabled={item.node.isDisabled}
-                            focused-child={item.node.focusedChild}
-                            nodename={item.node.name}
-                            is-leaf={item.node.isLeaf}
-                            child-items={item.node.children}
-                            aria-label={item.node.label}
-                            aria-expanded={item.node.strexpanded}
-                            level={nextLevel}
-                            is-vertical={isVertical}
-                            url-sub-map-json={urlSubMapJson}
-
-                            brand-navigation-color-text={brandNavigationColorText}
-                            brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
-                            brand-navigation-background-color={brandNavigationBackgroundColor}
-                            font-family={fontFamily}
-                            text-transform={textTransform}
-                            top-level-item-spacing={topLevelItemSpacing}
-
-                            data-is-vertical={isVertical}
-                            data-level={nextLevel}
-                            data-role="treeitem"
-                        >
-                        </c-tree-item>
-                    </template>
+                        data-is-vertical={isVertical}
+                        data-level={nextLevel}
+                        data-role="treeitem"
+                    >
+                    </c-tree-item>
                 </template>
-            </div>
+                <template if:false={item.node.isLeaf}>
+                    <c-tree-item
+                        role="treeitem"
+                        data-key={item.node.key}
+                        key={item.node.key}
+                        node-key={item.node.key}
+                        aria-selected={item.selected}
+                        aria-level={item.node.level}
+                        label={item.node.label}
+                        href={item.node.href}
+                        target={item.node.target}
+                        icon={item.node.icon}
+                        icon-position={item.node.iconPosition}
+                        metatext={item.node.metatext}
+                        node-ref={item.node.nodeRef}
+                        is-expanded={item.node.isExpanded}
+                        is-disabled={item.node.isDisabled}
+                        focused-child={item.node.focusedChild}
+                        nodename={item.node.name}
+                        is-leaf={item.node.isLeaf}
+                        child-items={item.node.children}
+                        aria-label={item.node.label}
+                        aria-expanded={item.node.strexpanded}
+                        level={nextLevel}
+                        is-vertical={isVertical}
+                        url-sub-map-json={urlSubMapJson}
+
+                        brand-navigation-color-text={brandNavigationColorText}
+                        brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
+                        brand-navigation-background-color={brandNavigationBackgroundColor}
+                        font-family={fontFamily}
+                        top-level-item-spacing={topLevelItemSpacing}
+
+                        data-is-vertical={isVertical}
+                        data-level={nextLevel}
+                        data-role="treeitem"
+                    >
+                    </c-tree-item>
+                </template>
+            </template>
         </template>
-    </template>
+        <template if:false={isRoot}>
+            <div class="slds-tree__item" data-is-vertical={isVertical} onclick={handleClick}>
+                <button if:true={computedIconPositionLeft}
+                    type="button"
+                    class={computedButtonClass}
+                    tabindex="-1"
+                    aria-hidden="true"
+                    title={buttonLabel}
+                >
+                    <c-primitive-icon
+                        icon-name={computedIconName}
+                        variant="bare"
+                        svg-class="slds-button__icon slds-button__icon_small"
+                    >
+                    </c-primitive-icon>
+                    <span class="slds-assistive-text">
+                        {buttonLabel}
+                    </span>
+                </button>
+                <span class="slds-has-flexi-truncate">
+                    <a href={href} tabindex="-1" role="presentation" target={target} class="menuLink">
+                        <template if:true={icon}>
+                            <c-primitive-icon if:true={iconPositionLeft}
+                            icon-name={icon}
+                            variant="bare"
+                            svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
+                            no-transform="true"
+                            >
+                            </c-primitive-icon>
+                        </template>
+                        <span
+                            class="slds-tree__item-label slds-truncate"
+                            title={label}
+                            >{label}</span>
+                        <template if:true={icon}>
+                            <c-primitive-icon if:true={iconPositionRight}
+                            icon-name={icon}
+                            variant="bare"
+                            svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
+                            no-transform="true"
+                            >
+                            </c-primitive-icon>
+                        </template>
+                        <template if:true={metatext}>
+                            <span
+                                class="slds-tree__item-meta slds-truncate"
+                                title={metatext}
+                            >
+                                <span class="slds-assistive-text">:</span>{metatext}
+                            </span>
+                        </template>
+                    </a>
+                </span>
+                <button if:true={computedIconPositionRight}
+                    type="button"
+                    class={computedButtonClass}
+                    tabindex="-1"
+                    aria-hidden="true"
+                    title={buttonLabel}
+                >
+                    <c-primitive-icon if:true={level}
+                        icon-name={computedIconName}
+                        variant="bare"
+                        svg-class="slds-button__icon slds-button__icon_small"
+                        no-transform="true"
+                    >
+                    </c-primitive-icon>
+                    <span class="slds-assistive-text">
+                        {buttonLabel}
+                    </span>
+                </button>
+            </div>
+            <template if:true={showExpanded}>
+                <div role="group" class={groupDivClass}>
+                    <template for:each={children} for:item="item">
+                        <template if:true={item.node.isLeaf}>
+                            <c-tree-item
+                                role="treeitem"
+                                data-key={item.node.key}
+                                key={item.node.key}
+                                node-key={item.node.key}
+                                aria-selected={item.selected}
+                                aria-level={item.node.level}
+                                label={item.node.label}
+                                href={item.node.href}
+                                target={item.node.target}
+                                icon={item.node.icon}
+                                icon-position={item.node.iconPosition}
+                                metatext={item.node.metatext}
+                                node-ref={item.node.nodeRef}
+                                is-expanded={item.node.isExpanded}
+                                is-disabled={item.node.isDisabled}
+                                focused-child={item.node.focusedChild}
+                                nodename={item.node.name}
+                                is-leaf={item.node.isLeaf}
+                                child-items={item.node.children}
+                                level={nextLevel}
+                                is-vertical={isVertical}
+                                url-sub-map-json={urlSubMapJson}
+                                
+                                brand-navigation-color-text={brandNavigationColorText}
+                                brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
+                                brand-navigation-background-color={brandNavigationBackgroundColor}
+                                font-family={fontFamily}
+                                text-transform={textTransform}
+                                top-level-item-spacing={topLevelItemSpacing}
+
+                                data-is-vertical={isVertical}
+                                data-level={nextLevel}
+                                data-role="treeitem"
+                            >
+                            </c-tree-item>
+                        </template>
+                        <template if:false={item.node.isLeaf}>
+                            <c-tree-item
+                                role="treeitem"
+                                data-key={item.node.key}
+                                key={item.node.key}
+                                node-key={item.node.key}
+                                aria-selected={item.selected}
+                                aria-level={item.node.level}
+                                label={item.node.label}
+                                href={item.node.href}
+                                target={item.node.target}
+                                icon={item.node.icon}
+                                icon-position={item.node.iconPosition}
+                                metatext={item.node.metatext}
+                                node-ref={item.node.nodeRef}
+                                is-expanded={item.node.isExpanded}
+                                is-disabled={item.node.isDisabled}
+                                focused-child={item.node.focusedChild}
+                                nodename={item.node.name}
+                                is-leaf={item.node.isLeaf}
+                                child-items={item.node.children}
+                                aria-label={item.node.label}
+                                aria-expanded={item.node.strexpanded}
+                                level={nextLevel}
+                                is-vertical={isVertical}
+                                url-sub-map-json={urlSubMapJson}
+
+                                brand-navigation-color-text={brandNavigationColorText}
+                                brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
+                                brand-navigation-background-color={brandNavigationBackgroundColor}
+                                font-family={fontFamily}
+                                text-transform={textTransform}
+                                top-level-item-spacing={topLevelItemSpacing}
+
+                                data-is-vertical={isVertical}
+                                data-level={nextLevel}
+                                data-role="treeitem"
+                            >
+                            </c-tree-item>
+                        </template>
+                    </template>
+                </div>
+            </template>
+        </template>
+    </div>
 </template>

@@ -1,87 +1,88 @@
 <template>
+    <div role="ccnavMenuCSS">
+        <template if:false={hamburgerMenu}>
+            <template if:true={isVertical}>
+                <c-tree 
+                    items={items} 
+                    selected-item={url} 
+                    selected-contains="true" 
+                    is-vertical={isVertical} 
+                    uuid={uuid} 
+                    url-sub-map-json={urlSubMapJson} 
+                    class="vertical-menu"
 
-    <template if:false={hamburgerMenu}>
-        <template if:true={isVertical}>
-            <c-tree 
-                items={items} 
-                selected-item={url} 
-                selected-contains="true" 
-                is-vertical={isVertical} 
-                uuid={uuid} 
-                url-sub-map-json={urlSubMapJson} 
-                class="vertical-menu"
+                    brand-navigation-color-text={brandNavigationColorText}
+                    brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
+                    brand-navigation-background-color={brandNavigationBackgroundColor}
+                    font-family={fontFamily}
+                    text-transform={textTransform}
+                    top-level-item-spacing={topLevelItemSpacing}
+                ></c-tree>
+            </template>
 
-                brand-navigation-color-text={brandNavigationColorText}
-                brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
-                brand-navigation-background-color={brandNavigationBackgroundColor}
-                font-family={fontFamily}
-                text-transform={textTransform}
-                top-level-item-spacing={topLevelItemSpacing}
-            ></c-tree>
+            <template if:false={isVertical}>
+                <c-tree 
+                    items={items} 
+                    selected-item={url} 
+                    selected-contains="true" 
+                    class="horizontal-menu" 
+                    is-vertical={isVertical} 
+                    uuid={uuid} 
+                    url-sub-map-json={urlSubMapJson}
+
+                    brand-navigation-color-text={brandNavigationColorText}
+                    brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
+                    brand-navigation-background-color={brandNavigationBackgroundColor}
+                    font-family={fontFamily}
+                    text-transform={textTransform}
+                    top-level-item-spacing={topLevelItemSpacing}
+                ></c-tree>
+            </template>
         </template>
 
-        <template if:false={isVertical}>
-            <c-tree 
-                items={items} 
-                selected-item={url} 
-                selected-contains="true" 
-                class="horizontal-menu" 
-                is-vertical={isVertical} 
-                uuid={uuid} 
-                url-sub-map-json={urlSubMapJson}
+        <template if:true={hamburgerMenu}>
 
-                brand-navigation-color-text={brandNavigationColorText}
-                brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
-                brand-navigation-background-color={brandNavigationBackgroundColor}
-                font-family={fontFamily}
-                text-transform={textTransform}
-                top-level-item-spacing={topLevelItemSpacing}
-            ></c-tree>
-        </template>
-    </template>
-
-    <template if:true={hamburgerMenu}>
-
-            <button data-id="toggleHamburgerMenu" 
-                class="slds-button slds-button_icon slds-button_icon-inverse ccnavmenu-hamburger-button slds-p-horizontal_x-small" 
-                title="Toggle Menu" 
-                onclick={toggleHamburgerMenu}>
-                    <div class="ccnavmenu-hamburger-icon ccnavmenu-hamburger-icon-toggle">&#9776;</div>
-                    <span class="slds-assistive-text">Toggle Menu</span>
-            </button>
-
-        <template if:true={hamburgerMenuVisible}>
-            <div class="hamburgerMenuContainer">
-                
-                <button 
-                    class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-p-horizontal_x-small ccnavmenu-hamburger-button ccnavmenu-hamburger-button-close" 
-                    title="Close" 
+                <button data-id="toggleHamburgerMenu" 
+                    class="slds-button slds-button_icon slds-button_icon-inverse ccnavmenu-hamburger-button slds-p-horizontal_x-small" 
+                    title="Toggle Menu" 
                     onclick={toggleHamburgerMenu}>
-                    <div class="ccnavmenu-hamburger-icon ccnavmenu-hamburger-icon-close">&times;</div>
-                    <span class="slds-assistive-text">Close</span>
+                        <div class="ccnavmenu-hamburger-icon ccnavmenu-hamburger-icon-toggle">&#9776;</div>
+                        <span class="slds-assistive-text">Toggle Menu</span>
                 </button>
 
-                <c-tree 
-                items={items} 
-                selected-item={url} 
-                selected-contains="true" 
-                class="vertical-menu" 
-                is-vertical="true" 
-                uuid={uuid} 
-                url-sub-map-json={urlSubMapJson}
-                hamburger-menu={hamburgerMenu}
+            <template if:true={hamburgerMenuVisible}>
+                <div class="hamburgerMenuContainer">
+                    
+                    <button 
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-p-horizontal_x-small ccnavmenu-hamburger-button ccnavmenu-hamburger-button-close" 
+                        title="Close" 
+                        onclick={toggleHamburgerMenu}>
+                        <div class="ccnavmenu-hamburger-icon ccnavmenu-hamburger-icon-close">&times;</div>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
 
-                brand-navigation-color-text={brandNavigationColorText}
-                brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
-                brand-navigation-background-color={brandNavigationBackgroundColor}
-                font-family={fontFamily}
-                text-transform={textTransform}
-                top-level-item-spacing={topLevelItemSpacing}
+                    <c-tree 
+                    items={items} 
+                    selected-item={url} 
+                    selected-contains="true" 
+                    class="vertical-menu" 
+                    is-vertical="true" 
+                    uuid={uuid} 
+                    url-sub-map-json={urlSubMapJson}
+                    hamburger-menu={hamburgerMenu}
 
-                onclosehamburgermenu={closeHamburgerMenu}
-            ></c-tree>
-            </div>
+                    brand-navigation-color-text={brandNavigationColorText}
+                    brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
+                    brand-navigation-background-color={brandNavigationBackgroundColor}
+                    font-family={fontFamily}
+                    text-transform={textTransform}
+                    top-level-item-spacing={topLevelItemSpacing}
+
+                    onclosehamburgermenu={closeHamburgerMenu}
+                ></c-tree>
+                </div>
+            </template>
         </template>
-    </template>
+    </div>
     
 </template>

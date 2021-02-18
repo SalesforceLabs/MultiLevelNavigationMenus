@@ -137,14 +137,18 @@ export default class NavMenu extends LightningElement {
 
     setStylingProperties()
     {
-        if(this.brandNavigationColorText !== undefined && this.brandNavigationColorText !== null && this.brandNavigationColorText.trim() !== '')
+        let ccnavMenuCSS = this.template.querySelector('div[role="ccnavMenuCSS"]');
+        if(ccnavMenuCSS !== undefined && ccnavMenuCSS !== null)
         {
-            this.template.host.style.setProperty('--ccnavmenus-brandNavigationColorText', this.brandNavigationColorText);
-        }
+            if(this.brandNavigationColorText !== undefined && this.brandNavigationColorText !== null && this.brandNavigationColorText.trim() !== '')
+            {
+                ccnavMenuCSS.style.setProperty('--ccnavmenus-brandNavigationColorText', this.brandNavigationColorText);
+            }
 
-        if(this.brandNavigationBarBackgroundColor !== undefined && this.brandNavigationBarBackgroundColor !== null && this.brandNavigationBarBackgroundColor.trim() !== '')
-        {
-            this.template.host.style.setProperty('--ccnavmenus-brandNavigationBarBackgroundColor', this.brandNavigationBarBackgroundColor);
+            if(this.brandNavigationBarBackgroundColor !== undefined && this.brandNavigationBarBackgroundColor !== null && this.brandNavigationBarBackgroundColor.trim() !== '')
+            {
+                ccnavMenuCSS.style.setProperty('--ccnavmenus-brandNavigationBarBackgroundColor', this.brandNavigationBarBackgroundColor);
+            }
         }
     }
 

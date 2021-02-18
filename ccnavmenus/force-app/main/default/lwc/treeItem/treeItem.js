@@ -119,38 +119,43 @@ export default class cTreeItem extends LightningElement {
             }
         }
 
-        if(this.brandNavigationColorText !== undefined && this.brandNavigationColorText !== null && this.brandNavigationColorText.trim() !== '')
-        {
-            this.template.host.style.setProperty('--ccnavmenus-brandNavigationColorText', this.brandNavigationColorText);
-        }
+        let treeItemCSS = this.template.querySelector('div[role="ccnavMenu-treeItemCSS"]');
 
-        if(this.brandNavigationBarBackgroundColor !== undefined && this.brandNavigationBarBackgroundColor !== null && this.brandNavigationBarBackgroundColor.trim() !== '')
+        if(treeItemCSS !== undefined && treeItemCSS !== null)
         {
-            this.template.host.style.setProperty('--ccnavmenus-brandNavigationBarBackgroundColor', this.brandNavigationBarBackgroundColor);
-        }
+            if(this.brandNavigationColorText !== undefined && this.brandNavigationColorText !== null && this.brandNavigationColorText.trim() !== '')
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-brandNavigationColorText', this.brandNavigationColorText);
+            }
 
-        if(this.brandNavigationBackgroundColor !== undefined && this.brandNavigationBackgroundColor !== null && this.brandNavigationBackgroundColor.trim() !== '')
-        {
-            this.template.host.style.setProperty('--ccnavmenus-brandNavigationBackgroundColor', this.brandNavigationBackgroundColor);
-        }
+            if(this.brandNavigationBarBackgroundColor !== undefined && this.brandNavigationBarBackgroundColor !== null && this.brandNavigationBarBackgroundColor.trim() !== '')
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-brandNavigationBarBackgroundColor', this.brandNavigationBarBackgroundColor);
+            }
 
-        if(this.fontFamily !== undefined && this.fontFamily !== null && this.fontFamily.trim() !== '')
-        {
-            this.template.host.style.setProperty('--ccnavmenus-fontFamily', this.fontFamily);
-        }
+            if(this.brandNavigationBackgroundColor !== undefined && this.brandNavigationBackgroundColor !== null && this.brandNavigationBackgroundColor.trim() !== '')
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-brandNavigationBackgroundColor', this.brandNavigationBackgroundColor);
+            }
 
-        if(this.textTransform === undefined || this.textTransform === null || this.textTransform.trim() === '' || this.textTransform.trim() === 'inherit')
-        {   
-            this.textTransform = getComputedStyle(document.documentElement).getPropertyValue('--lwc-textTransform');
-        }
-        if(this.textTransform !== undefined && this.textTransform !== null && this.textTransform.trim() !== '')
-        {
-            this.template.host.style.setProperty('--ccnavmenus-textTransform', this.textTransform);
-        }
+            if(this.fontFamily !== undefined && this.fontFamily !== null && this.fontFamily.trim() !== '')
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-fontFamily', this.fontFamily);
+            }
 
-        if(this.topLevelItemSpacing !== undefined && this.topLevelItemSpacing !== null)
-        {
-            this.template.host.style.setProperty('--ccnavmenus-topLevelItemSpacing', this.topLevelItemSpacing +'px');
+            if(this.textTransform === undefined || this.textTransform === null || this.textTransform.trim() === '' || this.textTransform.trim() === 'inherit')
+            {   
+                this.textTransform = getComputedStyle(document.documentElement).getPropertyValue('--lwc-textTransform');
+            }
+            if(this.textTransform !== undefined && this.textTransform !== null && this.textTransform.trim() !== '')
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-textTransform', this.textTransform);
+            }
+
+            if(this.topLevelItemSpacing !== undefined && this.topLevelItemSpacing !== null)
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-topLevelItemSpacing', this.topLevelItemSpacing +'px');
+            }
         }
         
     }

@@ -228,9 +228,13 @@ export default class cTree extends LightningElement {
             this.handleWidthCalculations();
         }
 
-        if(this.brandNavigationBarBackgroundColor !== undefined && this.brandNavigationBarBackgroundColor !== null && this.brandNavigationBarBackgroundColor.trim() !== '')
+        let treeContainer = this.template.querySelector('div[role="treeContainer"]');
+        if(treeContainer !== undefined && treeContainer !== null)
         {
-            this.template.host.style.setProperty('--ccnavmenus-brandNavigationBarBackgroundColor', this.brandNavigationBarBackgroundColor);
+            if(this.brandNavigationBarBackgroundColor !== undefined && this.brandNavigationBarBackgroundColor !== null && this.brandNavigationBarBackgroundColor.trim() !== '')
+            {
+                treeContainer.style.setProperty('--ccnavmenus-brandNavigationBarBackgroundColor', this.brandNavigationBarBackgroundColor);
+            }
         }
 
     }
