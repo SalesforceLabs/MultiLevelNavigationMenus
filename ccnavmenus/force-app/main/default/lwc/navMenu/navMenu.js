@@ -71,7 +71,12 @@ export default class NavMenu extends LightningElement {
                     || this.hamburgerMenuMode === 'on')
                 );
 
-        this.url = window.location.href.split('?')[0];
+        try {
+            this.url = window.location.href.split('?')[0];
+        } catch(err){
+            this.url = document.URL.split('?')[0];
+        }
+        
         loadStyle(this, navMenuCSS);
         this.isVertical = (this.checkMobile()) ? this.checkMobile() : this.isVertical;
         try {
