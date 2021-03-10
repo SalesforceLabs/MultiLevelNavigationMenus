@@ -4,6 +4,9 @@
     <isExposed>true</isExposed>
     <masterLabel>Multi-Level Navigation Menu</masterLabel>
     <description>Multi-Level Navigation Menu for Community Cloud</description>
+    <capabilities>
+        <capability>lightningCommunity__RelaxedCSP</capability>
+    </capabilities>
     <targets>
         <target>lightningCommunity__Page</target>
         <target>lightningCommunity__Default</target>

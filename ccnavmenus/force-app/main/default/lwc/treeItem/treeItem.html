@@ -90,23 +90,27 @@
         </template>
         <template if:false={isRoot}>
             <div class="slds-tree__item" data-is-vertical={isVertical} onclick={handleClick}>
-                <button if:true={computedIconPositionLeft}
-                    type="button"
-                    class={computedButtonClass}
-                    tabindex="-1"
-                    aria-hidden="true"
-                    title={buttonLabel}
-                >
-                    <c-primitive-icon
-                        icon-name={computedIconName}
-                        variant="bare"
-                        svg-class="slds-button__icon slds-button__icon_small"
+                <template if:true={computedIconName}>
+                    <button if:true={computedIconPositionLeft}
+                        type="button"
+                        class={computedButtonClass}
+                        tabindex="-1"
+                        aria-hidden="true"
+                        title={buttonLabel}
                     >
-                    </c-primitive-icon>
-                    <span class="slds-assistive-text">
-                        {buttonLabel}
-                    </span>
-                </button>
+                        
+                        <c-primitive-icon
+                            icon-name={computedIconName}
+                            variant="bare"
+                            svg-class="slds-button__icon slds-button__icon_small"
+                        >
+                            </c-primitive-icon>
+                        
+                        <span class="slds-assistive-text">
+                            {buttonLabel}
+                        </span>
+                    </button>
+                </template>
                 <span class="slds-has-flexi-truncate">
                     <a href={href} tabindex="-1" role="presentation" target={target} class="menuLink">
                         <template if:true={icon}>

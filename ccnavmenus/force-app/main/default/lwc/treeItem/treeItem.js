@@ -189,6 +189,8 @@ export default class cTreeItem extends LightningElement {
             ? 'utility:chevronleft'
             : 'utility:chevronright';
         iconName = (this.computedIconPositionLeft) ? iconName : 'utility:chevrondown' ;
+        iconName = (this.isExpanded) ? 'utility:chevrondown' : iconName;
+        iconName = (this.level === 6) ? null : iconName; 
         return iconName;
     }
 

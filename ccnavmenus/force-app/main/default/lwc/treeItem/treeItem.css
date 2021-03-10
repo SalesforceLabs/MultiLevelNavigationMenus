@@ -6,6 +6,7 @@
     --ccnavmenus-textTransform: 'none';
     --ccnavmenus-fontFamily: var(--lwc-fontFamily, 'Salesforce Sans');
     --ccnavmenus-topLevelItemSpacing: '20px';
+    --ccnavmenus-midLevelItemSpacing: '10px';
 }
 
 
@@ -112,25 +113,35 @@ c-tree-item[aria-level="1"][data-is-vertical="false"] > div {
     padding-left: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
 }
 
-[aria-level="2"][data-is-vertical="false"] > .slds-tree__item {
-    padding-left: 1rem;
+[aria-level="2"][data-is-vertical="false"] {
+    padding-left: 0;
 }
 
-[aria-level="3"][data-is-vertical="false"] > .slds-tree__item {
-    padding-left: 2rem;
+[aria-level="2"][data-is-vertical="true"] > div[role="ccnavMenu-treeItemCSS"] {
+    padding-left: var(--ccnavmenus-midLevelItemSpacin, 10px);
 }
 
-[aria-level="4"][data-is-vertical="false"] > .slds-tree__item {
-    padding-left: 3rem;
+[aria-level="3"][data-is-vertical="false"],
+[aria-level="3"][data-is-vertical="true"] > div[role="ccnavMenu-treeItemCSS"] {
+    padding-left: var(--ccnavmenus-midLevelItemSpacin, 10px);
 }
 
-[aria-level="5"][data-is-vertical="false"] > .slds-tree__item {
-    padding-left: 4rem;
+[aria-level="4"][data-is-vertical="false"],
+[aria-level="4"][data-is-vertical="true"] > div[role="ccnavMenu-treeItemCSS"] {
+    padding-left: var(--ccnavmenus-midLevelItemSpacin, 10px);
 }
 
-[aria-level="6"][data-is-vertical="false"] > .slds-tree__item {
-    padding-left: 5rem;
+[aria-level="5"][data-is-vertical="false"],
+[aria-level="5"][data-is-vertical="true"] > div[role="ccnavMenu-treeItemCSS"] {
+    padding-left: var(--ccnavmenus-midLevelItemSpacin, 10px);
 }
+
+[aria-level="6"][data-is-vertical="false"],
+[aria-level="6"][data-is-vertical="true"] > div[role="ccnavMenu-treeItemCSS"] {
+    padding-left: 30px;
+}
+
+
 
 
 @media (max-width: 499px)
