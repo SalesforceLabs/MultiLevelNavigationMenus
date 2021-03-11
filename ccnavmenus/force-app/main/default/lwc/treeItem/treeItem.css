@@ -5,8 +5,8 @@
     --ccnavmenus-brandNavigationBackgroundColor: var(--lwc-brandNavigationBackgroundColor, white);
     --ccnavmenus-textTransform: 'none';
     --ccnavmenus-fontFamily: var(--lwc-fontFamily, 'Salesforce Sans');
-    --ccnavmenus-topLevelItemSpacing: '20px';
-    --ccnavmenus-midLevelItemSpacing: '10px';
+    --ccnavmenus-topLevelItemSpacing: 20px;
+    --ccnavmenus-midLevelItemSpacing: 10px;
 }
 
 
@@ -69,7 +69,7 @@ c-tree-item[aria-level="1"] > div.slds-tree__item
 
 .horizontal-groupDiv-1 {
     position: absolute;
-    margin-top: 35px;
+    margin-top: 10px;
     min-width: 20rem;
     background-color: var(--ccnavmenus-brandNavigationBackgroundColor, white);
     border: 1px solid gray;
@@ -113,35 +113,18 @@ c-tree-item[aria-level="1"][data-is-vertical="false"] > div {
     padding-left: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
 }
 
-[aria-level="2"][data-is-vertical="false"] {
-    padding-left: 0;
+
+div[role="ccnavMenu-treeItemCSS"] > div {
+    padding-left: var(--ccnavmenus-midLevelItemSpacing, 10px);
 }
 
-[aria-level="2"][data-is-vertical="true"] > div[role="ccnavMenu-treeItemCSS"] {
-    padding-left: var(--ccnavmenus-midLevelItemSpacin, 10px);
+div[role="ccnavMenu-treeItemCSS"] > div[data-is-leaf="true"] {
+    padding-left: 32px;
 }
 
-[aria-level="3"][data-is-vertical="false"],
-[aria-level="3"][data-is-vertical="true"] > div[role="ccnavMenu-treeItemCSS"] {
-    padding-left: var(--ccnavmenus-midLevelItemSpacin, 10px);
+[data-level="1"] > div[role="ccnavMenu-treeItemCSS"] > div[data-is-leaf="true"] {
+    padding-left: 0px;
 }
-
-[aria-level="4"][data-is-vertical="false"],
-[aria-level="4"][data-is-vertical="true"] > div[role="ccnavMenu-treeItemCSS"] {
-    padding-left: var(--ccnavmenus-midLevelItemSpacin, 10px);
-}
-
-[aria-level="5"][data-is-vertical="false"],
-[aria-level="5"][data-is-vertical="true"] > div[role="ccnavMenu-treeItemCSS"] {
-    padding-left: var(--ccnavmenus-midLevelItemSpacin, 10px);
-}
-
-[aria-level="6"][data-is-vertical="false"],
-[aria-level="6"][data-is-vertical="true"] > div[role="ccnavMenu-treeItemCSS"] {
-    padding-left: 30px;
-}
-
-
 
 
 @media (max-width: 499px)

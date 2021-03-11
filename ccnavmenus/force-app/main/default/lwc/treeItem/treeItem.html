@@ -89,7 +89,7 @@
             </template>
         </template>
         <template if:false={isRoot}>
-            <div class="slds-tree__item" data-is-vertical={isVertical} onclick={handleClick}>
+            <div class="slds-tree__item" data-is-leaf={isLeaf} data-is-vertical={isVertical} onclick={handleClick}>
                 <template if:true={computedIconName}>
                     <button if:true={computedIconPositionLeft}
                         type="button"
