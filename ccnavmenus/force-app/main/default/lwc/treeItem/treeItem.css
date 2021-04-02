@@ -52,7 +52,7 @@ a.menuLink:focus
 }
 
 c-tree-item[role="treeitem"][data-is-vertical="false"] {
-    display: inline-grid;
+    display: inline-block;
 }
 
 .horizontal-groupDiv-1 c-tree-item[role="treeitem"][data-is-vertical="false"] {

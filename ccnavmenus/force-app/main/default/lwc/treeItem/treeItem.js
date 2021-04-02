@@ -115,14 +115,14 @@ export default class cTreeItem extends LightningElement {
         this.addEventListener('keydown', this.handleKeydown.bind(this));
 
         this.handleUrlReplace();
-
+        
     }
 
     renderedCallback() {
         if (typeof this.focusedChild === 'number') {
             const child = this.getNthChildItem(this.focusedChild + 1);
-            if (child) {
-                //child.tabIndex = '0';
+            if (child && ((!child.isLeaf && this.isVertical === false) || (child.level > 1 && this.isVertical === true))) {
+                child.tabIndex = '0';
             }
         }
 
@@ -420,8 +420,8 @@ export default class cTreeItem extends LightningElement {
     makeChildFocusable(childKey, shouldFocus) {
         const child = this.getImmediateChildItem(childKey);
         if (child) {
-            if (child.tabIndex !== '0') {
-                //child.tabIndex = '0';
+            if (child.tabIndex !== '0' && ((!child.isLeaf && this.isVertical === false) || (child.level > 1 && this.isVertical === true))) {
+                child.tabIndex = '0';
             }
             if (shouldFocus) {
                 child.focus();

@@ -14,7 +14,6 @@
                     <template if:true={item.node.isLeaf}>
                         <c-tree-item
                             role="treeitem"
-                            tabindex="-1"
                             data-key={item.node.key}
                             key={item.node.key}
                             node-key={item.node.key}
@@ -54,7 +53,6 @@
                     <template if:false={item.node.isLeaf}>
                         <c-tree-item
                             role="treeitem"
-                            tabindex="-1"
                             data-key={item.node.key}
                             key={item.node.key}
                             node-key={item.node.key}
@@ -191,7 +189,6 @@
                                 <template if:true={item.node.isLeaf}>
                                     <c-tree-item
                                         role="treeitem"
-                                        tabindex="-1"
                                         data-key={item.node.key}
                                         key={item.node.key}
                                         node-key={item.node.key}
@@ -231,7 +228,6 @@
                                 <template if:false={item.node.isLeaf}>
                                     <c-tree-item
                                         role="treeitem"
-                                        tabindex="-1"
                                         data-key={item.node.key}
                                         key={item.node.key}
                                         node-key={item.node.key}
