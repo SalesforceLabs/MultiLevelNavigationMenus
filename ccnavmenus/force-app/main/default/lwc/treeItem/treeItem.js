@@ -10,8 +10,8 @@ import { classSet } from 'c/utils';
 import { keyCodes } from 'c/utilsPrivate';
 
 const i18n = {
-    collapseBranch: 'Collapse Tree Branch',
-    expandBranch: 'Expand Tree Branch'
+    collapseBranch: 'Collapse ',
+    expandBranch: 'Expand '
 };
 
 export default class cTreeItem extends LightningElement {
@@ -23,7 +23,7 @@ export default class cTreeItem extends LightningElement {
     _focusedChild = null;
 
     @api isRoot = false;
-    @api label;
+    @api label = '';
     @api href;
     @api target;
     @api icon;
@@ -40,6 +40,7 @@ export default class cTreeItem extends LightningElement {
     @api isVertical = false;
     @api uuid;
     @api urlSubMapJson;
+    @api menuAriaAnnouncement='';
 
     //styling inputs
     @api brandNavigationColorText;
@@ -49,6 +50,12 @@ export default class cTreeItem extends LightningElement {
     @api fontFamily;
     @api topLevelItemSpacing = 20;
 
+    @api get liClass()
+    {
+        let liClass = (this.isVertical) ? 'groupMenuItem' : 'horizontalMenuItem';
+        return liClass;
+    }
+    
     @api get groupDivClass()
     {
         let groupDivClass = (this.isVertical) ? 'vertical-' : 'horizontal-';
@@ -115,7 +122,7 @@ export default class cTreeItem extends LightningElement {
         if (typeof this.focusedChild === 'number') {
             const child = this.getNthChildItem(this.focusedChild + 1);
             if (child) {
-                child.tabIndex = '0';
+                //child.tabIndex = '0';
             }
         }
 
@@ -160,11 +167,39 @@ export default class cTreeItem extends LightningElement {
         
     }
 
+    get isDropDownTrigger() {
+        return (this.href === 'javascript:void(0)' || this.href === 'javascript:void(0);');
+    }
+
     get buttonLabel() {
         if (this.nodeRef && this.nodeRef.expanded) {
-            return i18n.collapseBranch;
+            return i18n.collapseBranch + this.label;
         }
-        return i18n.expandBranch;
+        return i18n.expandBranch + this.label;
+    }
+
+    get linkTitle() {
+        let linkTitleTmp = '';
+        if(this.isDropDownTrigger && this.children.length > 0)
+        {
+            linkTitleTmp = this.buttonLabel;
+        }
+        else 
+        {
+            linkTitleTmp =  this.label;
+        }
+        return linkTitleTmp;
+    }
+
+    get linkRole() {
+        if(this.isLeaf === true || !this.isDropDownTrigger)
+        {
+            return 'link';
+        }
+        else 
+        {
+            return 'menuitem';
+        }
     }
 
     get showExpanded() { 
@@ -179,7 +214,7 @@ export default class cTreeItem extends LightningElement {
         buttonClasses += (this.computedIconPositionLeft) ? ' slds-m-right_x-small ' : ' slds-m-left_x-small ';
         return classSet(buttonClasses)
             .add({
-                'slds-is-disabled': this.isLeaf || this.isDisabled
+                'slds-hide': this.isLeaf || this.isDisabled
             })
             .toString();
     }
@@ -192,6 +227,59 @@ export default class cTreeItem extends LightningElement {
         iconName = (this.isExpanded) ? 'utility:chevrondown' : iconName;
         iconName = (this.level === 6) ? null : iconName; 
         return iconName;
+    }
+
+    get computedIconTabindex() {
+
+        if(this.isDropDownTrigger)
+        {
+            return '-1';
+        }
+        else 
+        {
+            return '0';
+        }
+
+    }
+
+    get computedIconFocusable() {
+
+        if(this.isDropDownTrigger)
+        {
+            return 'false';
+        }
+        else 
+        {
+            return 'true';
+        }
+        
+    }
+
+    get ariaLabelledById() 
+    {
+        if(this.nodeKey === "1")
+        {
+            return 'announceNavMenu';
+        }
+        else 
+        {
+            return '';
+        }
+    }
+
+    get isFirstNode()
+    {
+        return this.nodeKey === "1";
+    }
+
+    get linkIsExpanded() {
+        if(this.isLeaf || !this.isDropDownTrigger)
+        {
+            return '';
+        }
+        let tmpLinkIsExpanded = false;
+        tmpLinkIsExpanded = this.children.length > 0 && this.isExpanded;
+        return tmpLinkIsExpanded;
     }
 
     get computedIconPositionLeft()
@@ -227,14 +315,14 @@ export default class cTreeItem extends LightningElement {
     handleClick(event) {
         if (!this.isDisabled) {
             // eslint-disable-next-line no-script-url
-            if (this.href === 'javascript:void(0)' || this.href === 'javascript:void(0);') {
+            if (this.isDropDownTrigger) {
                 event.preventDefault();
             }
             let target = 'anchor';
             if (
                 event.target.tagName === 'BUTTON' ||
                 event.target.tagName === 'C-PRIMITIVE-ICON' ||
-                ((this.href === 'javascript:void(0)' || this.href === 'javascript:void(0);') && this.isLeaf === false)
+                (this.isDropDownTrigger && this.isLeaf === false)
             ) {
                 target = 'chevron';
             }
@@ -250,6 +338,11 @@ export default class cTreeItem extends LightningElement {
             });
 
             this.dispatchEvent(customEvent);
+
+            if(target === 'chevron')
+            {
+                this.preventDefaultAndStopPropagation(event);
+            }
         }
     }
 
@@ -258,7 +351,14 @@ export default class cTreeItem extends LightningElement {
             case keyCodes.space:
             case keyCodes.enter:
                 this.preventDefaultAndStopPropagation(event);
-                this.template.querySelector('.slds-tree__item a').click();
+                if(event.target.tagName === 'C-PRIMITIVE-ICON')
+                {
+                    this.handleClick(event);
+                }
+                else
+                {
+                    this.template.querySelector('.slds-tree__item a').click();
+                }
                 break;
             case keyCodes.up:
             case keyCodes.down:
@@ -321,7 +421,7 @@ export default class cTreeItem extends LightningElement {
         const child = this.getImmediateChildItem(childKey);
         if (child) {
             if (child.tabIndex !== '0') {
-                child.tabIndex = '0';
+                //child.tabIndex = '0';
             }
             if (shouldFocus) {
                 child.focus();

@@ -24,6 +24,7 @@ export default class cTree extends LightningElement {
     @api fontFamily;
     @api textTransform;  
     @api topLevelItemSpacing = 20;  
+    @api menuAriaAnnouncement='';
 
     @track _currentFocusedItem = null;
     @track _childNodes;

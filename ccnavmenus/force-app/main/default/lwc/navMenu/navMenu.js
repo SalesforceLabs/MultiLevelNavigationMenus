@@ -34,6 +34,19 @@ export default class NavMenu extends LightningElement {
     @track hamburgerMenuVisible = false;
     @track hamburgerMenu = false;
     @track clickListener;
+    
+    get menuAriaAnnouncement()
+    {
+        if(this.items.length > 0)
+        {
+            return ' Menu first Item of ' + this.items.length + ' items';
+        }
+        else 
+        {
+            return '';
+        }
+    }
+
 
     //wire functions
     wireFetchMenu;

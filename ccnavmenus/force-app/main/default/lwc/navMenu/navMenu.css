@@ -17,6 +17,10 @@
     font-weight: 100;
 }
 
+.ccnavmenu-hamburger-button:focus {
+    outline: auto;
+}
+
 .ccnavmenu-hamburger-icon-toggle
 {
     font-size: 30px;

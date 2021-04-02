@@ -9,6 +9,17 @@
     --ccnavmenus-midLevelItemSpacing: 10px;
 }
 
+li.horizontalMenuItem {
+    display: inline-block;
+}
+
+li.groupMenuItem {
+    display: block;
+}
+
+div {
+    box-sizing: content-box;
+}
 
 [aria-expanded="true"] > .slds-tree__item .slds-button__icon .menu-icon,
 [aria-expanded="false"] > .slds-tree__item .slds-button__icon .menu-icon,
@@ -28,6 +39,11 @@ a.menuLink
 a.menuLink:focus
 {
     text-decoration: none;
+    outline: auto;
+}
+
+.slds-button:focus {
+    outline: auto;
 }
 
 .slds-tree__item > button
@@ -126,6 +142,14 @@ div[role="ccnavMenu-treeItemCSS"] > div[data-is-leaf="true"] {
     padding-left: 0px;
 }
 
+li.groupMenuItem > c-tree-item > div[role="ccnavMenu-treeItemCSS"] {
+    padding-left: 11px;
+}
+
+.horizontal-groupDiv-1 > ul > li.groupMenuItem > c-tree-item > div[role="ccnavMenu-treeItemCSS"],
+ul > li.groupMenuItem > c-tree-item[data-is-vertical="true"][data-level="1"] > div[role="ccnavMenu-treeItemCSS"] {
+    padding-left: 0px;
+}
 
 @media (max-width: 499px)
 {
