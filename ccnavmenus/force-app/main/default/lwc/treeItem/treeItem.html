@@ -123,8 +123,8 @@
                     </button>
                 </template>
                 <span class="slds-has-flexi-truncate" role={linkRole}>
-                    <span class="slds-hide" id={ariaLabelledById} if:true={isFirstNode}>{menuAriaAnnouncement}</span>
-                    <a href={href} tabindex="0" role={linkRole} target={target} class="menuLink" aria-expanded={linkIsExpanded} aria-labelledby={ariaLabelledById} title={linkTitle}>
+                    <span class="slds-hide" id={ariaLabelledById} if:true={isFirstNode}>{computedMenuAriaAnnouncement}</span>
+                    <a href={href} tabindex="0" role={linkRole} target={target} class="menuLink" aria-expanded={linkIsExpanded} aria-labelledby={ariaLabelledById} aria-label={linkTitle} title={linkTitle}>
                         <template if:true={icon}>
                             <c-primitive-icon if:true={iconPositionLeft}
                             icon-name={icon}

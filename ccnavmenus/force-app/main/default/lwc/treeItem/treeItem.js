@@ -255,6 +255,10 @@ export default class cTreeItem extends LightningElement {
         
     }
 
+    get computedMenuAriaAnnouncement() {
+        return this.menuAriaAnnouncement + ' ' + this.linkTitle;
+    }
+
     get ariaLabelledById() 
     {
         if(this.nodeKey === "1")
