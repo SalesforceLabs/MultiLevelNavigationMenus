@@ -325,7 +325,7 @@ export default class cTreeItem extends LightningElement {
             let target = 'anchor';
             if (
                 event.target.tagName === 'BUTTON' ||
-                event.target.tagName === 'C-PRIMITIVE-ICON' ||
+                (event.target.tagName === 'C-PRIMITIVE-ICON' && event.target.dataset.targetIconType === 'chevron') ||
                 (this.isDropDownTrigger && this.isLeaf === false)
             ) {
                 target = 'chevron';
