@@ -330,6 +330,10 @@ export default class cTreeItem extends LightningElement {
             ) {
                 target = 'chevron';
             }
+            else if(event.target.tagName === "DIV" && event.target.querySelector("a.menuLink") !== undefined && event.target.querySelector("a.menuLink") !== null)
+            {
+                target = 'nearbyDiv';
+            }
             const customEvent = new CustomEvent('privateitemclick', {
                 bubbles: true,
                 composed: true,
@@ -346,6 +350,10 @@ export default class cTreeItem extends LightningElement {
             if(target === 'chevron')
             {
                 this.preventDefaultAndStopPropagation(event);
+            }
+            else if(target === 'nearbyDiv' && event.target.querySelector("a.menuLink") !== undefined && event.target.querySelector("a.menuLink") !== null)
+            {
+                event.target.querySelector("a.menuLink").click();
             }
         }
     }
