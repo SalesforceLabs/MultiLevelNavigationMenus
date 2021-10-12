@@ -267,7 +267,7 @@ export default class cTreeItem extends LightningElement {
         }
         else 
         {
-            return '';
+            return 'announceNavMenu-' + Date.now();
         }
     }
 

@@ -77,7 +77,7 @@ export default class cTree extends LightningElement {
 
         
 
-        if(!this.isVertical && this.checkMobile() === false)
+        /*if(!this.isVertical && this.checkMobile() === false)
         {
             this.clickListener = this.handleDropDownClose.bind(this);
             this.resizeListener = this.handleWindowResize.bind(this);
@@ -91,7 +91,7 @@ export default class cTree extends LightningElement {
                 'resize',
                 this.resizeListener
             );
-        }
+        }*/
 
     }
 
@@ -135,8 +135,27 @@ export default class cTree extends LightningElement {
 
     @api get treeContainerClasses() {
         let treeContainerClasses = 'slds-tree_container';
-        treeContainerClasses += (this.isVertical) ? ' slds-tree_container-vertical' : ' slds-tree_container-horizontal';
+        treeContainerClasses += (this.isVertical !== undefined && this.isVertical !== null && this.isVertical) ? ' slds-tree_container-vertical' : ' slds-tree_container-horizontal';
         return treeContainerClasses;
+    }
+
+    connectedCallback()
+    {
+        if(!this.isVertical && this.checkMobile() === false)
+        {
+            this.clickListener = this.handleDropDownClose.bind(this);
+            this.resizeListener = this.handleWindowResize.bind(this);
+            window.addEventListener(
+                'click',
+                this.clickListener
+            );
+            
+            
+            window.addEventListener(
+                'resize',
+                this.resizeListener
+            );
+        }
     }
 
     syncSelected() {

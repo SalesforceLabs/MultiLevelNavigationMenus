@@ -56,6 +56,9 @@
             <property name="topLevelItemSpacing" type="Integer" label="Top Level Item Spacing" required="true" default="20"
             description="Set spacing in pixels between Top Level Menu Items."/>
 
+            <property name="navMenuClassNames" type="String" label="Menu Style Classes" required="false"
+            description="Class names to uniquely target a menu's styles."/>
+
         </targetConfig>
     </targetConfigs> 
 </LightningComponentBundle>

@@ -28,6 +28,7 @@ export default class NavMenu extends LightningElement {
     @api textTransform;
     @api topLevelItemSpacing = 20;
     @api hamburgerMenuMode = 'mobile-only'; //on, mobile-only, off
+    @api navMenuClassNames = '';
 
     @track items = [];
     @track url = '';

@@ -20,6 +20,7 @@ export default class cPrimitiveIcon extends LightningElement {
     @api size = 'medium';
     @api variant;
     @api noTransform = false;
+    @api focusable = false;
 
     privateIconSvgTemplates = getIconSvgTemplates();
 
