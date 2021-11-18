@@ -115,6 +115,11 @@ export default class cTreeItem extends LightningElement {
         this.addEventListener('keydown', this.handleKeydown.bind(this));
 
         this.handleUrlReplace();
+
+        if(this.textTransform === undefined || this.textTransform === null || this.textTransform.trim() === '' || this.textTransform.trim() === 'inherit')
+        {   
+            this.textTransform = getComputedStyle(document.documentElement).getPropertyValue('--lwc-textTransform');
+        }
         
     }
 
@@ -150,10 +155,7 @@ export default class cTreeItem extends LightningElement {
                 treeItemCSS.style.setProperty('--ccnavmenus-fontFamily', this.fontFamily);
             }
 
-            if(this.textTransform === undefined || this.textTransform === null || this.textTransform.trim() === '' || this.textTransform.trim() === 'inherit')
-            {   
-                this.textTransform = getComputedStyle(document.documentElement).getPropertyValue('--lwc-textTransform');
-            }
+            
             if(this.textTransform !== undefined && this.textTransform !== null && this.textTransform.trim() !== '')
             {
                 treeItemCSS.style.setProperty('--ccnavmenus-textTransform', this.textTransform);
