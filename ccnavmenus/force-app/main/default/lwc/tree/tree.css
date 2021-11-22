@@ -1,6 +1,6 @@
 :host
 {
-    --ccnavmenus-brandNavigationBarBackgroundColor: var(--lwc-brandNavigationBarBackgroundColor, #c9c9c9);
+    --ccnavmenus-brandNavigationBarBackgroundColor: var(--dxp-g-root, var(--lwc-brandNavigationBarBackgroundColor, #c9c9c9));
 }
 
 c-tree-item.slds-tree-hidden

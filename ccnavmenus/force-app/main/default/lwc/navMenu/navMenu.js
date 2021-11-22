@@ -120,9 +120,11 @@ export default class NavMenu extends LightningElement {
         this.setStylingProperties();
     }
 
-    toggleHamburgerMenu()
+    toggleHamburgerMenu(e)
     {
         this.hamburgerMenuVisible = !this.hamburgerMenuVisible;
+        e.preventDefault();
+        e.stopPropagation();
     }
 
     handleCloseHamburgerMenu(e)

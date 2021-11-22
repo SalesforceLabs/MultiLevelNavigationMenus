@@ -1,10 +1,10 @@
 :host
 {
-    --ccnavmenus-brandNavigationColorText: var(--lwc-brandNavigationColorText, blue);
-    --ccnavmenus-brandNavigationBarBackgroundColor: var(--lwc-brandNavigationBarBackgroundColor, #c9c9c9);
-    --ccnavmenus-brandNavigationBackgroundColor: var(--lwc-brandNavigationBackgroundColor, white);
+    --ccnavmenus-brandNavigationColorText: var(--dxp-g-root-contrast, var(--lwc-brandNavigationColorText, black));
+    --ccnavmenus-brandNavigationBarBackgroundColor: var(--dxp-g-root, var(--lwc-brandNavigationBarBackgroundColor, #c9c9c9));
+    --ccnavmenus-brandNavigationBackgroundColor: var(--dxp-g-brand, var(--lwc-brandNavigationBackgroundColor, white));
     --ccnavmenus-textTransform: 'none';
-    --ccnavmenus-fontFamily: var(--lwc-fontFamily, 'Salesforce Sans');
+    --ccnavmenus-fontFamily: var(--dxp-g-root-font-family, var(--lwc-fontFamily, 'Salesforce Sans'));
     --ccnavmenus-topLevelItemSpacing: 20px;
     --ccnavmenus-midLevelItemSpacing: 10px;
 }
@@ -30,10 +30,11 @@ div {
 
 a.menuLink
 {
-    color: var(--ccnavmenus-brandNavigationColorText, blue);
+    color: var(--ccnavmenus-brandNavigationColorText, black);
     display: flex;
     text-transform: var(--ccnavmenus-textTransform);
     font-family: var(--ccnavmenus-fontFamily);
+    text-decoration: none;
 }
 
 a.menuLink:focus
@@ -48,7 +49,7 @@ a.menuLink:focus
 
 .slds-tree__item > button
 {
-    color: var(--ccnavmenus-brandNavigationColorText, blue);
+    color: var(--ccnavmenus-brandNavigationColorText, black);
 }
 
 c-tree-item[role="treeitem"][data-is-vertical="false"] {
