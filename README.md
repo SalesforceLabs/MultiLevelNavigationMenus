@@ -105,6 +105,18 @@ Using Translations:
 
 
 
+### Sharing, Access, and Security Requirements
+
+The Multi-Level Navigation Menu lightning component and underlying data model follow the Salesforce platform’s security and sharing concepts. 
+
+1. In order for a user to be able to run the component, the user has to be granted access to the Apex Controller “*ccnavmenus__menusController*” (either via profile or permission set).
+2. Since the apex controller runs in “*with sharing*” mode, in order for the user to be able to successfully query and render a menu, the following needs to occur:
+    1. The user must be granted “*Read*” CRUD permission to both the “*Menu*” and “*Menu Item*” objects (either via profile or permission set).
+    2. The user must be granted “*Read*” FLS permission to all fields on both the “*Menu*” and “*Menu Item*” objects.
+    3. The user must be granted “*Read*” access to the “*Menu*” records that you want them to be able to render on the Experience Cloud site. For guest (unauthenticated) users, you will need to create Guest User Sharing Rules to open up access to “*Menu*” records. For authenticated users, you will need to share the “*Menu*” records in one of the many options you have on the platform to do so.
+
+
+
 ### Usage Example in Aura
 
 ```
