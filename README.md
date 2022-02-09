@@ -1,13 +1,17 @@
 # Multi-Level Navigation Menus for Experience Cloud
 
 
-**As of:** Winter '22<br>
-**Authored By:** George Abboud<br>
-**Last Updated:** 11/22/2021<br>
-**Reviews and Contributions:**<br>
+**As of:** Winter '22
+
+**Authored By:** George Abboud
+
+**Last Updated:** 11/22/2021
+
+**Reviews and Contributions:**
+
 Craig Johnson, Manish Aggarwal, Yelena Kamyshina, David Goldbrenner<br>
 
-
+***
 
 # Overview:
 
