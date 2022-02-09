@@ -25,7 +25,7 @@ https://github.com/SalesforceLabs/MultiLevelNavigationMenus
 
 # Description
 
-The Multi-Level Navigation Menu for Community Cloud app offers components to manage multi-level navigation menus, and render them in your Community. You can configure up to 6 levels of depth in your menus, control the look and feel with styling configuration, horizontal vs vertical presentation, language filtering support, and much more!
+The Multi-Level Navigation Menu for Experience Cloud app offers components to manage multi-level navigation menus, and render them in your Experience Cloud site. You can configure up to 6 levels of depth in your menus, control the look and feel with styling configuration, horizontal vs vertical presentation, language filtering support, and much more!
 
 
 ### Disclaimer:
@@ -70,12 +70,16 @@ Using Translations:
 
 
 
-## Navigation Menu component for Community Builder
+## Navigation Menu component for Experience Builder
 
 **Component Label**: CC Navigation Menu
+
 **Component Aura API Name**: navMenu
+
 **Component LWC API Name**: nav-menu
+
 **Component Namespace**: ccnavmenus
+
 **Component Properties:**
 
 |Property Label	|Aura Property API Name	|LWC Property API Name	|Type	|Description	|
