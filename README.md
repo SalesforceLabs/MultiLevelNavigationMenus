@@ -2,7 +2,7 @@
 
 
 **As of:** Winter '22
-**Authored By:** [George Abboud](https://quip.com/JODAEAtgNLn)
+**Authored By:** George Abboud
 **Last Updated:** 11/22/2021
 **Reviews and Contributions:**
 Craig Johnson, Manish Aggarwal, Yelena Kamyshina, David Goldbrenner
