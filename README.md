@@ -143,7 +143,7 @@ The Multi-Level Navigation Menu lightning component and underlying data model fo
 
 From a declarative perspective, this component cannot be used to swap out the nav menu in the header from theme settings. This is due to the unavailability of a nav menu interface to implement that would allow for such a swap. The availability of this interface is currently not on the product roadmap.
 
-From a development perspective, this component, being part of a managed package, cannot be included in the markup of another LWC component outside of its namespace due to Locker Service limitations. 
+From a development perspective, including this component in a custom LWC behaves differently, depending on if you’re using your custom component in LWR vs Aura Runtime. In LWR, you can use a custom LWC which includes the “*ccnavmenus-nav-menu*”. On the other hand, in Aura Runtime you cannot use a custom LWC that includes other LWCs from different namespaces due to Locker Service limitations.  
 
 
 ### Un-Limitations (Use Cases)
