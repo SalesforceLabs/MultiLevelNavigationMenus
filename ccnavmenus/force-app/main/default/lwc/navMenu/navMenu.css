@@ -51,6 +51,7 @@
     background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor, var(--lwc-brandNavigationBarBackgroundColor, white));
     position: absolute;
     right: 0;
+    top: -40px;
 }
 
 .ccnavmenu-hamburger-button-close
