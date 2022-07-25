@@ -45,7 +45,7 @@
         </template>
 
         <template if:true={hamburgerMenu}>
-
+            <div class="closeButtonDiv">
                 <button data-id="toggleHamburgerMenu" 
                     class="slds-button slds-button_icon slds-button_icon-inverse ccnavmenu-hamburger-button slds-p-horizontal_x-small" 
                     title="Toggle Menu" 
@@ -54,7 +54,7 @@
                         <div aria-hidden="true" tabindex="-1" class="ccnavmenu-hamburger-icon ccnavmenu-hamburger-icon-toggle">&#9776;</div>
                         <span class="slds-assistive-text">Toggle Menu</span>
                 </button>
-
+            </div>
             <template if:true={hamburgerMenuVisible}>
                 <div class="hamburgerMenuContainer">
                     

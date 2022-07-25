@@ -46,9 +46,16 @@
     box-shadow: none;
 }
 
+.closeButtonDiv
+{
+    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor, var(--lwc-brandNavigationBarBackgroundColor, white));
+    position: absolute;
+    right: 0;
+}
+
 .ccnavmenu-hamburger-button-close
 {
-    top: -40px;
+    top: 0;
     right: 0;
 }
 
