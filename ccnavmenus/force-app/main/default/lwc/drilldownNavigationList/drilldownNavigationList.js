@@ -1,9 +1,12 @@
+/*
+ * Copyright (c) 2020, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+
 import { api, LightningElement, track } from 'lwc';
-//import closeLabel from '@salesforce/label/ThemeNav.closeNavigationMenu';
-//import allLabel from '@salesforce/label/Commerce_Navigation_Menu.All';
-//import backLabel from '@salesforce/label/Commerce_Navigation_Menu.Back';
 import { flattenItems } from './flatten';
-//import listStylesStringGenerator from './listStylesStringGenerator';
 
 const NAVIGATE_EVENT = 'navigatetopage';
 const closeLabel = 'Close';

@@ -1,8 +1,12 @@
+/*
+ * Copyright (c) 2020, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+
 import { api, LightningElement, track } from 'lwc';
 import { debounce } from './navbar_utils';
-//import labelAppLauncherTitle from '@salesforce/label/AppLauncherDesktop.titleLabel';
-//import labelOverflowLabel from '@salesforce/label/Commerce_Navigation_Menu.OverflowMenuItemLabel';
-//import componentNameLabel from '@salesforce/label/LwcComponent:commerce_navigation_menu:navigationMenu.component_name';
 import { addOverflowMenu } from './overflow';
 
 const NAVIGATE_EVENT = 'navigatetopage';
