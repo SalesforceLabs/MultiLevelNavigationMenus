@@ -14,7 +14,7 @@ export default class cTree extends LightningElement {
     @api selectedContains = false;
     @api isVertical = false;
     @api uuid;
-    @api urlSubMapJson;
+    
     @api hamburgerMenu = false;
 
     //styling inputs
@@ -25,6 +25,9 @@ export default class cTree extends LightningElement {
     @api textTransform;  
     @api topLevelItemSpacing = 20;  
     @api menuAriaAnnouncement='';
+    @api menuAlignment = 'Left';
+
+    @api overflowLabel = 'More';
 
     @track _currentFocusedItem = null;
     @track _childNodes;
@@ -75,24 +78,6 @@ export default class cTree extends LightningElement {
             this.handleRegistration.bind(this)
         );
 
-        
-
-        /*if(!this.isVertical && this.checkMobile() === false)
-        {
-            this.clickListener = this.handleDropDownClose.bind(this);
-            this.resizeListener = this.handleWindowResize.bind(this);
-            window.addEventListener(
-                'click',
-                this.clickListener
-            );
-            
-            
-            window.addEventListener(
-                'resize',
-                this.resizeListener
-            );
-        }*/
-
     }
 
     @api get childrenFirstLevel() {
@@ -141,7 +126,8 @@ export default class cTree extends LightningElement {
 
     connectedCallback()
     {
-        if(!this.isVertical && this.checkMobile() === false)
+        this.moreItems.label = this.overflowLabel;
+        if(!this.isVertical)
         {
             this.clickListener = this.handleDropDownClose.bind(this);
             this.resizeListener = this.handleWindowResize.bind(this);
@@ -155,6 +141,7 @@ export default class cTree extends LightningElement {
                 'resize',
                 this.resizeListener
             );
+            
         }
     }
 
@@ -194,7 +181,7 @@ export default class cTree extends LightningElement {
             this._currentFocusedItem = this._defaultFocused;
         }
         this.updateCurrentFocusedChild();
-        if(!this.isVertical && this.checkMobile() === false)
+        if(!this.isVertical)
         {
             this.collapseAll();
         }
@@ -248,15 +235,6 @@ export default class cTree extends LightningElement {
             this.handleWidthCalculations();
         }
 
-        let treeContainer = this.template.querySelector('div[role="treeContainer"]');
-        if(treeContainer !== undefined && treeContainer !== null)
-        {
-            if(this.brandNavigationBarBackgroundColor !== undefined && this.brandNavigationBarBackgroundColor !== null && this.brandNavigationBarBackgroundColor.trim() !== '')
-            {
-                treeContainer.style.setProperty('--ccnavmenus-brandNavigationBarBackgroundColor', this.brandNavigationBarBackgroundColor);
-            }
-        }
-
     }
 
     disconnectedCallback() {
@@ -276,7 +254,7 @@ export default class cTree extends LightningElement {
                 } else {
                     this.expandBranch(item.treeNode);
                     
-                    if(!this.isVertical && item.treeNode.level === 1 && this.checkMobile() === false)
+                    if(!this.isVertical && item.treeNode.level === 1)
                     {
                         for(let i=0; i < this.items.length;i++)
                         {
@@ -506,7 +484,7 @@ export default class cTree extends LightningElement {
     handleDropDownClose(e)
     {
         try {
-            if(this.hamburgerMenu === false && (this.isVertical || this.checkMobile() === true || (e.target.tagName === 'C-TREE-ITEM' && e.target.uuid === this.uuid && e.target.forceClose === undefined)))
+            if(this.hamburgerMenu === false && (this.isVertical || (e.target.tagName === 'C-TREE-ITEM' && e.target.uuid === this.uuid && e.target.forceClose === undefined)))
             {
                 return;
             }
@@ -550,7 +528,7 @@ export default class cTree extends LightningElement {
     handleWidthCalculations()
     {
         try{
-            if(this.isVertical || this.checkMobile())
+            if(this.isVertical)
             {
                 this.widthCalculated = true;
             }
@@ -585,13 +563,17 @@ export default class cTree extends LightningElement {
     handleMenuResize(e)
     {
         try {
-            if(!this.isVertical && !this.checkMobile() && this.widthCalculated)
+            if(!this.isVertical && this.widthCalculated)
             {
                 this.origItems = (this.origItems === undefined || this.origItems === null || this.origItems.length === 0) ? this.items : this.origItems; 
                 
                 let topElement = this.template.querySelector('[role="treeContainer"]');
                 let topElementWidth = topElement.offsetWidth + parseInt(getComputedStyle(topElement).marginLeft) + parseInt(getComputedStyle(topElement).marginRight);
+
+                let deviceWidth = document?.documentElement?.clientWidth || document?.body?.clientWidth;
                 
+                topElementWidth = (deviceWidth < topElementWidth) ? deviceWidth : topElementWidth;
+
                 let currItems = [];
 
                 this.moreItems.items = [];

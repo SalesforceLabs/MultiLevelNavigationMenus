@@ -131,7 +131,7 @@ global with sharing class menusController {
                 ti = (ti == null) ? createTreeItem(tocMap.get(toc.ccnavmenus__Menu_Item__c), expanded) : ti;
                 ti.itemsMap.put(ti2.id, ti2);
                 ti.items = ti.itemsMap.values();
-                
+                ti.type = (ti.items != null && ti.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItemMapTop.put(toc.ccnavmenus__Menu_Item__c, ti);
                 treeItemMapLevel2.put(toc.Id,ti2);
@@ -144,11 +144,13 @@ global with sharing class menusController {
                 ti2 = (ti2 == null) ? createTreeItem2(tocMap.get(toc.ccnavmenus__Menu_Item__c), expanded) : ti2;
                 ti2.itemsMap.put(ti3.id, ti3);
                 ti2.items = ti2.itemsMap.values();
+                ti2.type = (ti2.items != null && ti2.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItem ti = treeItemMapTop.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
                 ti = (ti == null) ? createTreeItem(tocMap.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c), expanded) : ti;
                 ti.itemsMap.put(ti2.id, ti2);
                 ti.items = ti.itemsMap.values();
+                ti.type = (ti.items != null && ti.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItemMapTop.put(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ti);
                 treeItemMapLevel2.put(toc.ccnavmenus__Menu_Item__c,ti2);
@@ -162,16 +164,19 @@ global with sharing class menusController {
                 ti3 = (ti3 == null) ? createTreeItem3(tocMap.get(toc.ccnavmenus__Menu_Item__c), expanded) : ti3;
                 ti3.itemsMap.put(ti4.id, ti4);
                 ti3.items = ti3.itemsMap.values();
+                ti3.type = (ti3.items != null && ti3.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItem2 ti2 = treeItemMapLevel2.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
                 ti2 = (ti2 == null) ? createTreeItem2(tocMap.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c), expanded) : ti2;
                 ti2.itemsMap.put(ti3.id, ti3);
                 ti2.items = ti2.itemsMap.values();
+                ti2.type = (ti2.items != null && ti2.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItem ti = treeItemMapTop.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
                 ti = (ti == null) ? createTreeItem(tocMap.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c), expanded) : ti;
                 ti.itemsMap.put(ti2.id, ti2);
                 ti.items = ti.itemsMap.values();
+                ti.type = (ti.items != null && ti.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItemMapTop.put(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ti);
                 treeItemMapLevel2.put(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ti2);
@@ -186,21 +191,25 @@ global with sharing class menusController {
                 ti4 = (ti4 == null) ? createTreeItem4(tocMap.get(toc.ccnavmenus__Menu_Item__c), expanded) : ti4;
                 ti4.itemsMap.put(ti5.id, ti5);
                 ti4.items = ti4.itemsMap.values();
+                ti4.type = (ti4.items != null && ti4.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItem3 ti3 = treeItemMapLevel3.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
                 ti3 = (ti3 == null) ? createTreeItem3(tocMap.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c), expanded) : ti3;
                 ti3.itemsMap.put(ti4.id, ti4);
                 ti3.items = ti3.itemsMap.values();
+                ti3.type = (ti3.items != null && ti3.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItem2 ti2 = treeItemMapLevel2.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
                 ti2 = (ti2 == null) ? createTreeItem2(tocMap.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c), expanded) : ti2;
                 ti2.itemsMap.put(ti3.id, ti3);
                 ti2.items = ti2.itemsMap.values();
+                ti2.type = (ti2.items != null && ti2.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItem ti = treeItemMapTop.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
                 ti = (ti == null) ? createTreeItem(tocMap.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c), expanded) : ti;
                 ti.itemsMap.put(ti2.id, ti2);
                 ti.items = ti.itemsMap.values();
+                ti.type = (ti.items != null && ti.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItemMapTop.put(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ti);
                 treeItemMapLevel2.put(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ti2);
@@ -216,26 +225,31 @@ global with sharing class menusController {
                 ti5 = (ti5 == null) ? createTreeItem5(tocMap.get(toc.ccnavmenus__Menu_Item__c), expanded) : ti5;
                 ti5.itemsMap.put(ti6.id, ti6);
                 ti5.items = ti5.itemsMap.values();
+                ti5.type = (ti5.items != null && ti5.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItem4 ti4 = treeItemMapLevel4.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
                 ti4 = (ti4 == null) ? createTreeItem4(tocMap.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c), expanded) : ti4;
                 ti4.itemsMap.put(ti5.id, ti5);
                 ti4.items = ti4.itemsMap.values();
+                ti4.type = (ti4.items != null && ti4.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItem3 ti3 = treeItemMapLevel3.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
                 ti3 = (ti3 == null) ? createTreeItem3(tocMap.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c), expanded) : ti3;
                 ti3.itemsMap.put(ti4.id, ti4);
                 ti3.items = ti3.itemsMap.values();
+                ti3.type = (ti3.items != null && ti3.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItem2 ti2 = treeItemMapLevel2.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
                 ti2 = (ti2 == null) ? createTreeItem2(tocMap.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c), expanded) : ti2;
                 ti2.itemsMap.put(ti3.id, ti3);
                 ti2.items = ti2.itemsMap.values();
+                ti2.type = (ti2.items != null && ti2.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItem ti = treeItemMapTop.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c);
                 ti = (ti == null) ? createTreeItem(tocMap.get(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c), expanded) : ti;
                 ti.itemsMap.put(ti2.id, ti2);
                 ti.items = ti.itemsMap.values();
+                ti.type = (ti.items != null && ti.items.size() > 0) ? 'SubMenuButton' : 'InternalLink';
 
                 treeItemMapTop.put(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ti);
                 treeItemMapLevel2.put(toc.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ti2);
@@ -349,6 +363,7 @@ global with sharing class menusController {
         ti.level = 6;
         ti.label = toc.Name;
         ti.name = toc.Id;
+        ti.type = 'InternalLink';
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
         ti.href = toc.ccnavmenus__URL__c;
@@ -383,6 +398,10 @@ public class treeItem
 
     public string name;
 
+    public string type;
+    
+    public boolean active = false;
+
     public string icon;
 
     public string iconPosition;
@@ -407,6 +426,10 @@ public class treeItem2
     public string label;
 
     public string name;
+
+    public string type;
+
+    public boolean active = false;
 
     public string icon;
 
@@ -433,6 +456,10 @@ public class treeItem3
 
     public string name;
 
+    public string type;
+
+    public boolean active = false;
+
     public string icon;
 
     public string iconPosition;
@@ -457,6 +484,10 @@ public class treeItem4
     public string label;
 
     public string name;
+
+    public string type;
+
+    public boolean active = false;
 
     public string icon;
 
@@ -484,6 +515,10 @@ public class treeItem5
 
     public string name;
 
+    public string type;
+
+    public boolean active = false;
+
     public string icon;
 
     public string iconPosition;
@@ -509,6 +544,10 @@ public class treeItem6
     public string label;
 
     public string name;
+
+    public string type = 'InternalLink';
+
+    public boolean active = false;
 
     public string icon;
 

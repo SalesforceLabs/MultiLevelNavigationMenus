@@ -11,12 +11,12 @@ import {loadStyle} from 'lightning/platformResourceLoader';
 import navMenuCSS from '@salesforce/resourceUrl/navMenu';
 import formFactor from '@salesforce/client/formFactor';
 
-
 export default class NavMenu extends LightningElement {
 
     @api menuId;
     @api nameFilter = '';
     @api isVertical = false;
+    @api verticalMode = ''; //on, off, mobile-only
     @api uuid = Date.now();
     /* [{"replaceThis":"[!recordId]","replaceWith":"{!recordId}"}] */ 
     @api urlSubMapJson;
@@ -31,6 +31,13 @@ export default class NavMenu extends LightningElement {
     @api topLevelItemSpacing = 20;
     @api hamburgerMenuMode = 'mobile-only'; //on, mobile-only, off
     @api navMenuClassNames = '';
+    @api menuAlignment = 'Left';
+
+    @api menuMode = 'Default'; //default, Drill Down
+
+    @api drillDownBackButtonLabel = 'Back';
+    @api overflowLabel = 'More';
+    @api allLabel = 'Go to';
 
     @track items = [];
     @track url = '';
@@ -50,6 +57,32 @@ export default class NavMenu extends LightningElement {
         }
     }
 
+    get isDrillDown()
+    {
+        return this.menuMode === 'Drill Down';
+    }
+
+    get menuAlignmentClass() {
+        const cssClasses = ['slds-grid'];
+
+        // Default is 'left' and only 'center' and 'right' need to be set explicitly
+        if (this.menuAlignment === 'Center') {
+            cssClasses.push('slds-grid_align-center');
+        } else if (this.menuAlignment === 'Right') {
+            cssClasses.push('slds-grid_align-end');
+        }
+
+        return (this.isVertical || this.hamburgerMenu) ? cssClasses.join(' ') : '';
+    }
+
+    get closeButtonDivClasses() {
+        const cssClasses = ['closeButtonDiv'];
+        if (this.menuAlignment === 'Left') {
+            cssClasses.push('closeButtonDivLeft');
+        }
+
+        return cssClasses.join(' ');
+    }
 
     //wire functions
     wireFetchMenu;
@@ -61,8 +94,17 @@ export default class NavMenu extends LightningElement {
             if(resData.menu)
             {
                 try {
-                    //this.menuItemListResult = result;
-                    this.items = resData.menu;
+                    
+                    this.items = resData?.menu;
+                    
+                    if(this.urlSubMapJson !== undefined && this.urlSubMapJson !== null && this.urlSubMapJson.trim() !== '')
+                    {
+                        if(this.items && Array.isArray(this.items))
+                        {
+                            this.handleUrlReplaceItems(this.items);
+                        }
+                    }
+
                     this.error = undefined;
                 }catch(e){}
             }
@@ -80,7 +122,7 @@ export default class NavMenu extends LightningElement {
     }
 
     connectedCallback()
-    {
+    { 
         this.hamburgerMenu = (this.hamburgerMenuMode !== undefined && this.hamburgerMenuMode !== null
             && (
                     (this.hamburgerMenuMode === 'mobile-only' && this.checkMobile()) 
@@ -94,7 +136,11 @@ export default class NavMenu extends LightningElement {
         }
         
         loadStyle(this, navMenuCSS);
-        this.isVertical = (this.checkMobile()) ? this.checkMobile() : this.isVertical;
+        
+        this.isVertical = false;
+        this.isVertical = (this.verticalMode === 'on') ? true : this.isVertical;
+        this.isVertical = (this.checkMobile() && this.verticalMode === 'mobile-only') ? this.checkMobile() : this.isVertical;
+
         try {
             
             if(this.language !== undefined && this.language !== null && this.language.trim() === 'auto')
@@ -162,21 +208,142 @@ export default class NavMenu extends LightningElement {
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
       }
 
+
     setStylingProperties()
     {
-        let ccnavMenuCSS = this.template.querySelector('div[role="ccnavMenuCSS"]');
-        if(ccnavMenuCSS !== undefined && ccnavMenuCSS !== null)
+        let treeItemCSS = this.template.querySelector('div[role="ccnavMenuCSS"]');
+
+        if(treeItemCSS !== undefined && treeItemCSS !== null)
         {
             if(this.brandNavigationColorText !== undefined && this.brandNavigationColorText !== null && this.brandNavigationColorText.trim() !== '')
             {
-                ccnavMenuCSS.style.setProperty('--ccnavmenus-brandNavigationColorText', this.brandNavigationColorText);
+                treeItemCSS.style.setProperty('--ccnavmenus-brandNavigationColorText', this.brandNavigationColorText);
             }
 
             if(this.brandNavigationBarBackgroundColor !== undefined && this.brandNavigationBarBackgroundColor !== null && this.brandNavigationBarBackgroundColor.trim() !== '')
             {
-                ccnavMenuCSS.style.setProperty('--ccnavmenus-brandNavigationBarBackgroundColor', this.brandNavigationBarBackgroundColor);
+                treeItemCSS.style.setProperty('--ccnavmenus-brandNavigationBarBackgroundColor', this.brandNavigationBarBackgroundColor);
+            }
+
+            if(this.brandNavigationBackgroundColor !== undefined && this.brandNavigationBackgroundColor !== null && this.brandNavigationBackgroundColor.trim() !== '')
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-brandNavigationBackgroundColor', this.brandNavigationBackgroundColor);
+            }
+
+            if(this.fontFamily !== undefined && this.fontFamily !== null && this.fontFamily.trim() !== '')
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-fontFamily', this.fontFamily);
+            }
+
+            
+            if(this.textTransform !== undefined && this.textTransform !== null && this.textTransform.trim() !== '')
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-textTransform', this.textTransform);
+            }
+
+            if(this.topLevelItemSpacing !== undefined && this.topLevelItemSpacing !== null)
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-topLevelItemSpacing', this.topLevelItemSpacing +'px');
+            }
+
+           
+            if(this.menuAlignment !== undefined && this.menu !== null && this.menuAlignment === 'Center' )
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-right', 'auto');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-left', 'auto');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-closeButton-left', '0');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-closeButton-right', 'auto');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-vertical-left','calc(50% - 10rem)');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-vertical-float','none');
+            }
+            else if(this.menuAlignment !== undefined && this.menu !== null && this.menuAlignment === 'Right' )
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-right', '0');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-left', '0');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-closeButton-left', '0');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-closeButton-right', 'auto');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-vertical-left','auto');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-vertical-float','right');
+            }
+            else 
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-right', 'initial');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-left', '0');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-closeButton-left', 'auto');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-closeButton-right', '0');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-vertical-left','0');
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-vertical-float','none');
+            }
+
+            if(this.hamburgerMenu)
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-before-after-display', 'none');
+            }
+            else
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-before-after-display', 'inherit');
             }
         }
+    }
+
+    handleUrlReplaceItems(items) {
+        if(items !== undefined && items !== null && Array.isArray(items))
+        {
+            for (var item of items) {
+
+                this.handleUrlReplace(item);
+                if(item.items !== undefined && item.items !== null && Array.isArray(item.items))
+                {
+                    this.handleUrlReplaceItems(item.items);
+                }
+             
+            }
+        }
+
+    }
+
+    handleUrlReplace(item)
+    {
+        
+        try {
+            
+            if(this.urlSubMapJson !== undefined && this.urlSubMapJson !== null && this.urlSubMapJson.trim() !== '')
+            {
+                let urlSubMap = JSON.parse(this.urlSubMapJson);
+
+                if(urlSubMap !== undefined && urlSubMap !== null && urlSubMap.length > 0)
+                {
+                    for(let i=0;i<urlSubMap.length;i++)
+                    {
+                        if(urlSubMap[i].replaceThis === undefined || urlSubMap[i].replaceThis === null || urlSubMap[i].replaceThis.trim() === ''
+                            || urlSubMap[i].replaceWith === undefined || urlSubMap[i].replaceWith === null || urlSubMap[i].replaceWith.trim() === '')
+                        {
+                            continue;
+                        }
+
+                        let searchMask = this.escapeRegex(urlSubMap[i].replaceThis);
+                        
+                        let regEx = new RegExp(searchMask, "ig");
+                        
+                        let replaceMask = urlSubMap[i].replaceWith;
+                        
+
+                        
+                        item.href = (item.href !== undefined && item.href !== null) ? item.href.replace(regEx, replaceMask) : item.href;
+                        item.label = (item.label !== undefined && item.label !== null) ? item.label.replace(regEx, replaceMask) : item.label;
+                            
+                        
+                    }
+                }
+            }
+
+            
+
+        } catch(e) {}
+    }
+
+    escapeRegex(string) {
+        return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     }
 
 }

@@ -22,8 +22,18 @@
             description="If above Menu option is set to [Name Filter], set a value to match a menu's name on. If multiple menus match, the most recently created one will be returned.
                         Merge fields from community pages can be used here, such as: {!recordId}, {!recordName}, {!urlParameter} - to create dynamic, page-specific menus."/>
 
-            <property name="isVertical" type="Boolean" label="Vertical?" required="false" default="false"
-            description="Check to display menu in vertical mode."/>
+            <property name="menuAlignment" type="String" label="Menu Aligment" required="true" datasource="Left,Center,Right" default="Left"
+            description="Horizontal Alignment of Navigation Bar"/>
+
+            <property name="menuMode" type="String" label="Menu Mode" required="true" datasource="Default,Drill Down" default="Default"
+            description="Default Drop Down Menu that keeps all items open, or Drill Down that hides other menu items except what is currently active."/>
+
+            <property name="verticalMode" type="String" label="Vertical Mode" required="true" datasource="mobile-only,on,off" default="mobile-only"
+            description="On to force vertical mode always, off to never render vertical mode, mobile only to render on mobile."/>
+
+            <property name="hamburgerMenuMode" type="String" label="Hamburger Menu Mode" required="true" datasource="mobile-only, on, off" default="mobile-only"
+            description="Mode for when to hide menu behind hamburger. Defaults to 'mobile-only' which will render a hamburger menu only on mobile devices. 
+            'on' will render a hamburger menu all the time. 'off' will never render a hamburger menu. Hamburger menu will take precedence over vertical mode."/>
 
             <property name="language" type="String" label="Language Filter" required="true" datasource="apex://languagePicklist"
             description="Choose language to filter menu on. 
@@ -31,13 +41,21 @@
                         otherwise for authenticated users the language is based on their language / locale selection in their user settings. 
                         If translation is not needed, leave the default 'none' value."/>
             
-            <property name="hamburgerMenuMode" type="String" label="Hamburger Menu Mode" required="false" datasource="mobile-only, on, off" default="mobile-only"
-            description="Mode for when to hide menu behind hamburger. Defaults to 'mobile-only' which will render a hamburger menu only on mobile devices. 
-            'on' will render a hamburger menu all the time. 'off' will never render a hamburger menu."/>
+            
 
-            <property name="urlSubMapJson" type="String" label="URL Substition Map JSON" required="false" 
-            description="Define JSON substitution map as such (Example):  [{ &#x22;replaceThis&#x22;: &#x22;[!recordId]&#x22;, &#x22;replaceWith&#x22;: &#x22;{!recordId}&#x22; }]"/>
+            
 
+            <property name="overflowLabel" type="String" label="Overflow Label" required="true" default="More"
+            description="Text to display for the overflow menu item."/>
+
+            <property name="drillDownBackButtonLabel" type="String" label="DrillDown Back Label" required="false" default="Back"
+            description="Label to display for the back button in drill down menu."/>
+
+            <property name="allLabel" type="String" label="DrillDown Go To Label" required="false" default="Go to"
+            description="Label to display for going to menu item that has children and is linked."/>
+
+            
+            
             <property name="brandNavigationColorText" type="Color" label="Override Navigation Text Color" required="false"
             description="Override the Navigation Text Color token that is inherited from the theme with this value."/>
 
@@ -58,6 +76,12 @@
 
             <property name="navMenuClassNames" type="String" label="Menu Style Classes" required="false"
             description="Class names to uniquely target a menu's styles."/>
+
+            <property name="urlSubMapJson" type="String" label="URL Substition Map JSON" required="false" 
+            description="Define JSON substitution map as such (Example):  [{ &#x22;replaceThis&#x22;: &#x22;[!recordId]&#x22;, &#x22;replaceWith&#x22;: &#x22;{!recordId}&#x22; }]"/>
+
+            <property name="isVertical" type="Boolean" label="Vertical? (Deprecated)" required="false" default="false"
+            description="deprecated"/>
 
         </targetConfig>
     </targetConfigs> 

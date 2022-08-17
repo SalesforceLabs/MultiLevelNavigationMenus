@@ -1,8 +1,3 @@
-:host
-{
-    --ccnavmenus-brandNavigationBarBackgroundColor: var(--dxp-g-root, var(--lwc-brandNavigationBarBackgroundColor, #c9c9c9));
-}
-
 c-tree-item.slds-tree-hidden
 {
     visibility: hidden;
@@ -17,3 +12,4 @@ c-tree-item.slds-tree-hidden
 {
     background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor);
 }
+

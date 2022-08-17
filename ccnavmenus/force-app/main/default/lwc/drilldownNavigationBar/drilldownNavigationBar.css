@@ -1,0 +1,33 @@
+.comm-drilldown-navigation__bar a,
+.comm-drilldown-navigation__bar button {
+    white-space: nowrap;
+    padding-right: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
+    padding-left: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
+    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor);
+    transition: background-color 0.2s linear;
+    color: var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-navigation-text-color, var(--dxp-g-root-contrast)));
+    font-family: var(--ccnavmenus-fontFamily, inherit);
+}
+
+.comm-drilldown-navigation__bar a {
+    display: block;
+    text-decoration: none;
+}
+
+.comm-drilldown-navigation__bar button {
+    border: unset;
+}
+
+.comm-drilldown-navigation__bar a:hover,
+.comm-drilldown-navigation__bar a:active,
+.comm-drilldown-navigation__bar a:focus,
+.comm-drilldown-navigation__bar button:hover,
+.comm-drilldown-navigation__bar button:active,
+.comm-drilldown-navigation__bar button:focus {
+    background-color: var(--dxp-c-navigation-list-hover-background-color-contrast);
+}
+
+.comm-drilldown-navigation__bar button:focus-visible {
+    outline-color: var(--dxp-c-navigation-list-box-shadow);
+}
+

@@ -1,14 +1,3 @@
-:host
-{
-    --ccnavmenus-brandNavigationColorText: var(--dxp-g-root-contrast, var(--lwc-brandNavigationColorText, black));
-    --ccnavmenus-brandNavigationBarBackgroundColor: var(--dxp-g-root, var(--lwc-brandNavigationBarBackgroundColor, #c9c9c9));
-    --ccnavmenus-brandNavigationBackgroundColor: var(--dxp-g-brand, var(--lwc-brandNavigationBackgroundColor, white));
-    --ccnavmenus-textTransform: 'none';
-    --ccnavmenus-fontFamily: var(--dxp-g-root-font-family, var(--lwc-fontFamily, 'Salesforce Sans'));
-    --ccnavmenus-topLevelItemSpacing: 20px;
-    --ccnavmenus-midLevelItemSpacing: 10px;
-}
-
 li.horizontalMenuItem {
     display: inline-block;
 }
@@ -30,7 +19,7 @@ div {
 
 a.menuLink
 {
-    color: var(--ccnavmenus-brandNavigationColorText, black);
+    color: var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-link-text-color, var(--dxp-s-link-text-color,var(--dxp-g-brand, black)))) !important;
     display: flex;
     text-transform: var(--ccnavmenus-textTransform);
     font-family: var(--ccnavmenus-fontFamily);
@@ -87,7 +76,8 @@ c-tree-item[aria-level="1"] > div.slds-tree__item
 .horizontal-groupDiv-1 {
     position: absolute;
     margin-top: 10px;
-    min-width: 20rem;
+    min-width: var(--ccnavmenus-horizontalItem-min-width, 20rem);
+    max-width: var(--ccnavmenus-horizontalItem-min-width, auto);
     background-color: var(--ccnavmenus-brandNavigationBackgroundColor, white);
     border: 1px solid gray;
     z-index: 9999;
@@ -128,6 +118,7 @@ button[title='Expand Tree Branch'].slds-is-disabled {
 c-tree-item[aria-level="1"][data-is-vertical="false"] > div {
     padding-right: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
     padding-left: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
+    position: relative;
 }
 
 
@@ -150,6 +141,43 @@ li.groupMenuItem > c-tree-item > div[role="ccnavMenu-treeItemCSS"] {
 .horizontal-groupDiv-1 > ul > li.groupMenuItem > c-tree-item > div[role="ccnavMenu-treeItemCSS"],
 ul > li.groupMenuItem > c-tree-item[data-is-vertical="true"][data-level="1"] > div[role="ccnavMenu-treeItemCSS"] {
     padding-left: 0px;
+}
+
+.horizontalMenuItem:last-child .horizontal-groupDiv-1 {
+    transform: translateX(var(--ccnavmenus-horizontalGroup-translateX, -75%));
+}
+
+.horizontalMenuItem:last-child .horizontal-groupDiv-1:after {
+    margin-right: -9px;
+    margin-left: 0;
+    right: 2.7rem;
+    left: auto;
+}
+.horizontalMenuItem:last-child .horizontal-groupDiv-1:before {
+	margin-right: -10px;
+    margin-left: 0;
+    right: 2.7rem;
+    left: auto;
+}
+
+@media (max-width: 650)
+{
+    .horizontalMenuItem:last-child .horizontal-groupDiv-1 {
+        right: 0;
+    }
+    
+    .horizontalMenuItem:last-child .horizontal-groupDiv-1:after {
+        margin-right: -9px;
+        margin-left: 0;
+        right: 2.7rem;
+        left: auto;
+    }
+    .horizontalMenuItem:last-child .horizontal-groupDiv-1:before {
+        margin-right: -10px;
+        margin-left: 0;
+        right: 2.7rem;
+        left: auto;
+    }
 }
 
 @media (max-width: 499px)

@@ -8,7 +8,7 @@
  <template>
     <div role="ccnavMenu-treeItemCSS">
         <template if:true={isRoot}>
-            <ul>
+            <ul class={menuAlignmentClass}>
             <template for:each={children} for:item="item" for:index="index">
                 <li class={liClass} key={item.node.key}> 
                     <template if:true={item.node.isLeaf}>
@@ -34,7 +34,7 @@
                             child-items={item.node.children}
                             level={nextLevel}
                             is-vertical={isVertical}
-                            url-sub-map-json={urlSubMapJson}
+                            
                             menu-aria-announcement={menuAriaAnnouncement}
 
                             brand-navigation-color-text={brandNavigationColorText}
@@ -43,6 +43,7 @@
                             font-family={fontFamily}
                             text-transform={textTransform}
                             top-level-item-spacing={topLevelItemSpacing}
+                            menu-alignment={menuAlignment}
 
                             data-is-vertical={isVertical}
                             data-level={nextLevel}
@@ -75,7 +76,7 @@
                             aria-expanded={item.node.strexpanded}
                             level={nextLevel}
                             is-vertical={isVertical}
-                            url-sub-map-json={urlSubMapJson}
+                            
                             menu-aria-announcement={menuAriaAnnouncement}
 
                             brand-navigation-color-text={brandNavigationColorText}
@@ -84,6 +85,7 @@
                             font-family={fontFamily}
                             text-transform={textTransform}
                             top-level-item-spacing={topLevelItemSpacing}
+                            menu-alignment={menuAlignment}
 
                             data-is-vertical={isVertical}
                             data-level={nextLevel}
@@ -214,7 +216,7 @@
                                         child-items={item.node.children}
                                         level={nextLevel}
                                         is-vertical={isVertical}
-                                        url-sub-map-json={urlSubMapJson}
+                                        
                                         menu-aria-announcement={menuAriaAnnouncement}
                                         
                                         brand-navigation-color-text={brandNavigationColorText}
@@ -223,6 +225,7 @@
                                         font-family={fontFamily}
                                         text-transform={textTransform}
                                         top-level-item-spacing={topLevelItemSpacing}
+                                        menu-alignment={menuAlignment}
 
                                         data-is-vertical={isVertical}
                                         data-level={nextLevel}
@@ -255,7 +258,7 @@
                                         aria-expanded={item.node.strexpanded}
                                         level={nextLevel}
                                         is-vertical={isVertical}
-                                        url-sub-map-json={urlSubMapJson}
+                                        
                                         menu-aria-announcement={menuAriaAnnouncement}
 
                                         brand-navigation-color-text={brandNavigationColorText}
@@ -264,6 +267,7 @@
                                         font-family={fontFamily}
                                         text-transform={textTransform}
                                         top-level-item-spacing={topLevelItemSpacing}
+                                        menu-alignment={menuAlignment}
 
                                         data-is-vertical={isVertical}
                                         data-level={nextLevel}

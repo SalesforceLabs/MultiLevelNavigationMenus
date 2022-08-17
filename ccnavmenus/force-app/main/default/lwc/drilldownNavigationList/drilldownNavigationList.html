@@ -1,0 +1,131 @@
+<template>
+    <nav aria-label={navMenuLabel} if:true={hasVisibleItems}>
+        <ul
+            class={navMenuClassList}
+            role="menu"
+            aria-label={navMenuLabel}
+            onfocusout={handleFocusOut}
+            style={customStyles}
+        >
+            <!-- Close button for mobile view -->
+            <template if:true={isMobileView}>
+                <li
+                    class="comm-drilldown-navigation__close-button slds-m-around_x-small"
+                >
+                    <div class={closeButtonDivClasses}>
+                        <button 
+                            class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-p-horizontal_x-small ccnavmenu-hamburger-button ccnavmenu-hamburger-button-close" 
+                            title={labels.closeLabel} 
+                            onclick={handleHamburgerCloseClick}>
+                            <div aria-hidden="true" tabindex="-1" class="ccnavmenu-hamburger-icon ccnavmenu-hamburger-icon-close">&times;</div>
+                            <span class="slds-assistive-text">{labels.closeLabel}}</span>
+                        </button>
+                    </div>
+                </li>
+            </template>
+            <template if:true={showBackButton}>
+                <li>
+                    <button
+                        class="slds-p-vertical_small slds-p-left_large"
+                        title={backButtonLabel}
+                        data-id="back"
+                        role="menuitem"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        onclick={handleBack}
+                        onkeydown={handleBackKeyDown}
+                        onanimationend={handleAnimationEnd}
+                        onmouseover={handleHoverOrFocus}
+                        onfocus={handleHoverOrFocus}
+                        onmouseout={handleHoverOrFocusOut}
+                        onfocusout={handleHoverOrFocusOut}
+                        style={customStyles}
+                    >
+                        {backButtonLabelComputed}
+                        <lightning-icon
+                            icon-name="utility:chevronleft"
+                            variant="bare"
+                            size="xx-small"
+                            class="slds-current-color slds-p-right_x-small slds-p-top_xxx-small slds-float_left"
+                        >
+                        </lightning-icon>
+                    </button>
+                </li>
+            </template>
+            <li if:true={hasProperParentItem}>
+                <a
+                    if:true={hasProperParentItem}
+                    class="slds-p-vertical_small slds-p-left_large slds-p-right_small slds-truncate"
+                    title={parentItem.label}
+                    data-id={parentItem.id}
+                    role="menuitem"
+                    href={parentItem.href}
+                    onclick={handleAllClick}
+                    onkeydown={handleAllKeyDown}
+                    onmouseover={handleHoverOrFocus}
+                    onfocus={handleHoverOrFocus}
+                    onmouseout={handleHoverOrFocusOut}
+                    onfocusout={handleHoverOrFocusOut}
+                    onanimationend={handleAnimationEnd}
+                    style={customStyles}
+                >
+                    {allLabel} {parentItem.label}
+                </a>
+            </li>
+            <template for:each={visibleItems} for:item="item">
+                <li
+                    key={item.id}
+                    class="slds-is-relative slds-list__item"
+                    role="none"
+                >
+                    <template if:true={item.items}>
+                        <button
+                            class="slds-p-vertical_small slds-p-horizontal_large slds-truncate"
+                            title={item.label}
+                            data-id={item.id}
+                            role="menuitem"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            onclick={handleParentClick}
+                            onkeydown={handleParentKeyDown}
+                            onanimationend={handleAnimationEnd}
+                            onmouseover={handleHoverOrFocus}
+                            onfocus={handleHoverOrFocus}
+                            onmouseout={handleHoverOrFocusOut}
+                            onfocusout={handleHoverOrFocusOut}
+                            style={customStyles}
+                        >
+                            {item.label}
+                            <lightning-icon
+                                icon-name="utility:chevronright"
+                                variant="bare"
+                                size="xx-small"
+                                class="comm-drilldown-navigation__chevron-right slds-current-color slds-p-left_x-small slds-is-absolute"
+                            >
+                            </lightning-icon>
+                        </button>
+                    </template>
+
+                    <a
+                        if:false={item.items}
+                        class="slds-p-vertical_small slds-p-left_large slds-truncate"
+                        title={item.label}
+                        data-id={item.id}
+                        role="menuitem"
+                        href={item.href}
+                        onclick={handleLeafClick}
+                        onkeydown={handleLeafKeyDown}
+                        onanimationend={handleAnimationEnd}
+                        onmouseover={handleHoverOrFocus}
+                        onfocus={handleHoverOrFocus}
+                        onmouseout={handleHoverOrFocusOut}
+                        onfocusout={handleHoverOrFocusOut}
+                        style={customStyles}
+                    >
+                        {item.label}
+                    </a>
+                </li>
+            </template>
+        </ul>
+    </nav>
+</template>

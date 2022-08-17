@@ -1,51 +1,99 @@
 <template>
     <div role="ccnavMenuCSS" class={navMenuClassNames}>
         <template if:false={hamburgerMenu}>
-            <nav role="navigation">
-                <template if:true={isVertical}>
-                    <c-tree 
-                        items={items} 
-                        selected-item={url} 
-                        selected-contains="true" 
-                        is-vertical={isVertical} 
-                        uuid={uuid} 
-                        url-sub-map-json={urlSubMapJson} 
-                        class="vertical-menu"
-                        menu-aria-announcement={menuAriaAnnouncement}
+            <template if:false={isDrillDown}>
+                <nav role="navigation">
+                    <template if:true={isVertical}>
+                        <div class={menuAlignmentClass}>
+                            <c-tree 
+                                items={items} 
+                                selected-item={url} 
+                                selected-contains="true" 
+                                is-vertical={isVertical} 
+                                uuid={uuid} 
+                                
+                                class="vertical-menu"
+                                menu-aria-announcement={menuAriaAnnouncement}
+                                overflow-label={overflowLabel}
 
-                        brand-navigation-color-text={brandNavigationColorText}
-                        brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
-                        brand-navigation-background-color={brandNavigationBackgroundColor}
-                        font-family={fontFamily}
-                        text-transform={textTransform}
-                        top-level-item-spacing={topLevelItemSpacing}
-                    ></c-tree>
+                                brand-navigation-color-text={brandNavigationColorText}
+                                brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
+                                brand-navigation-background-color={brandNavigationBackgroundColor}
+                                font-family={fontFamily}
+                                text-transform={textTransform}
+                                top-level-item-spacing={topLevelItemSpacing}
+                                menu-alignment={menuAlignment}
+                            ></c-tree>
+                        </div>
+                    </template>
+
+                    <template if:false={isVertical}>
+                        <c-tree 
+                            items={items} 
+                            selected-item={url} 
+                            selected-contains="true" 
+                            class="horizontal-menu" 
+                            is-vertical={isVertical} 
+                            uuid={uuid} 
+                            
+                            menu-aria-announcement={menuAriaAnnouncement}
+                            overflow-label={overflowLabel}
+
+                            brand-navigation-color-text={brandNavigationColorText}
+                            brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
+                            brand-navigation-background-color={brandNavigationBackgroundColor}
+                            font-family={fontFamily}
+                            text-transform={textTransform}
+                            top-level-item-spacing={topLevelItemSpacing}
+                            menu-alignment={menuAlignment}
+                        ></c-tree>
+                    </template>
+                </nav>
+            </template>
+
+            <template if:true={isDrillDown}>
+                <template if:true={isVertical}>
+                    <c-drilldown-navigation-list
+                    menu-items={items}
+                    onclosesubmenus={handleCloseSubmenus}
+                    onclosehamburger={handleCloseHamburger}
+                    onleftrightarrowkeysubmenu={handleLeftRightArrowKeyOnSubmenu}
+                    focus-on-first-item={setFocusOnFirstSubMenuItem}
+                    focus-on-last-item={setFocusOnLastSubMenuItem}
+                    back-button-label={drillDownBackButtonLabel}
+                    all-label={allLabel}
+                    show-back-label=true
+                    is-vertical=true
+                    
+                    
+                    >
+                    </c-drilldown-navigation-list>
                 </template>
 
                 <template if:false={isVertical}>
-                    <c-tree 
-                        items={items} 
-                        selected-item={url} 
-                        selected-contains="true" 
-                        class="horizontal-menu" 
-                        is-vertical={isVertical} 
-                        uuid={uuid} 
-                        url-sub-map-json={urlSubMapJson}
-                        menu-aria-announcement={menuAriaAnnouncement}
-
+                    <c-drilldown-navigation-bar
+                        menu-items={items}
+                        back-button-label={drillDownBackButtonLabel}
+                        overflow-label={overflowLabel}
+                        all-label={allLabel}
+                        
+                        
                         brand-navigation-color-text={brandNavigationColorText}
                         brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
                         brand-navigation-background-color={brandNavigationBackgroundColor}
                         font-family={fontFamily}
                         text-transform={textTransform}
                         top-level-item-spacing={topLevelItemSpacing}
-                    ></c-tree>
+                        menu-alignment={menuAlignment}
+
+                        onclosehamburgermenu={closehamburgermenu}
+                    ></c-drilldown-navigation-bar>
                 </template>
-            </nav>
+            </template>
         </template>
 
         <template if:true={hamburgerMenu}>
-            
+            <div class={menuAlignmentClass}>
                 <button data-id="toggleHamburgerMenu" 
                     class="slds-button slds-button_icon slds-button_icon-inverse ccnavmenu-hamburger-button slds-p-horizontal_x-small" 
                     title="Toggle Menu" 
@@ -54,10 +102,12 @@
                         <div aria-hidden="true" tabindex="-1" class="ccnavmenu-hamburger-icon ccnavmenu-hamburger-icon-toggle">&#9776;</div>
                         <span class="slds-assistive-text">Toggle Menu</span>
                 </button>
-          
+            
+
             <template if:true={hamburgerMenuVisible}>
-                <div class="hamburgerMenuContainer">
-                    <div class="closeButtonDiv">
+                <template if:false={isDrillDown}>
+                <div class="hamburgerMenuContainer hamburgerMenuContainerDefault">
+                    <div class={closeButtonDivClasses}>
                         <button 
                             class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-p-horizontal_x-small ccnavmenu-hamburger-button ccnavmenu-hamburger-button-close" 
                             title="Close" 
@@ -74,9 +124,10 @@
                             class="vertical-menu" 
                             is-vertical="true" 
                             uuid={uuid} 
-                            url-sub-map-json={urlSubMapJson}
+                            
                             hamburger-menu={hamburgerMenu}
                             menu-aria-announcement={menuAriaAnnouncement}
+                            overflow-label={overflowLabel}
 
                             brand-navigation-color-text={brandNavigationColorText}
                             brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
@@ -84,12 +135,42 @@
                             font-family={fontFamily}
                             text-transform={textTransform}
                             top-level-item-spacing={topLevelItemSpacing}
-
-                            onclosehamburgermenu={closeHamburgerMenu}
+                            menu-alignment={menuAlignment}
+                            
+                            onccnavmenus__closehamburgermenu={closeHamburgerMenu}
                         ></c-tree>
                     </nav>
                 </div>
+                </template>
+
+                <template if:true={isDrillDown}>
+                    <div class="hamburgerMenuContainer hamburgerMenuContainerDrillDown">
+
+                        <c-drilldown-navigation-bar
+                        menu-items={items}
+                        back-button-label={drillDownBackButtonLabel}
+                        overflow-label={overflowLabel}
+                        all-label={allLabel}
+                        in-hamburger-menu=true
+                        
+
+                        brand-navigation-color-text={brandNavigationColorText}
+                        brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
+                        brand-navigation-background-color={brandNavigationBackgroundColor}
+                        font-family={fontFamily}
+                        text-transform={textTransform}
+                        top-level-item-spacing={topLevelItemSpacing}
+                        menu-alignment={menuAlignment}
+
+                        onccnavmenus__closehamburgermenu={closeHamburgerMenu}
+                        ></c-drilldown-navigation-bar>
+
+                    </div>
+                </template>
+
             </template>
+        </div>
+
         </template>
     </div>
     
