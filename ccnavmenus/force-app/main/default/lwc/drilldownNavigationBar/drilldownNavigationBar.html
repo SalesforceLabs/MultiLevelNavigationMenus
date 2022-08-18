@@ -35,7 +35,7 @@
                             class="slds-is-relative slds-list__item drillDownItem"
                             role="none"
                         >
-                            <template if:true={item.items}>
+                            <template if:true={item.hasChildren}>
                                 <button
                                     title={item.label}
                                     data-id={item.id}
@@ -75,7 +75,7 @@
                             </template>
 
                             <a
-                                if:false={item.items}
+                                if:false={item.hasChildren}
                                 title={item.label}
                                 data-id={item.id}
                                 role="menuitem"

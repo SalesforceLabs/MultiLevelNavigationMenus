@@ -244,6 +244,7 @@ export default class DrilldownNavigationBar extends LightningElement {
         for(let i=0;i<this.visibleMenuItems.length; i++)
         {
             this.visibleMenuItems[i].isLast = ((this.visibleMenuItems.length - 1) === i);
+            this.visibleMenuItems[i].hasChildren = (this.visibleMenuItems[i].items !== undefined && this.visibleMenuItems[i].items !== null && this.visibleMenuItems[i].items.length > 0);
         }
         
 

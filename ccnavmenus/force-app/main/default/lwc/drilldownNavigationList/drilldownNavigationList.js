@@ -21,7 +21,7 @@ export default class DrilldownNavigationList extends LightningElement {
     // Not working atm because contains is not available on template/this
     //static renderMode = 'light';
 
-    _menuItems = [];
+    @track _menuItems = [];
     _parentItem = {};
     _focusOnFirstItem = false;
     _focusOnLastItem = false;
@@ -49,8 +49,13 @@ export default class DrilldownNavigationList extends LightningElement {
     }
 
     set menuItems(value) {
-        this._flatItems = flattenItems(value);
-        this._menuItems = value;
+        let tmpValue = JSON.parse(JSON.stringify(value));
+        for(let i=0; i < tmpValue.length; i++)
+        {
+            tmpValue[i].hasChildren = (tmpValue[i].items !== undefined && tmpValue[i].items !== null && tmpValue[i].items.length > 0);
+        }
+        this._flatItems = flattenItems(tmpValue);
+        this._menuItems = tmpValue;
     }
 
     /**
@@ -134,10 +139,18 @@ export default class DrilldownNavigationList extends LightningElement {
         ) {
             return this.menuItems;
         }
-        return (
-            this._listStack.length &&
-            this._listStack[this._listStack.length - 1]?.items
-        );
+        else
+        {
+            let items = this._listStack.length && this._listStack[this._listStack.length - 1]?.items;
+            items = JSON.parse(JSON.stringify(items));
+            
+            for(let i=0; i < items.length; i++)
+            {
+                items[i].hasChildren = (items[i].items !== undefined && items[i].items !== null && items[i].items.length > 0);
+            }
+            return items;
+        }
+        
     }
 
     get hasVisibleItems() {
