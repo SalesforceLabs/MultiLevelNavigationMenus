@@ -63,7 +63,7 @@ export default class NavMenu extends LightningElement {
     }
 
     get menuAlignmentClass() {
-        const cssClasses = ['slds-grid'];
+        const cssClasses = ['slds-grid hamburgerIconContainer'];
 
         // Default is 'left' and only 'center' and 'right' need to be set explicitly
         if (this.menuAlignment === 'Center') {
