@@ -23,6 +23,10 @@
     --ccnavmenus-drillDownNav-list-vertical-float: none;
 }
 
+.hamburgerIconContainer {
+    position: relative;
+}
+
 .ccnavmenu-hamburger-icon
 {
     color: var(--ccnavmenus-brandNavigationColorText, var(--dxp-g-root-contrast, var(--lwc-brandNavigationColorText, black)));
