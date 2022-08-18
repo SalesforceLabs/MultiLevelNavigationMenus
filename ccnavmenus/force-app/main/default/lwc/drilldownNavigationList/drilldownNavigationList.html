@@ -69,7 +69,30 @@
                     onanimationend={handleAnimationEnd}
                     style={customStyles}
                 >
-                    {allLabel} {parentItem.label}
+                    {allLabel} <span>
+                        <template if:true={parentItem.icon}>
+                            &nbsp;
+                            <c-primitive-icon if:true={parentItem.iconPositionLeft}
+                            icon-name={parentItem.icon}
+                            variant="bare"
+                            svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
+                            no-transform="true"
+                            >
+                            </c-primitive-icon>
+                        </template>
+
+                        {parentItem.label}
+
+                            <template if:true={parentItem.icon}>
+                                <c-primitive-icon if:true={parentItem.iconPositionRight}
+                                icon-name={parentItem.icon}
+                                variant="bare"
+                                svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
+                                no-transform="true"
+                                >
+                                </c-primitive-icon>
+                            </template>
+                        </span>
                 </a>
             </li>
             <template for:each={visibleItems} for:item="item">
@@ -95,7 +118,29 @@
                             onfocusout={handleHoverOrFocusOut}
                             style={customStyles}
                         >
+
+                        <template if:true={item.icon}>
+                            <c-primitive-icon if:true={item.iconPositionLeft}
+                            icon-name={item.icon}
+                            variant="bare"
+                            svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
+                            no-transform="true"
+                            >
+                            </c-primitive-icon>
+                        </template>
+
                             {item.label}
+
+                            <template if:true={item.icon}>
+                                <c-primitive-icon if:true={item.iconPositionRight}
+                                icon-name={item.icon}
+                                variant="bare"
+                                svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
+                                no-transform="true"
+                                >
+                                </c-primitive-icon>
+                            </template>
+
                             <lightning-icon
                                 icon-name="utility:chevronright"
                                 variant="bare"
@@ -122,7 +167,27 @@
                         onfocusout={handleHoverOrFocusOut}
                         style={customStyles}
                     >
+                    <template if:true={item.icon}>
+                        <c-primitive-icon if:true={item.iconPositionLeft}
+                        icon-name={item.icon}
+                        variant="bare"
+                        svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
+                        no-transform="true"
+                        >
+                        </c-primitive-icon>
+                    </template>
+
                         {item.label}
+
+                        <template if:true={item.icon}>
+                            <c-primitive-icon if:true={item.iconPositionRight}
+                            icon-name={item.icon}
+                            variant="bare"
+                            svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
+                            no-transform="true"
+                            >
+                            </c-primitive-icon>
+                        </template>
                     </a>
                 </li>
             </template>

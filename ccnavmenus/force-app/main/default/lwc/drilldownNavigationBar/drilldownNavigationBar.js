@@ -245,6 +245,8 @@ export default class DrilldownNavigationBar extends LightningElement {
         {
             this.visibleMenuItems[i].isLast = ((this.visibleMenuItems.length - 1) === i);
             this.visibleMenuItems[i].hasChildren = (this.visibleMenuItems[i].items !== undefined && this.visibleMenuItems[i].items !== null && this.visibleMenuItems[i].items.length > 0);
+            this.visibleMenuItems[i].iconPositionLeft = (this.visibleMenuItems[i].iconPosition !== undefined && this.visibleMenuItems[i].iconPosition !== null && this.visibleMenuItems[i].iconPosition.trim() === 'left');
+            this.visibleMenuItems[i].iconPositionRight = (this.visibleMenuItems[i].iconPosition !== undefined && this.visibleMenuItems[i].iconPosition !== null && this.visibleMenuItems[i].iconPosition.trim() === 'right');
         }
         
 

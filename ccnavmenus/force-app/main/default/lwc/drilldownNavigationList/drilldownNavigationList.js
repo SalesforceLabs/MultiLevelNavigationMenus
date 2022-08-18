@@ -67,8 +67,15 @@ export default class DrilldownNavigationList extends LightningElement {
     }
 
     set parentItem(value) {
-        this._parentItem = value;
-        this._listStack.push(value);
+        let tmpValue = JSON.parse(JSON.stringify(value));
+
+        tmpValue.hasChildren = (tmpValue.items !== undefined && tmpValue.items !== null && tmpValue.items.length > 0);
+        tmpValue.iconPositionLeft = (tmpValue.iconPosition !== undefined && tmpValue.iconPosition !== null && tmpValue.iconPosition.trim() === 'left');
+        tmpValue.iconPositionRight = (tmpValue.iconPosition !== undefined && tmpValue.iconPosition !== null && tmpValue.iconPosition.trim() === 'right');
+
+        this._parentItem = tmpValue;
+        this._listStack.push(tmpValue);
+        this._flatItems[tmpValue.id] = tmpValue;
     }
 
     /**
@@ -143,10 +150,12 @@ export default class DrilldownNavigationList extends LightningElement {
         {
             let items = this._listStack.length && this._listStack[this._listStack.length - 1]?.items;
             items = JSON.parse(JSON.stringify(items));
-            
+
             for(let i=0; i < items.length; i++)
             {
                 items[i].hasChildren = (items[i].items !== undefined && items[i].items !== null && items[i].items.length > 0);
+                items[i].iconPositionLeft = (items[i].iconPosition !== undefined && items[i].iconPosition !== null && items[i].iconPosition.trim() === 'left');
+                items[i].iconPositionRight = (items[i].iconPosition !== undefined && items[i].iconPosition !== null && items[i].iconPosition.trim() === 'right');
             }
             return items;
         }
@@ -298,10 +307,13 @@ export default class DrilldownNavigationList extends LightningElement {
 
     handleParentClick(event) {
         const newItem = this._flatItems[event?.currentTarget?.dataset?.id];
+        let newItemTmp = JSON.parse(JSON.stringify(newItem));
+        newItemTmp.iconPositionLeft = (newItemTmp.iconPosition !== undefined && newItemTmp.iconPosition !== null && newItemTmp.iconPosition.trim() === 'left');
+        newItemTmp.iconPositionRight = (newItemTmp.iconPosition !== undefined && newItemTmp.iconPosition !== null && newItemTmp.iconPosition.trim() === 'right');
         this._isBackButtonClicked = false;
         this._showAnimation = true;
-        this._parentItem = newItem;
-        this._listStack.push(newItem);
+        this._parentItem = newItemTmp;
+        this._listStack.push(newItemTmp);
         this._drilledDown += 1;
 
         event.preventDefault();

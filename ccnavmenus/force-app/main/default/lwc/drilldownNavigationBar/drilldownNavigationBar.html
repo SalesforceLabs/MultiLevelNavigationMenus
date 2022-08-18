@@ -46,7 +46,29 @@
                                     onkeydown={handleKeyDown}
                                     onfocus={handleFocus}
                                 >
+
+                                <template if:true={item.icon}>
+                                    <c-primitive-icon if:true={item.iconPositionLeft}
+                                    icon-name={item.icon}
+                                    variant="bare"
+                                    svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
+                                    no-transform="true"
+                                    >
+                                    </c-primitive-icon>
+                                </template>
+
                                     {item.label}
+
+                                    <template if:true={item.icon}>
+                                        <c-primitive-icon if:true={item.iconPositionRight}
+                                        icon-name={item.icon}
+                                        variant="bare"
+                                        svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
+                                        no-transform="true"
+                                        >
+                                        </c-primitive-icon>
+                                    </template>
+
                                     <lightning-icon
                                         icon-name="utility:chevrondown"
                                         variant="bare"
