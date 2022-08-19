@@ -25,6 +25,10 @@
     pointer-events: none;
 }
 
+.comm-drilldown-navigation__list .backButtonIcon {
+    pointer-events: none;
+}
+
 .comm-drilldown-navigation__list a,
 .comm-drilldown-navigation__list button {
     text-align: start;

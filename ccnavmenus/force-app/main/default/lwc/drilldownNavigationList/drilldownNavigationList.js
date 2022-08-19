@@ -39,6 +39,7 @@ export default class DrilldownNavigationList extends LightningElement {
     @api isLastItem = false;
     @api allLabel = 'Go to';
     @api isVertical = false;
+    @api isInHamburgerMenu = false;
 
     /**
      * MenuItems that should be visualized
@@ -272,7 +273,7 @@ export default class DrilldownNavigationList extends LightningElement {
         let itemId = event?.currentTarget?.dataset?.id;
         let href = event?.currentTarget?.getAttribute('href');
         let type = 'InternalLink';
-       /* this.dispatchEvent(
+        this.dispatchEvent(
             new CustomEvent(NAVIGATE_EVENT, {
                 bubbles: true,
                 cancelable: true,
@@ -283,7 +284,7 @@ export default class DrilldownNavigationList extends LightningElement {
                     href: href
                 }
             })
-        );*/
+        );
     }
 
     handleFocusOut(event) {
@@ -339,13 +340,19 @@ export default class DrilldownNavigationList extends LightningElement {
     }
 
     handleAllClick(event) {
-        this.fireNavigationEventForAll(event);
-        this.fireCloseNavigationListEvent();
+        if(!this.isInHamburgerMenu)
+        {
+            this.fireNavigationEvent(event);
+            this.fireCloseNavigationListEvent();
+        }
     }
 
     handleLeafClick(event) {
-        this.fireNavigationEvent(event);
-        this.fireCloseNavigationListEvent();
+        if(!this.isInHamburgerMenu)
+        {
+            this.fireNavigationEvent(event);
+            this.fireCloseNavigationListEvent();
+        }       
     }
 
     // if there is custom theme styling for the background color on hover use that instead of the ootb css
@@ -525,10 +532,16 @@ export default class DrilldownNavigationList extends LightningElement {
         let preventDefault = false;
         switch (event.key) {
             case 'Enter':
+                break;
             case ' ': // Spacebar
-                this.fireNavigationEventForAll(event);
-                this.fireCloseNavigationListEvent();
-                preventDefault = true;
+                    event.stopPropagation();
+                    event.preventDefault();
+                   
+                    let newLink = document.createElement('a');
+                    newLink.setAttribute('href',event.target.href);
+                    newLink.setAttribute('target', event.target.target);
+                    newLink.click();
+                    
                 break;
             case 'ArrowRight':
                 this.resetListStackToFirstLevel();
