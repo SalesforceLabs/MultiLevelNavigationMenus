@@ -60,6 +60,7 @@
                     data-id={parentItem.id}
                     role="menuitem"
                     href={parentItem.href}
+                    target={parentItem.target}
                     onclick={handleAllClick}
                     onkeydown={handleAllKeyDown}
                     onmouseover={handleHoverOrFocus}
@@ -69,7 +70,7 @@
                     onanimationend={handleAnimationEnd}
                     style={customStyles}
                 >
-                    {allLabel} <span>
+                    {allLabel} <span class="labelSpanClass">
                         <template if:true={parentItem.icon}>
                             &nbsp;
                             <c-primitive-icon if:true={parentItem.iconPositionLeft}
@@ -158,6 +159,7 @@
                         data-id={item.id}
                         role="menuitem"
                         href={item.href}
+                        target={item.target}
                         onclick={handleLeafClick}
                         onkeydown={handleLeafKeyDown}
                         onanimationend={handleAnimationEnd}

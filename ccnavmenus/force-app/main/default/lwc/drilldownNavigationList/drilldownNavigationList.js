@@ -272,7 +272,7 @@ export default class DrilldownNavigationList extends LightningElement {
         let itemId = event?.currentTarget?.dataset?.id;
         let href = event?.currentTarget?.getAttribute('href');
         let type = 'InternalLink';
-        this.dispatchEvent(
+       /* this.dispatchEvent(
             new CustomEvent(NAVIGATE_EVENT, {
                 bubbles: true,
                 cancelable: true,
@@ -283,7 +283,7 @@ export default class DrilldownNavigationList extends LightningElement {
                     href: href
                 }
             })
-        );
+        );*/
     }
 
     handleFocusOut(event) {

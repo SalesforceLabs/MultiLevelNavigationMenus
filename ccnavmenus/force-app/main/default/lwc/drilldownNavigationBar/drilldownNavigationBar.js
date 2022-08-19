@@ -428,8 +428,20 @@ export default class DrilldownNavigationBar extends LightningElement {
      * @param event
      */
     handleNavClick(event) {
-        event.stopPropagation();
-        event.preventDefault();
+        let preventDefaultAndPropagation = true;
+        if(event?.target?.role === 'menuitem')
+        {
+           let item = this.findItem(event?.target?.dataset?.id);
+           if(!item.hasChildren && !item.href.startsWith('javascript:void(0)'))
+           {
+                preventDefaultAndPropagation = false;
+           }
+        }
+        
+        if (preventDefaultAndPropagation) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
 
         // if the menu bar was clicked instead of a parent item, close any open submenus
         if (event.target.role === 'menubar') {

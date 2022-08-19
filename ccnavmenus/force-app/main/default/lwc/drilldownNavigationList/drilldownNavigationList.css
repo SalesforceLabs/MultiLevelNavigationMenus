@@ -21,6 +21,10 @@
     margin-top: 10px;
 }
 
+.comm-drilldown-navigation__list .labelSpanClass {
+    pointer-events: none;
+}
+
 .comm-drilldown-navigation__list a,
 .comm-drilldown-navigation__list button {
     text-align: start;
