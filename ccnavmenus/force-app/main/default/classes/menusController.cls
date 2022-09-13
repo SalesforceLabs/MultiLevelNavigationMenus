@@ -30,6 +30,10 @@ global with sharing class menusController {
 
                 listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
                 resultMap.put('menu',listTOCLevel1);
+
+                User u = [SELECT Id, Contact.Id, Account.Id, FirstName, LastName, CommunityNickname FROM User WHERE Id = :System.UserInfo.getUserId() LIMIT 1];
+                resultMap.put('user',u);
+
             } 
             else 
             {

@@ -44,6 +44,7 @@ export default class NavMenu extends LightningElement {
     @track hamburgerMenuVisible = false;
     @track hamburgerMenu = false;
     @track clickListener;
+    @track userInfo = {};
     
     get menuAriaAnnouncement()
     {
@@ -96,9 +97,13 @@ export default class NavMenu extends LightningElement {
                 try {
                     
                     this.items = resData?.menu;
+                    this.userInfo = resData?.user;
                     
                     if(this.urlSubMapJson !== undefined && this.urlSubMapJson !== null && this.urlSubMapJson.trim() !== '')
                     {
+
+                        this.handleUserInfoReplacements();
+
                         if(this.items && Array.isArray(this.items))
                         {
                             this.handleUrlReplaceItems(this.items);
@@ -161,6 +166,13 @@ export default class NavMenu extends LightningElement {
             );
         }
         
+    }
+
+    disconnectedCallback() {
+        if(this.hamburgerMenu)
+        {
+            window.removeEventListener('click', this.clickListener);
+        }
     }
 
     renderedCallback()
@@ -316,7 +328,7 @@ export default class NavMenu extends LightningElement {
                     for(let i=0;i<urlSubMap.length;i++)
                     {
                         if(urlSubMap[i].replaceThis === undefined || urlSubMap[i].replaceThis === null || urlSubMap[i].replaceThis.trim() === ''
-                            || urlSubMap[i].replaceWith === undefined || urlSubMap[i].replaceWith === null || urlSubMap[i].replaceWith.trim() === '')
+                            || urlSubMap[i].replaceWith === undefined || urlSubMap[i].replaceWith === null)
                         {
                             continue;
                         }
@@ -344,6 +356,64 @@ export default class NavMenu extends LightningElement {
 
     escapeRegex(string) {
         return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+
+    handleUserInfoReplacements()
+    {
+        if(this.userInfo.Id !== undefined && this.userInfo.Id !== null)
+        {
+
+            let searchMask = this.escapeRegex('[@User.Id]');
+            let regEx = new RegExp(searchMask, "ig");
+            let replaceMask = this.userInfo.Id;
+            this.urlSubMapJson = this.urlSubMapJson.replace(regEx,replaceMask);
+        } 
+        
+        if(this.userInfo.AccountId !== undefined && this.userInfo.AccountId !== null)
+        {
+
+            let searchMask = this.escapeRegex('[@User.AccountId]');
+            let regEx = new RegExp(searchMask, "ig");
+            let replaceMask = this.userInfo.AccountId;
+            this.urlSubMapJson = this.urlSubMapJson.replace(regEx,replaceMask);
+        }
+
+        if(this.userInfo.ContactId !== undefined && this.userInfo.ContactId !== null)
+        {
+
+            let searchMask = this.escapeRegex('[@User.ContactId]');
+            let regEx = new RegExp(searchMask, "ig");
+            let replaceMask = this.userInfo.ContactId;
+            this.urlSubMapJson = this.urlSubMapJson.replace(regEx,replaceMask);
+        }
+
+        if(this.userInfo.FirstName !== undefined && this.userInfo.FirstName !== null)
+        {
+
+            let searchMask = this.escapeRegex('[@User.FirstName]');
+            let regEx = new RegExp(searchMask, "ig");
+            let replaceMask = this.userInfo.FirstName;
+            this.urlSubMapJson = this.urlSubMapJson.replace(regEx,replaceMask);
+        }
+
+        if(this.userInfo.LastName !== undefined && this.userInfo.LastName !== null)
+        {
+
+            let searchMask = this.escapeRegex('[@User.LastName]');
+            let regEx = new RegExp(searchMask, "ig");
+            let replaceMask = this.userInfo.LastName;
+            this.urlSubMapJson = this.urlSubMapJson.replace(regEx,replaceMask);
+        }
+        
+        if(this.userInfo.CommunityNickname !== undefined && this.userInfo.CommunityNickname !== null)
+        {
+
+            let searchMask = this.escapeRegex('[@User.CommunityNickname]');
+            let regEx = new RegExp(searchMask, "ig");
+            let replaceMask = this.userInfo.CommunityNickname;
+            this.urlSubMapJson = this.urlSubMapJson.replace(regEx,replaceMask);
+        }
+      
     }
 
 }
