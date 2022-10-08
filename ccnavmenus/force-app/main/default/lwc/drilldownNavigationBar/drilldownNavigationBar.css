@@ -37,4 +37,3 @@
 .comm-drilldown-navigation__bar button:focus-visible {
     outline-color: var(--dxp-c-navigation-list-box-shadow);
 }
-

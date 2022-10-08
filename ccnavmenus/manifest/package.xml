@@ -1,35 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>*</members>
+        <members>languagePicklist</members>
+        <members>menusController</members>
+        <members>menusControllerTest</members>
+        <members>menusManagerController</members>
+        <members>menusManagerControllerTest</members>
+        <members>menusPicklist</members>
         <name>ApexClass</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>ApexComponent</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>ApexPage</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>ApexTestSuite</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>ApexTrigger</name>
-    </types>
-    <types>
-        <members>*</members>
-        <name>AuraDefinitionBundle</name>
     </types>
     <types>
         <members>*</members>
         <name>LightningComponentBundle</name>
     </types>
     <types>
-        <members>*</members>
+        <members>menusManager</members>
+        <members>navMenu</members>
         <name>StaticResource</name>
     </types>
     <types>

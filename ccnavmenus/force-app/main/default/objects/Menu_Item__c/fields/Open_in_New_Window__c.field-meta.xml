@@ -2,6 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Open_in_New_Window__c</fullName>
     <defaultValue>false</defaultValue>
+    <deprecated>false</deprecated>
     <description>Open link in new window/tab</description>
     <externalId>false</externalId>
     <inlineHelpText>If link is not set to javascript:void(0); the link will be forced to open in a new tab.</inlineHelpText>

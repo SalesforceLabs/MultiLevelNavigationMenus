@@ -2,6 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>SLDS_Icon__c</fullName>
     <defaultValue>&quot;utility:connected_apps&quot;</defaultValue>
+    <deprecated>false</deprecated>
     <description>SLDS Icon Name</description>
     <externalId>false</externalId>
     <inlineHelpText>Optional: name of the SLDS icon to appear next to the menu label.</inlineHelpText>
