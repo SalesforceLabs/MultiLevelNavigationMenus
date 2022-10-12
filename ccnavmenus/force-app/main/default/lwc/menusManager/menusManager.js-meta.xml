@@ -4,6 +4,9 @@
     <isExposed>true</isExposed>
     <masterLabel>Community Cloud Menus Manager</masterLabel>
     <description>Manage your Community Cloud Menus</description>
+    <capabilities>
+        <capability>lightningCommunity__RelaxedCSP</capability>
+    </capabilities>
     <targets>
         <target>lightning__HomePage</target>
     </targets>
