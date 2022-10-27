@@ -22,5 +22,28 @@
         <members>*</members>
         <name>CustomObject</name>
     </types>
-    <version>48.0</version>
+     <types>
+        <members>Community_Menus_Home</members>
+        <members>Community_Menus_UtilityBar</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>Menu__c-Menu Layout</members>
+        <members>Menu_Item__c-Menu Item Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>Community_Menus</members>
+        <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>Languages</members>
+        <name>GlobalValueSet</name>
+    </types>
+    <types>
+        <members>Menu__c</members>
+        <members>Menu_Item__c</members>
+        <name>CustomTab</name>
+    </types>
+    <version>55.0</version>
 </Package>
