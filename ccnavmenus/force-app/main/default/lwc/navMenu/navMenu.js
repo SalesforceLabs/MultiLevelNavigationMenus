@@ -189,15 +189,37 @@ export default class NavMenu extends LightningElement {
 
     handleCloseHamburgerMenu(e)
     {
-        if(e.target !== undefined && e.target !== null && 
-                (
-                    e.target.tagName !== 'CCNAVMENUS-NAV-MENU' || 
-                    (e.target.tagName === 'CCNAVMENUS-NAV-MENU' && e.target.uuid !== this.uuid)
-                )
-            )
+        if(this.shouldCloseHamburgerMenu(e) === true)
         {
             this.closeHamburgerMenu();
         }
+
+    }
+
+    shouldCloseHamburgerMenu(e) {
+
+        if(e.target !== undefined && e.target !== null)
+        {
+            if(e.detail.forceClose !== undefined && e.detail.forceClose !== null && e.detail.forceClose === true)
+            {
+                return true;
+            }
+
+            //if click is from drill down back button
+            if(e.target.tagName === 'BUTTON' && e.target.dataset.id !== undefined && e.target.dataset.id === 'back') {
+                return false;
+            }
+
+            //if click is from outside the component
+            if(e.target.tagName !== 'CCNAVMENUS-NAV-MENU' || 
+            (e.target.tagName === 'CCNAVMENUS-NAV-MENU' && e.target.uuid !== this.uuid))
+            {
+                return true;
+            }
+        }
+
+        return false;
+
     }
 
     closeHamburgerMenu()

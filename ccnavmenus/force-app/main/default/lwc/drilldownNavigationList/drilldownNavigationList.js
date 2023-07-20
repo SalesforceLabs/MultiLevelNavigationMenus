@@ -332,27 +332,65 @@ export default class DrilldownNavigationList extends LightningElement {
               );
     }
 
-    handleBack() {
+    handleBack(e) {
         this._isBackButtonClicked = true;
         this._listStack.pop();
         this._parentItem = this._listStack[this._listStack.length - 1];
         this._drilledDown -= 1;
+        e.preventDefault();
+        e.stopPropagation();
     }
 
     handleAllClick(event) {
         if(!this.isInHamburgerMenu)
         {
-            this.fireNavigationEvent(event);
+            //this.fireNavigationEvent(event);
             this.fireCloseNavigationListEvent();
         }
+        else 
+        {
+            if(this.shouldCloseHamburgerMenu(event))
+            {
+                this.dispatchEvent(new CustomEvent('ccnavmenus__closehamburgermenu', {bubbles: true, composed: true}));
+            }
+
+        }
+
+        event.stopImmediatePropagation();
     }
 
     handleLeafClick(event) {
         if(!this.isInHamburgerMenu)
         {
-            this.fireNavigationEvent(event);
+            //this.fireNavigationEvent(event);
             this.fireCloseNavigationListEvent();
-        }       
+        }   
+        else 
+        {
+            if(this.shouldCloseHamburgerMenu(event))
+            {
+                this.dispatchEvent(new CustomEvent('ccnavmenus__closehamburgermenu', {bubbles: true, composed: true}));
+            }
+        }   
+    }
+
+    shouldCloseHamburgerMenu(event) {
+
+        if(event.target !== undefined && event.target !== null && event.target.tagName === 'A' && event.target.dataset.id !== undefined
+            && event.target.dataset.id !== null && event.target.href !== undefined && event.target.href !== null && event.target.href.trim() !== 'javascript:void(0);'
+            && event.target.href.trim() !== 'javascript:void(0)')
+        {
+            return true;
+        }
+
+        if(event.target !== undefined && event.target !== null && event.target.tagName === 'C-PRIMITIVE-ICON' && event.target.dataset.islink !== undefined
+            && event.target.dataset.islink !== null && event.target.dataset.islink === 'true')
+        {
+            return true;
+        }
+
+        return false;
+
     }
 
     // if there is custom theme styling for the background color on hover use that instead of the ootb css
@@ -367,6 +405,7 @@ export default class DrilldownNavigationList extends LightningElement {
                 this.customThemeStyles['background-hover'];
         }
     }
+
 
     handleHoverOrFocusOut(event) {
         let item = event.currentTarget;

@@ -52,7 +52,7 @@
     display: block;
     right: var(--ccnavmenus-drillDownNav-closeButton-right, 0);
     left: var(--ccnavmenus-drillDownNav-closeButton-left, auto);
-    top: -45px;
+    top: -48px;
     z-index: 10;
     margin: 0;
     background-color: var(--ccnavmenus-brandNavigationBackgroundColor,var(--dxp-c-navigation-list-background-color));
