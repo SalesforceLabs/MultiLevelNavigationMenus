@@ -16,6 +16,7 @@ import { refreshApex } from '@salesforce/apex';
 import {loadStyle} from 'lightning/platformResourceLoader';
 import menusManagerCSS from '@salesforce/resourceUrl/menusManager';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import fetchAppVersion from '@salesforce/apex/menusManagerController.getAppVersion';
 
 
 const MENU_ITEM_ACTIONS = [
@@ -110,10 +111,26 @@ export default class MenusManager extends LightningElement {
     @track selectedMenuItemLabelForDelete;
     @track error;
     @track activeLanguageSections = [];
+    @track version;
 
     @track MENU_ITEM_COLUMNS_DEFINITION = JSON.parse(JSON.stringify(MENU_ITEM_COLUMNS_DEFINITION));
     @track MENU_ITEM_ACTIONS = JSON.parse(JSON.stringify(MENU_ITEM_ACTIONS));
 
+
+    //wire functions
+    wireFetchAppVersion;
+    @wire(fetchAppVersion,{})
+    fetchAppVersionImperativeWiring(result) 
+    {
+        if (result.data) {
+
+            this.version = result.data;
+            
+        } else if (result.error) {
+            
+        }
+
+    }
 
     //wire functions
     wireFetchMenu;

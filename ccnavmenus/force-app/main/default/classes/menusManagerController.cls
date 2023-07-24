@@ -1,6 +1,11 @@
 global with sharing class menusManagerController {
     
     @AuraEnabled(cacheable=true)
+    public static string getAppVersion(){
+        return 'v' + System.requestVersion().major() + '.' + System.requestVersion().minor();
+    }
+
+    @AuraEnabled(cacheable=true)
     public static String getMenus()
     {
         Map<String,Object> resultMap = new Map<String,Object>();

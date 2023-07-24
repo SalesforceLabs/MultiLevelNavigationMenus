@@ -38,6 +38,7 @@ export default class NavMenu extends LightningElement {
     @api drillDownBackButtonLabel = 'Back';
     @api overflowLabel = 'More';
     @api allLabel = 'Go to';
+    @api hideHamburgerMenuAnimation = false;
 
     @track items = [];
     @track url = '';
@@ -74,6 +75,17 @@ export default class NavMenu extends LightningElement {
         }
 
         return (this.isVertical || this.hamburgerMenu) ? cssClasses.join(' ') : '';
+    }
+
+    get hamburgerMenuClass() {
+        const cssClasses = ['slds-button slds-button_icon slds-button_icon-inverse ccnavmenu-hamburger-button slds-p-horizontal_x-small'];
+
+        if (this.hideHamburgerMenuAnimation === false) {
+            cssClasses.push('showHamburgerAnimation');
+        } 
+
+        return cssClasses.join(' ');
+
     }
 
     get closeButtonDivClasses() {
@@ -183,6 +195,13 @@ export default class NavMenu extends LightningElement {
     toggleHamburgerMenu(e)
     {
         this.hamburgerMenuVisible = !this.hamburgerMenuVisible;
+        
+        let hamburgerMenu = this.template.querySelector('[data-id="toggleHamburgerMenu"]');
+        if(hamburgerMenu !== undefined && hamburgerMenu !== null)
+        {
+            hamburgerMenu.classList.toggle('opened');
+            hamburgerMenu.setAttribute('aria-expanded', hamburgerMenu.classList.contains('opened'));
+        }
         e.preventDefault();
         e.stopPropagation();
     }
@@ -225,7 +244,14 @@ export default class NavMenu extends LightningElement {
     closeHamburgerMenu()
     {
         this.hamburgerMenuVisible = false;
+        let hamburgerMenu = this.template.querySelector('[data-id="toggleHamburgerMenu"]');
+        if(hamburgerMenu !== undefined && hamburgerMenu !== null)
+        {
+            hamburgerMenu.classList.remove('opened');
+            hamburgerMenu.setAttribute('aria-expanded', false);
+        }
     }
+
 
     checkMobile()
     {

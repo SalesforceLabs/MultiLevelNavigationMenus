@@ -81,6 +81,9 @@ public class menusManagerControllerTest {
         String resultM = menusManagerController.deleteMenu(menuId);
         System.assertEquals('success', resultM);
 
+        String appVersionString = menusManagerController.getAppVersion();
+        System.assert(appVersionString != null);
+
     }
 
     @IsTest

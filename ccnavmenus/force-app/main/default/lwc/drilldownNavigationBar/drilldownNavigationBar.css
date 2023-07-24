@@ -37,3 +37,11 @@
 .comm-drilldown-navigation__bar button:focus-visible {
     outline-color: var(--dxp-c-navigation-list-box-shadow);
 }
+
+ul.display-block {
+    display: block;
+}
+
+ul.display-block > li {
+    display: inline-block;
+}

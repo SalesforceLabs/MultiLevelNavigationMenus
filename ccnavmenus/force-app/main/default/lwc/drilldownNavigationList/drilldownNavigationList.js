@@ -203,6 +203,10 @@ export default class DrilldownNavigationList extends LightningElement {
             classList.push('comm-drilldown-navigation__list-vertical');
         }
 
+        if(!this.isInHamburgerMenu) {
+            classList.push('slds-m-top_small');
+        }
+
         return classList.join(' ');
 
     }

@@ -96,11 +96,18 @@
         <template if:true={hamburgerMenu}>
             <div class={menuAlignmentClass}>
                 <button data-id="toggleHamburgerMenu" 
-                    class="slds-button slds-button_icon slds-button_icon-inverse ccnavmenu-hamburger-button slds-p-horizontal_x-small" 
+                    class={hamburgerMenuClass} 
                     title="Toggle Menu" 
                     aria-expanded={hamburgerMenuVisible}
-                    onclick={toggleHamburgerMenu}>
-                        <div aria-hidden="true" tabindex="-1" class="ccnavmenu-hamburger-icon ccnavmenu-hamburger-icon-toggle">&#9776;</div>
+                    onclick={toggleHamburgerMenu}
+                    >
+                       <!--<div aria-hidden="true" tabindex="-1" class="ccnavmenu-hamburger-icon ccnavmenu-hamburger-icon-toggle">&#9776;</div>-->
+                       <svg width="50" height="50" viewBox="0 0 100 100">
+                            <path class="hamburgerline line1" d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058" />
+                            <path class="hamburgerline line2" d="M 20,50 H 80" />
+                            <path class="hamburgerline line3" d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942" />
+                            <circle class="another-circle" cx="50" cy="20" r="45" fill="transparent" stroke-width="4" />
+                    </svg>
                         <span class="slds-assistive-text">Toggle Menu</span>
                 </button>
             
@@ -108,6 +115,7 @@
             <template if:true={hamburgerMenuVisible}>
                 <template if:false={isDrillDown}>
                 <div class="hamburgerMenuContainer hamburgerMenuContainerDefault">
+                    <!--
                     <div class={closeButtonDivClasses}>
                         <button 
                             class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-p-horizontal_x-small ccnavmenu-hamburger-button ccnavmenu-hamburger-button-close" 
@@ -117,6 +125,7 @@
                             <span class="slds-assistive-text">Close</span>
                         </button>
                     </div>
+                -->
                     <nav role="navigation">
                         <c-tree 
                             items={items} 

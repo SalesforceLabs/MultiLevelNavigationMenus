@@ -35,6 +35,9 @@
             description="Mode for when to hide menu behind hamburger. Defaults to 'mobile-only' which will render a hamburger menu only on mobile devices. 
             'on' will render a hamburger menu all the time. 'off' will never render a hamburger menu. Hamburger menu will take precedence over vertical mode."/>
 
+            <property name="hideHamburgerMenuAnimation" type="Boolean" label="Hide Hamurger Menu Animation" default="false"
+            description="Hide or show hamburger menu / close button animations." />
+
             <property name="language" type="String" label="Language Filter" required="true" datasource="apex://languagePicklist"
             description="Choose language to filter menu on. 
                         If 'auto' is chosen, for unauthenticated / guest users the language is populated based on the language picker component ('language' url parameter),

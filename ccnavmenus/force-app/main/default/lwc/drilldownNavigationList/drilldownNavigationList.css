@@ -10,7 +10,6 @@
     top: auto;
     left: 0;
     z-index: var(--dxp-c-navigation-list-z-index);
-    margin: 0;
     height: var(--dxp-c-navigation-full-height);
     width: var(--dxp-c-navigation-full-width);
     overflow: var(--dxp-c-navigation-list-overflow);
@@ -18,7 +17,6 @@
     outline: none;
     box-shadow: 0 0 5px rgb(132,132,132);
     z-index: 1;
-    margin-top: 10px;
 }
 
 .comm-drilldown-navigation__list .labelSpanClass {
@@ -222,7 +220,6 @@
         outline: var(--dxp-c-navigation-list-nested-outline);
         z-index: 10;
         min-width: max-content;
-        margin-top: 10px;
         z-index: 1;
     }
 
@@ -253,4 +250,8 @@
     }
     
     
+}
+
+.comm-drilldown-navigation__list.comm-drilldown-navigation__slideDown.comm-drilldown-navigation__list-last {
+    left: -20px;
 }
