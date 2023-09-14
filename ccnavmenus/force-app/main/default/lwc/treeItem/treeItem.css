@@ -84,7 +84,7 @@ c-tree-item[aria-level="1"] > div.slds-tree__item
     position: absolute;
     margin-top: 10px;
     min-width: var(--ccnavmenus-horizontalItem-min-width, 20rem);
-    max-width: var(--ccnavmenus-horizontalItem-min-width, auto);
+    max-width: var(--ccnavmenus-horizontalItem-max-width, auto);
     background-color: var(--ccnavmenus-brandNavigationBackgroundColor, white);
     border: 1px solid gray;
     z-index: 9999;
