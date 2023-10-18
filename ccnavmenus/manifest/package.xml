@@ -45,5 +45,9 @@
         <members>Menu_Item__c</members>
         <name>CustomTab</name>
     </types>
-    <version>55.0</version>
+    <types>
+        <members>*</members>
+        <name>ExperiencePropertyTypeBundle</name>
+    </types>
+    <version>59.0</version>
 </Package>
