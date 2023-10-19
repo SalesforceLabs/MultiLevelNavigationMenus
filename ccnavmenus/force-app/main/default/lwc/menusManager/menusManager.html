@@ -1,4 +1,9 @@
 <template>
+    <template lwc:if={showSpinner}>
+        <div class="spinnerContainer">
+            <lightning-spinner alternative-text="Loading" variant="brand" size="medium"></lightning-spinner>
+        </div>
+    </template>
     <div class="slds-theme_default">
         <div class="slds-clearfix">
             <div class="slds-float_right slds-p-around_medium">
@@ -41,6 +46,9 @@
                         <lightning-button label="Create Menu Item" title="Create Menu Item"
                                 disabled>
                         </lightning-button>
+                        <lightning-button label="Manage Cache" title="Manage Cache"
+                                disabled>
+                        </lightning-button>
                     </template>
 
                     <template if:true={menuId}>
@@ -55,6 +63,9 @@
                         </lightning-button>
                         <lightning-button label="Create Menu Item" title="Create Menu Item"
                                 onclick={openCreateEditModal}>
+                        </lightning-button>
+                        <lightning-button label="Manage Cache" title="Manage Cache"
+                                onclick={openManageCacheModal}>
                         </lightning-button>
                     </template>
                 </lightning-button-group>
@@ -341,6 +352,54 @@
                     <div class="slds-backdrop slds-backdrop_open"></div>
                 </div>
             </template>
+
+
+            <template if:true={manageCacheModalOpen}>
+
+                <div class="demo-only" style="height: 640px;">
+                    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-06" aria-modal="true" aria-describedby="modal-content-id-6" class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container">
+                            <header class="slds-modal__header">
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeManageCacheModal}>
+                                    <lightning-icon icon-name="utility:close" size="medium" variant="inverse">
+                                    </lightning-icon>
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+                                <h2 id="modal-heading-06" class="slds-text-heading_medium slds-hyphenate">Manage Cache for Menu</h2>
+                            </header>
+                            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-6">
+                                
+                                <lightning-input class="slds-p-bottom_large" checked={enableCache} type="checkbox" label="Enable Cache" onchange={handleEnableCacheChange}></lightning-input>
+
+                                <lightning-combobox
+                                    name="partitions"
+                                    label="Choose Platform Cache Partition"
+                                    value={selectedPartition}
+                                    placeholder="Choose Platform Cache Partition"
+                                    options={partitionOptions}
+                                    onchange={handlePartitionChange}
+                                    data-name="partitions"
+                                    required
+                                ></lightning-combobox>
+                                
+                                <lightning-input class="slds-p-top_large" type="number" label="Cache Time to Live - Must be between 300(5 minutes) and 172800(48 hours) seconds" min="300" max="172800" value={cacheTimeToLive} onchange={handleCacheTTLChange}></lightning-input>
+                                
+                            </div>
+                            <footer class="slds-modal__footer">
+                                <lightning-button label="Save" title="Save" class="slds-m-right_xx-large"
+                                onclick={saveManageCacheModal}></lightning-button>
+                                <lightning-button label="Clear Cache" title="Clear Cache" class="slds-m-right_xx-large"
+                                onclick={clearManageCacheModal} disabled={disableClearCacheButton}></lightning-button>
+                                <lightning-button label="Cancel" title="Cancel"
+                                onclick={closeManageCacheModal}></lightning-button>
+                            </footer>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                </div>
+                
+            </template>
+
 
     </div>       
 

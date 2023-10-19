@@ -50,6 +50,79 @@ global with sharing class menusManagerController {
         return result;
     }
 
+    @AuraEnabled
+    global static String saveMenuCache(Id menuId, Boolean enableCache, String cachePartitionName, Integer cacheTimeToLive)
+    {
+        String result = 'success';
+        try {
+            if(ccnavmenus__Menu__c.sObjectType.getDescribe().isUpdateable())
+            {
+                if([SELECT COUNT() FROM PlatformCachePartition WHERE DeveloperName = :cachePartitionName] < 1)
+                {
+                    result = 'Cache Partition not found.';
+                    return result;
+                }
+
+                ccnavmenus__Menu__c menu = new ccnavmenus__Menu__c(Id=menuId, ccnavmenus__Enable_Cache__c=enableCache, ccnavmenus__Cache_Partition__c=cachePartitionName, ccnavmenus__Cache_Time_To_Live__c=cacheTimeToLive);
+                update menu;
+
+            }
+            else 
+            {
+                result = 'CRUD checks failed on the Menu object. Please review the user\'s permissions.';
+            }
+        } catch(Exception e) {
+            result = e+'';
+        }
+        return result;
+    }
+
+    @AuraEnabled
+    global static String clearMenuCache(Id menuId)
+    {
+        String result = 'success';
+        try {
+            if(ccnavmenus__Menu__c.sObjectType.getDescribe().isUpdateable())
+            {
+
+                ccnavmenus__Menu__c menu = [SELECT Id, ccnavmenus__Cache_Partition__c FROM ccnavmenus__Menu__c WHERE Id =: menuId LIMIT 1];
+
+                if(menu != null && menu.ccnavmenus__Cache_Partition__c != null)
+                {
+
+                    Cache.OrgPartition orgPart;
+                    try{
+
+                        orgPart = Cache.Org.getPartition('local.' + menu.ccnavmenus__Cache_Partition__c);
+                        Set<String> keySet = orgPart.getKeys();
+
+                        for(String key : keySet)
+                        {
+                            if(key.contains(menu.Id))
+                            {
+                                orgPart.remove(key);
+                            }
+                        }
+
+                    } catch(Exception e_1) {
+
+                        System.debug('Cache Error: ' + e_1);
+                        result = e_1 + '';
+                    }
+
+                }
+                
+            }
+            else 
+            {
+                result = 'CRUD checks failed on the Menu object. Please review the user\'s permissions.';
+            }
+        } catch(Exception e) {
+            result = e+'';
+        }
+        return result;
+    }
+
     @AuraEnabled(cacheable=true)
     global static String getMenu(String menuId, String language)
     {
@@ -63,11 +136,21 @@ global with sharing class menusManagerController {
             )
             {
                 Boolean expanded = false;
+                ccnavmenus__Menu__c menu = [SELECT Id, ccnavmenus__Cache_Partition__c, ccnavmenus__Enable_Cache__c, ccnavmenus__Cache_Time_To_Live__c FROM ccnavmenus__Menu__c WHERE Id =: menuId LIMIT 1];
+                resultMap.put('menu', menu);
                 Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId, language);
 
                 listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
                 resultMap.put('itemsList',listTOCLevel1);
                 resultMap.put('itemsMap',tocMap);
+
+                List<String> orgPartitionsList = new List<String>();
+                for(PlatformCachePartition pcp : [SELECT DeveloperName,Id FROM PlatformCachePartition])
+                {
+                    orgPartitionsList.add(pcp.DeveloperName);
+                }
+                resultMap.put('orgPartitionsList',orgPartitionsList);
+
             }
             else 
             {
@@ -80,6 +163,7 @@ global with sharing class menusManagerController {
 
         return System.JSON.serialize(resultMap).replaceAll('"items"','"_children"');
     }
+
 
     @AuraEnabled
     global static String deleteMenuItem(Id menuItemId)
@@ -106,6 +190,7 @@ global with sharing class menusManagerController {
         }
         return result;
     }
+
 
     @AuraEnabled(cacheable=true)
     global static String getLanguages()

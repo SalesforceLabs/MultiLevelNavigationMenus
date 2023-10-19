@@ -9,6 +9,8 @@ import { LightningElement, track, wire } from 'lwc';
 import fetchMenus from '@salesforce/apex/menusManagerController.getMenus';
 import fetchLanguages from '@salesforce/apex/menusManagerController.getLanguages';
 import deleteMenu from '@salesforce/apex/menusManagerController.deleteMenu';
+import saveMenuCache from '@salesforce/apex/menusManagerController.saveMenuCache';
+import clearMenuCache from '@salesforce/apex/menusManagerController.clearMenuCache';
 import fetchMenu from '@salesforce/apex/menusManagerController.getMenu';
 import deleteMenuItem from '@salesforce/apex/menusManagerController.deleteMenuItem';
 import doImportMenu from '@salesforce/apex/menusManagerController.importMenu';
@@ -92,14 +94,17 @@ export default class MenusManager extends LightningElement {
     @track deleteModalOpen = false;
     @track deleteMIModalOpen = false;
     @track createEditModalOpen = false;
+    @track manageCacheModalOpen = false;
     @track menuList;
     @track menuListResult;
     @track menuOptions;
     @track languageList;
     @track languageListResult;
     @track languageOptions;
+    @track menu;
     @track menuItemList;
     @track menuItemMap;
+    @track partitionsList;
     @track menuItemListResult;
     @track menuId = '';
     @track languageFilter = '';
@@ -112,10 +117,20 @@ export default class MenusManager extends LightningElement {
     @track error;
     @track activeLanguageSections = [];
     @track version;
+    @track partitionOptions;
+    @track selectedPartition;
+    @track enableCache;
+    @track cacheTimeToLive = 86400;
+    @track showSpinner = false;
 
     @track MENU_ITEM_COLUMNS_DEFINITION = JSON.parse(JSON.stringify(MENU_ITEM_COLUMNS_DEFINITION));
     @track MENU_ITEM_ACTIONS = JSON.parse(JSON.stringify(MENU_ITEM_ACTIONS));
 
+
+
+    get disableClearCacheButton() {
+      return (this.selectedPartition !== undefined && this.selectedPartition !== null && this.selectedPartition.trim() !== '') ? false : true;
+    }
 
     //wire functions
     wireFetchAppVersion;
@@ -143,9 +158,31 @@ export default class MenusManager extends LightningElement {
                 let menuItemResult = JSON.parse(result.data);
                 if(menuItemResult.itemsList)
                 {
-                this.menuItemList = menuItemResult.itemsList;
-                this.menuItemMap = menuItemResult.itemsMap;
-                this.error = undefined;
+                    this.menuItemList = menuItemResult.itemsList;
+                    this.menuItemMap = menuItemResult.itemsMap;
+                    this.menu = menuItemResult.menu;
+                    this.partitionsList = menuItemResult.orgPartitionsList;
+
+
+                    this.enableCache = (this.menu.ccnavmenus__Enable_Cache__c !== undefined && this.menu.ccnavmenus__Enable_Cache__c !== null && this.menu.ccnavmenus__Enable_Cache__c === true);
+                    this.cacheTimeToLive = (this.menu.ccnavmenus__Cache_Time_To_Live__c !== undefined && this.menu.ccnavmenus__Cache_Time_To_Live__c !== null && this.menu.ccnavmenus__Cache_Time_To_Live__c > 299 && this.menu.ccnavmenus__Cache_Time_To_Live__c < 172801) ? this.menu.ccnavmenus__Cache_Time_To_Live__c : 86400;
+
+                    this.partitionOptions = new Array();
+                    for(let i=0; i<this.partitionsList.length;i++)
+                    {
+                        let tmpPartitionOption = {};
+                        tmpPartitionOption.label = this.partitionsList[i];
+                        tmpPartitionOption.value = this.partitionsList[i];
+                        if(this.menu.ccnavmenus__Cache_Partition__c !== undefined && this.menu.ccnavmenus__Cache_Partition__c !== null && 
+                            this.menu.ccnavmenus__Cache_Partition__c.trim() !== '' && this.menu.ccnavmenus__Cache_Partition__c === this.partitionsList[i])
+                        {
+                            tmpPartitionOption.selected = true;
+                            this.selectedPartition = this.partitionsList[i];
+                        }
+                        this.partitionOptions.push(tmpPartitionOption);
+                    }
+
+                    this.error = undefined;
                 }
                 else if(menuItemResult.error)
                 {
@@ -153,6 +190,7 @@ export default class MenusManager extends LightningElement {
                     this.menuItemList = undefined;
                     this.menuItemMap = undefined;
                 }
+                this.showSpinner = false;
             }catch(e){}
         } else if (result.error) {
             this.menuItemListResult = result;
@@ -181,6 +219,7 @@ export default class MenusManager extends LightningElement {
                     this.menuOptions.push(tmpMenuOption);
                 }
                 this.error = undefined;
+                this.showSpinner = false;
             }
             else if(this.menuList.error)
             {
@@ -223,6 +262,7 @@ export default class MenusManager extends LightningElement {
 
     connectedCallback() 
     {
+        this.showSpinner = true;
         this.MENU_ITEM_COLUMNS_DEFINITION = JSON.parse(JSON.stringify(MENU_ITEM_COLUMNS_DEFINITION));
         
         this.MENU_ITEM_COLUMNS_DEFINITION.push({
@@ -297,6 +337,16 @@ export default class MenusManager extends LightningElement {
     {
         this.deleteModalOpen = false;
     } 
+
+    openManageCacheModal() 
+    {
+        this.manageCacheModalOpen = true;
+    }
+    
+    closeManageCacheModal() 
+    {
+        this.manageCacheModalOpen = false;
+    } 
     
     handleDeleteMenu() 
     {
@@ -324,6 +374,86 @@ export default class MenusManager extends LightningElement {
 
         
     }
+
+    saveManageCacheModal() 
+    {
+
+        if(this.selectedPartition === undefined || this.selectedPartition === null || this.selectedPartition.trim() === '')
+        {
+
+            this.showNotification('Platform Cache Partition Required', 'Please Select a valid Platform Cache Partition','error');
+            
+        }
+        else if(this.cacheTimeToLive === undefined || this.cacheTimeToLive === null || this.cacheTimeToLive < 300 || this.cacheTimeToLive > 172800)
+        {
+            this.showNotification('Platform Cache Time To Live Error', 'Cache Time to Live must be between 300 and 172800 seconds.','error');
+        }
+        else 
+        {
+            this.showSpinner = true;
+            saveMenuCache({
+                menuId: this.menuId,
+                enableCache: this.enableCache,
+                cachePartitionName: this.selectedPartition,
+                cacheTimeToLive: this.cacheTimeToLive
+            })
+            .then((result) => {
+                if(result === 'success')
+                {
+                    this.closeManageCacheModal();
+                    setTimeout(() => {
+                        refreshApex(this.menuItemListResult);
+                    }, 500);
+                    this.showNotification('Menu Updated Successfully', 'Successfully updated menu cache options!','success');
+                }
+                else 
+                {
+                    this.showNotification('Error Updating Menu!', result+'','error');
+                }
+            })
+            .catch((error) => {
+                this.message = 'Error received: code' + error.errorCode + ', ' +
+                    'message ' + error.body.message;
+            });
+
+        }
+        
+    }
+
+    clearManageCacheModal() 
+    {
+        if(this.selectedPartition === undefined || this.selectedPartition === null || this.selectedPartition.trim() === '')
+        {
+
+            this.showNotification('Platform Cache Partition Required', 'Please Select a valid Platform Cache Partition','error');
+            
+        }
+        else 
+        {
+            this.showSpinner = true;
+            clearMenuCache({
+                menuId: this.menuId
+            })
+            .then((result) => {
+                if(result === 'success')
+                {
+                    this.showNotification('Menu Cache Cleared', 'Successfully cleared menu cache!','success');
+                }
+                else 
+                {
+                    this.showNotification('Error Clearing Menu Cache!', result+'','error');
+                }
+                this.showSpinner = false;
+            })
+            .catch((error) => {
+                this.message = 'Error received: code' + error.errorCode + ', ' +
+                    'message ' + error.body.message;
+                this.showSpinner = false;
+            });
+        }
+        
+    }
+
 
     openCreateEditModal() 
     {
@@ -359,6 +489,7 @@ export default class MenusManager extends LightningElement {
     handleCreateEditSuccess(e)
     {
 
+        this.clearManageCacheModal();
         refreshApex(this.menuItemListResult);
 
         this.selectedMenuItemIdForCreate = undefined;
@@ -382,12 +513,12 @@ export default class MenusManager extends LightningElement {
     
     handleDeleteMIMenu() 
     {
-
+        this.showSpinner = true;
         deleteMenuItem({
             menuItemId: this.selectedMenuItemIdForDelete
         })
         .then(() => {
-            
+            this.clearManageCacheModal();
             this.closeDeleteMIModal();
             return refreshApex(this.menuItemListResult);
         })
@@ -401,7 +532,11 @@ export default class MenusManager extends LightningElement {
 
     handleMenuChange(e) 
     {
+        this.showSpinner = true;
         this.menuId = e.detail.value;
+        this.enableCache = false;
+        this.selectedPartition = undefined;
+        this.partitionOptions = new Array();
         for(let i=0;i<this.menuOptions.length;i++)
         {
             if(this.menuOptions[i].value === this.menuId)
@@ -418,15 +553,33 @@ export default class MenusManager extends LightningElement {
 
     }
 
+    handleEnableCacheChange(e)
+    {
+        this.enableCache = e.detail.checked;
+    }
+
+    handleCacheTTLChange(e)
+    {
+        this.cacheTimeToLive = e.detail.value;
+    }
+
+    handlePartitionChange(e)
+    {
+        this.selectedPartition = e.detail.value;
+    }
+
     handleExportMenu(e)
     {
+        this.showSpinner = true;
         let menu = {name: this.menuName, _children: this.menuItemList};
         menu = this.cleanExport(menu);
         this.download(this.menuName + '.json', JSON.stringify(menu, undefined, 4));
+        this.showSpinner = false;
     }
 
     handleLanguageChange(e) 
     {
+        this.showSpinner = true;
         this.languageFilter = e.detail.value;
         this.languageFilter = (this.languageFilter === 'none') ? '' : this.languageFilter ;
         
@@ -495,6 +648,8 @@ export default class MenusManager extends LightningElement {
             reader.readAsText(file);
         }
     }
+
+
 
     getRowActions(row, doneCallback)
     {

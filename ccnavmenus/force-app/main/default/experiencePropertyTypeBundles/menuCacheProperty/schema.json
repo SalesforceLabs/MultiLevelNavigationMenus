@@ -1,0 +1,20 @@
+{
+  "title" : "Menu Cache Properties",
+  "lightning:type" : "lightning__objectType",
+  "properties" : {
+    "cacheName" : {
+      "lightning:type" : "lightning__textType",
+      "title" : "Cache Name"
+    },
+    "cacheKey" : {
+      "lightning:type" : "lightning__textType",
+      "title" : "Cache Key"
+    },
+    "cacheEnabled" : {
+      "lightning:type" : "lightning__booleanType",
+      "title" : "Cache Enabled"
+    }
+  },
+  "required" : [ ],
+  "unevaluatedProperties" : false
+}

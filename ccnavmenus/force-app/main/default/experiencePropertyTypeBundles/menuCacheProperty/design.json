@@ -1,0 +1,31 @@
+{
+  "propertySheet": {
+    "propertyRenderers": {
+      "$": {
+        "definition": "c/cpeMenuCacheProperty"
+      }
+    },
+    "view": {
+      "definition": "lightning/accordionLayout",
+      "attributes": {
+        "allowMultipleSectionsOpen": true
+      },
+      "children": [
+        {
+          "definition": "lightning/accordionSectionLayout",
+          "attributes": {
+            "label": "Manage Cache"
+          },
+          "children": [
+            {
+              "definition": "lightning/propertyLayout",
+              "attributes": {
+                "property": "$"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

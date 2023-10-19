@@ -26,9 +26,73 @@ global with sharing class menusController {
                     menuId = getMenuIdByNameFilter(nameFilter);
                 }
 
-                Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId, language);
+                //language = 'autoen_US' - from variable --> same value if guest, from user record if not
+                if(language != null && language.trim() != '' && language.trim().startsWith('auto'))
+                {
+                    language = language.replace('auto', '');
+                    language = (language != '' || System.UserInfo.getUserType() == 'Guest') ? '\'' + language + '\'' : '\'' + System.UserInfo.getLanguage() + '\',\'' + System.UserInfo.getLocale() + '\'';
+                }
+                //language = 'en_US' - hardcoded --> same value
+                else if(language != null && language.trim() != '' && !language.trim().startsWith('auto') && language.trim() != 'none')
+                {
+                    language = '\'' + language + '\'';
+                }
+                //language = 'none' --> null language
+                else 
+                {
+                    language = null;
+                }
 
-                listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
+                String cacheKey = 'ccnavmenus' + menuId + language;
+                Pattern nonAlphanumeric = Pattern.compile('[^a-zA-Z0-9]');
+                Matcher matcher = nonAlphanumeric.matcher(cacheKey);
+                cacheKey = matcher.replaceAll(''); 
+
+                ccnavmenus__Menu__c menu = isMenuCacheEnabled(menuId);
+
+                if(menu == null) //menu not cache enabled
+                {
+
+                    Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId, language);
+
+                    listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
+
+                    resultMap.put('cacheStatus','cache_disabled');
+
+                }
+                else //menu is cache enabled
+                {
+                    Cache.OrgPartition orgPart;
+                    try{
+
+                        orgPart = Cache.Org.getPartition('local.' + menu.ccnavmenus__Cache_Partition__c);
+
+                        if (orgPart.contains(cacheKey)) {
+                            listTOCLevel1 = (List<treeItem>)orgPart.get(cacheKey);
+                            resultMap.put('cacheStatus','from_cache');
+                        }
+                        else 
+                        {
+                            Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId, language);
+    
+                            listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
+                            orgPart.put(cacheKey, listTOCLevel1, (Integer)menu.ccnavmenus__Cache_Time_To_Live__c);
+                            resultMap.put('cacheStatus','cached');
+
+                        }
+
+                    } catch(Exception e_1) {
+
+                        System.debug('Cache Error: ' + e_1);
+                        Map<Id,ccnavmenus__Menu_Item__c>  tocMap = queryMenu(menuId, language);
+
+                        listTOCLevel1 = populateTreeItemsByParent(tocMap, expanded);
+                        resultMap.put('cacheStatus','cache_error');
+                    }
+
+                }
+
+                
                 resultMap.put('menu',listTOCLevel1);
 
                 User u = [SELECT Id, Contact.Id, Account.Id, FirstName, LastName, CommunityNickname FROM User WHERE Id = :System.UserInfo.getUserId() LIMIT 1];
@@ -48,6 +112,13 @@ global with sharing class menusController {
         return System.JSON.serialize(resultMap);
     }
     
+    private static ccnavmenus__Menu__c isMenuCacheEnabled(String menuId)
+    {
+        ccnavmenus__Menu__c menu = [SELECT Id, ccnavmenus__Cache_Partition__c, ccnavmenus__Enable_Cache__c, ccnavmenus__Cache_Time_To_Live__c FROM ccnavmenus__Menu__c WHERE Id =: menuId LIMIT 1];
+        menu.ccnavmenus__Cache_Time_To_Live__c = (menu.ccnavmenus__Cache_Time_To_Live__c == null || menu.ccnavmenus__Cache_Time_To_Live__c < 300 || menu.ccnavmenus__Cache_Time_To_Live__c > 172800) ? 86400 : menu.ccnavmenus__Cache_Time_To_Live__c;
+        return (menu.ccnavmenus__Enable_Cache__c && menu.ccnavmenus__Cache_Partition__c != null) ? menu : null ;
+    } 
+
     private static String getMenuIdByNameFilter(String nameFilter)
     {
         List<ccnavmenus__Menu__c> menuList = [SELECT Id FROM ccnavmenus__Menu__c WHERE Name = :nameFilter ORDER  BY CreatedDate DESC];
@@ -56,23 +127,6 @@ global with sharing class menusController {
 
     private static Map<Id,ccnavmenus__Menu_Item__c> queryMenu(String menuId, String language)
     {
-
-        //language = 'autoen_US' - from variable --> same value if guest, from user record if not
-        if(language != null && language.trim() != '' && language.trim().startsWith('auto'))
-        {
-            language = language.replace('auto', '');
-            language = (language != '' || System.UserInfo.getUserType() == 'Guest') ? '\'' + language + '\'' : '\'' + System.UserInfo.getLanguage() + '\',\'' + System.UserInfo.getLocale() + '\'';
-        }
-        //language = 'en_US' - hardcoded --> same value
-        else if(language != null && language.trim() != '' && !language.trim().startsWith('auto') && language.trim() != 'none')
-        {
-            language = '\'' + language + '\'';
-        }
-        //language = 'none' --> null language
-        else 
-        {
-            language = null;
-        }
 
         String query = 'SELECT Id, Name, ccnavmenus__URL__c, ccnavmenus__Menu_Path__c, ccnavmenus__Open_in_New_Window__c,';
         query += 'ccnavmenus__SLDS_Icon__c, ccnavmenus__SLDS_Icon_Position__c, ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';

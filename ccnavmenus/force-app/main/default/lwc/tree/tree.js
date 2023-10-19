@@ -156,18 +156,21 @@ export default class cTree extends LightningElement {
     }
 
     normalizeData(items) {
-        this.treedata = new TreeData();
+        if(items !== undefined && items !== null)
+        {
+            this.treedata = new TreeData();
 
-        this._items = items.map(item => {
-            return this.treedata.cloneItems(item);
-        });
+            this._items = items.map(item => {
+                return this.treedata.cloneItems(item);
+            });
 
-        const treeRoot = this.treedata.parse(this.items, this.selectedItem, this.selectedContains);
-        this._childNodes = treeRoot ? treeRoot.children : [];
-        this._selectedItem = treeRoot.selectedItem;
-        this._key = this._childNodes.length > 0 ? treeRoot.key : null;
-        if (this._key) {
-            this.syncCurrentFocused();
+            const treeRoot = this.treedata.parse(this.items, this.selectedItem, this.selectedContains);
+            this._childNodes = treeRoot ? treeRoot.children : [];
+            this._selectedItem = treeRoot.selectedItem;
+            this._key = this._childNodes.length > 0 ? treeRoot.key : null;
+            if (this._key) {
+                this.syncCurrentFocused();
+            }
         }
     }
 
@@ -234,6 +237,8 @@ export default class cTree extends LightningElement {
         {
             this.handleWidthCalculations();
         }
+
+        
 
     }
 
@@ -518,7 +523,7 @@ export default class cTree extends LightningElement {
         } catch(e){}
     }
 
-    handleWindowResize(e)
+    @api handleWindowResize(e)
     {
         try {
             clearTimeout(this.resizeId);

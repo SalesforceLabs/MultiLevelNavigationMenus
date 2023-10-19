@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>48.0</apiVersion>
+    <apiVersion>59.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>Multi-Level Navigation Menu</masterLabel>
     <description>Multi-Level Navigation Menu for Community Cloud</description>
@@ -83,8 +83,15 @@
             <property name="urlSubMapJson" type="String" label="URL Substition Map JSON" required="false" 
             description="Define JSON substitution map as such (Example):  [{ &#x22;replaceThis&#x22;: &#x22;[!recordId]&#x22;, &#x22;replaceWith&#x22;: &#x22;{!recordId}&#x22; }]"/>
 
+            <property name="menuCache" type="c__menuCacheProperty" label="Menu Cache" required="false"
+            description="Client-side browser caching options, configure for better performance. (String representation of object)"/>
+
+            <property name="debugMode" type="Boolean" label="Debug Mode" required="false" default="false"
+            description="Uncheck when not debugging. If checked, console logs and debugger statements in the code will execute and show in browser developer tools console."/>
+
             <property name="isVertical" type="Boolean" label="Vertical? (Deprecated)" required="false" default="false"
-            description="deprecated"/>
+            description="deprecated" editor="c/blankCPE"/>
+            
 
         </targetConfig>
     </targetConfigs> 
