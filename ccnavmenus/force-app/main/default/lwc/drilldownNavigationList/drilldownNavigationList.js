@@ -376,6 +376,8 @@ export default class DrilldownNavigationList extends LightningElement {
                 this.dispatchEvent(new CustomEvent('ccnavmenus__closehamburgermenu', {bubbles: true, composed: true}));
             }
         }   
+
+        event.stopImmediatePropagation();
     }
 
     shouldCloseHamburgerMenu(event) {
