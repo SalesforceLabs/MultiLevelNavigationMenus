@@ -225,7 +225,7 @@ global with sharing class menusManagerController {
             {
                 Map<String,Object> menuMap = (Map<String,Object>)System.JSON.deserializeUntyped(menuJSON);
                 String menuName = (String)menuMap.get('name');
-                menuName = (menuName != null && menuName.trim() != '') ? menuName : 'NoName - ' + System.now().getTime(); 
+                menuName = (menuName != null && menuName.trim() != '') ? menuName : 'NoName - ' + generateUUID(); 
 
                 ccnavmenus__Menu__c menu = new ccnavmenus__Menu__c(Name=menuName);
                 insert menu;
@@ -479,7 +479,7 @@ global with sharing class menusManagerController {
         
         for(treeItem ti :  treeItemList)
         {
-            ti.id = ti.label + '-' + System.now().getTime();
+            ti.id = ti.label + '-' + generateUUID();
             ti.id = ti.id.replace(' ','-');
             ccnavmenus__Menu_Item__c mi = createMenuItem(ti, menuId, null);
             miList1.add(mi);
@@ -488,7 +488,7 @@ global with sharing class menusManagerController {
             {
                 for(treeItem2 ti2 : ti.items)
                 {
-                    ti2.id = ti2.label + '-' + System.now().getTime();
+                    ti2.id = ti2.label + '-' + generateUUID();
                     ti2.id = ti2.id.replace(' ','-');
                     ccnavmenus__Menu_Item__c mi2 = createMenuItem2(ti2, menuId, ti.id);
                     miList2.add(mi2);
@@ -497,7 +497,7 @@ global with sharing class menusManagerController {
                     {
                         for(treeItem3 ti3 : ti2.items)
                         {
-                            ti3.id = ti3.label + '-' + System.now().getTime();
+                            ti3.id = ti3.label + '-' + generateUUID();
                             ti3.id = ti3.id.replace(' ','-');
                             ccnavmenus__Menu_Item__c mi3 = createMenuItem3(ti3, menuId, ti2.id);
                             miList3.add(mi3);
@@ -506,7 +506,7 @@ global with sharing class menusManagerController {
                             {
                                 for(treeItem4 ti4 : ti3.items)
                                 {
-                                    ti4.id = ti4.label + '-' + System.now().getTime();
+                                    ti4.id = ti4.label + '-' + generateUUID();
                                     ti4.id = ti4.id.replace(' ','-');
                                     ccnavmenus__Menu_Item__c mi4 = createMenuItem4(ti4, menuId, ti3.id);
                                     miList4.add(mi4);
@@ -515,7 +515,7 @@ global with sharing class menusManagerController {
                                     {
                                         for(treeItem5 ti5 : ti4.items)
                                         {
-                                            ti5.id = ti5.label + '-' + System.now().getTime();
+                                            ti5.id = ti5.label + '-' + generateUUID();
                                             ti5.id = ti5.id.replace(' ','-');
                                             ccnavmenus__Menu_Item__c mi5 = createMenuItem5(ti5, menuId, ti4.id);
                                             miList5.add(mi5);
@@ -524,7 +524,7 @@ global with sharing class menusManagerController {
                                             {
                                                 for(treeItem6 ti6 : ti5.items)
                                                 {
-                                                    ti6.id = ti6.label + '-' + System.now().getTime();
+                                                    ti6.id = ti6.label + '-' + generateUUID();
                                                     ti6.id = ti6.id.replace(' ','-');
                                                     ccnavmenus__Menu_Item__c mi6 = createMenuItem6(ti6, menuId, ti5.id);
                                                     miList6.add(mi6);
@@ -846,6 +846,11 @@ global with sharing class menusManagerController {
             && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Language__c.isUpdateable()
             && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__External_Id__c.isUpdateable()
         );
+    }
+
+    private static String generateUUID()
+    {
+        return System.UUID.randomUUID().toString();
     }
 
 
