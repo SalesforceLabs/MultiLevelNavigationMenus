@@ -361,6 +361,7 @@ export default class DrilldownNavigationList extends LightningElement {
         }
 
         event.stopImmediatePropagation();
+
     }
 
     handleLeafClick(event) {
@@ -642,7 +643,6 @@ export default class DrilldownNavigationList extends LightningElement {
 
     fireCloseNavigationListEvent() {
         // eslint-disable-next-line no-unused-expressions
-        this.resetListStackToFirstLevel();
         if (this._isMobileView) {
             this.dispatchEvent(new CustomEvent('closesubmenus'));
         } else {
@@ -654,6 +654,7 @@ export default class DrilldownNavigationList extends LightningElement {
                 })
             );
         }
+        this.resetListStackToFirstLevel();
     }
 
     fireLeftRightArrowNavigationListEvent(event) {
