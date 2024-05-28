@@ -422,34 +422,39 @@ export default class MenusManager extends LightningElement {
 
     clearManageCacheModal() 
     {
-        if(this.selectedPartition === undefined || this.selectedPartition === null || this.selectedPartition.trim() === '')
+        if(this.enableCache !== undefined && this.enableCache !== null && this.enableCache === true)
         {
 
-            this.showNotification('Platform Cache Partition Required', 'Please Select a valid Platform Cache Partition','error');
-            
-        }
-        else 
-        {
-            this.showSpinner = true;
-            clearMenuCache({
-                menuId: this.menuId
-            })
-            .then((result) => {
-                if(result === 'success')
-                {
-                    this.showNotification('Menu Cache Cleared', 'Successfully cleared menu cache!','success');
-                }
-                else 
-                {
-                    this.showNotification('Error Clearing Menu Cache!', result+'','error');
-                }
-                this.showSpinner = false;
-            })
-            .catch((error) => {
-                this.message = 'Error received: code' + error.errorCode + ', ' +
-                    'message ' + error.body.message;
-                this.showSpinner = false;
-            });
+            if(this.selectedPartition === undefined || this.selectedPartition === null || this.selectedPartition.trim() === '')
+            {
+
+                this.showNotification('Platform Cache Partition Required', 'Please Select a valid Platform Cache Partition','error');
+                
+            }
+            else 
+            {
+                this.showSpinner = true;
+                clearMenuCache({
+                    menuId: this.menuId
+                })
+                .then((result) => {
+                    if(result === 'success')
+                    {
+                        this.showNotification('Menu Cache Cleared', 'Successfully cleared menu cache!','success');
+                    }
+                    else 
+                    {
+                        this.showNotification('Error Clearing Menu Cache!', result+'','error');
+                    }
+                    this.showSpinner = false;
+                })
+                .catch((error) => {
+                    this.message = 'Error received: code' + error.errorCode + ', ' +
+                        'message ' + error.body.message;
+                    this.showSpinner = false;
+                });
+            }
+
         }
         
     }
