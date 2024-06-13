@@ -47,6 +47,16 @@ export function getTreeNode(node, level, parentKey, childNum) {
                 ? true
                 : this.nodeRef.expanded || false
             ).toString();
+        },
+        get selected() {
+            
+            let url = document.URL;
+            if(node.href !== undefined && node.href !== null && node.href.trim() !== '' && url.includes(node.href))
+            {
+                return true;
+            }
+            return false;
+
         }
     };
 }

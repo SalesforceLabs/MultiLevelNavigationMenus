@@ -10,10 +10,14 @@
     white-space: nowrap;
     padding-right: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
     padding-left: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
-    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor);
+    padding-top: calc(var(--ccnavmenus-menuItemVerticalPadding)/2);
+    padding-bottom: calc(var(--ccnavmenus-menuItemVerticalPadding)/2);
+    background-color: var(--ccnavmenus-navContainer-background-color, var(--ccnavmenus-brandNavigationBarBackgroundColor));
     transition: background-color 0.2s linear;
-    color: var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-navigation-text-color, var(--dxp-g-root-contrast)));
+    color: var(--ccnavmenus-navContainer-text-color, var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-navigation-text-color, var(--dxp-g-root-contrast))));
     font-family: var(--ccnavmenus-fontFamily, inherit);
+    text-transform: var(--ccnavmenus-textTransform);
+    font-size: var(--dxp-s-body-font-size,var(--dxp-g-font-size-3));
 }
 
 .comm-drilldown-navigation__bar a {
@@ -25,13 +29,30 @@
     border: unset;
 }
 
+.comm-drilldown-navigation__bar a[aria-selected="true"],
+.comm-drilldown-navigation__bar button[aria-selected="true"]
+{
+    color: var(--ccnavmenus-navContainer-text-color-selected, var(--ccnavmenus-navContainer-text-color));
+    background-color: var(--ccnavmenus-navContainer-background-color-selected, var(--ccnavmenus-navContainer-background-color));
+    border-top: var(--ccnavmenus-navContainer-border-top-selected);
+    border-bottom: var(--ccnavmenus-navContainer-border-bottom-selected);
+    border-left: var(--ccnavmenus-navContainer-border-left-selected);
+    border-right: var(--ccnavmenus-navContainer-border-right-selected);
+}
+
 .comm-drilldown-navigation__bar a:hover,
 .comm-drilldown-navigation__bar a:active,
 .comm-drilldown-navigation__bar a:focus,
 .comm-drilldown-navigation__bar button:hover,
 .comm-drilldown-navigation__bar button:active,
-.comm-drilldown-navigation__bar button:focus {
-    background-color: var(--dxp-c-navigation-list-hover-background-color-contrast);
+.comm-drilldown-navigation__bar button:focus
+ {
+    background-color: var(--ccnavmenus-navContainer-background-color-hover, var(--ccnavmenus-brandNavigationBarBackgroundColor));
+    color: var(--ccnavmenus-navContainer-text-color-hover, var(--ccnavmenus-brandNavigationColorText));
+    border-top: var(--ccnavmenus-navContainer-border-top);
+    border-bottom: var(--ccnavmenus-navContainer-border-bottom);
+    border-left: var(--ccnavmenus-navContainer-border-left);
+    border-right: var(--ccnavmenus-navContainer-border-right);
 }
 
 .comm-drilldown-navigation__bar button:focus-visible {

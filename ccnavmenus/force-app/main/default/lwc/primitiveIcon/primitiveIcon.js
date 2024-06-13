@@ -36,6 +36,11 @@ export default class cPrimitiveIcon extends LightningElement {
         }
     }
 
+    get isIconFa()
+    {
+        return (this.iconName.indexOf('fa-') > -1);
+    }
+    
     get href() {
         return this.src || iconUtils.getIconPath(this.iconName, dir);
     }
@@ -109,6 +114,7 @@ export default class cPrimitiveIcon extends LightningElement {
                 return template;
             }
         }
+        
         return standardTemplate;
     }
 

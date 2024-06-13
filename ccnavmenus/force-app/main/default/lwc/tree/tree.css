@@ -13,9 +13,17 @@ c-tree-item.slds-tree-hidden
 .slds-tree_container-horizontal
 {
     max-width: none;
+    flex-basis: 100%;
 }
 
 .slds-tree_container
 {
-    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor);
+    background-color: var(--ccnavmenus-navContainer-background-color, var(--ccnavmenus-brandNavigationBarBackgroundColor));
+}
+
+.slds-tree_container-vertical
+{
+    background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBarBackgroundColor));
+    border: var(--ccnavmenus-nav-allLevel-border);
+    box-shadow: var(--ccnavmenus-nav-allLevel-shadowBox);
 }

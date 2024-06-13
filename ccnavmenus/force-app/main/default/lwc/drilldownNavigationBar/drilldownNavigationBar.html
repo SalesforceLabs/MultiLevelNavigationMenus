@@ -1,119 +1,123 @@
 <template>
     <template if:false={inHamburgerMenu}>
-        <nav
-        aria-label={componentNameLabel}
-        class="slds-has-flexi-truncate"
-        onclick={handleNavClick}
-        >
-            <ul
-                class={menuAlignmentClass}
-                role="menubar"
-                aria-label={componentNameLabel}
+        <div role="menubarnav" class={menuAlignmentClass}>
+            <nav
+            aria-label={componentNameLabel}
+            class=""
+            onclick={handleNavClick}
             >
-                <template for:each={visibleMenuItems} for:item="item">
-                    <template if:true={item.appLauncher}>
-                        <li
-                            key={item.id}
-                            class="slds-is-relative slds-list__item appIcon"
-                            role="none"
-                        >
-                            <lightning-dynamic-icon
-                                data-id={item.id}
-                                role="menuitem"
-                                type="waffle"
-                                alternative-text={appLauncherLabel}
-                                onclick={handleAppLauncher}
-                                onkeydown={handleKeyDown}
-                                onfocus={handleFocus}
+                <ul
+                    class={menuAlignmentClass}
+                    role="menubar"
+                    aria-label={componentNameLabel}
+                >
+                    <template for:each={visibleMenuItems} for:item="item">
+                        <template if:true={item.appLauncher}>
+                            <li
+                                key={item.id}
+                                class="slds-is-relative slds-list__item appIcon"
+                                role="none"
                             >
-                            </lightning-dynamic-icon>
-                        </li>
-                    </template>
-                    <template if:false={item.appLauncher}>
-                        <li
-                            key={item.id}
-                            class="slds-is-relative slds-list__item drillDownItem"
-                            role="none"
-                        >
-                            <template if:true={item.hasChildren}>
-                                <button
-                                    title={item.label}
+                                <lightning-dynamic-icon
                                     data-id={item.id}
                                     role="menuitem"
-                                    aria-haspopup="true"
-                                    aria-expanded={item.active}
-                                    onclick={handleParentClick}
+                                    type="waffle"
+                                    alternative-text={appLauncherLabel}
+                                    onclick={handleAppLauncher}
                                     onkeydown={handleKeyDown}
                                     onfocus={handleFocus}
                                 >
-
-                                <template if:true={item.icon}>
-                                    <c-primitive-icon if:true={item.iconPositionLeft}
-                                    icon-name={item.icon}
-                                    variant="bare"
-                                    svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
-                                    no-transform="true"
-                                    >
-                                    </c-primitive-icon>
-                                </template>
-
-                                    {item.label}
-
-                                    <template if:true={item.icon}>
-                                        <c-primitive-icon if:true={item.iconPositionRight}
-                                        icon-name={item.icon}
-                                        variant="bare"
-                                        svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
-                                        no-transform="true"
-                                        >
-                                        </c-primitive-icon>
-                                    </template>
-
-                                    <lightning-icon
-                                        icon-name="utility:chevrondown"
-                                        variant="bare"
-                                        size="xx-small"
-                                        class="slds-current-color slds-p-left_x-small"
-                                    >
-                                    </lightning-icon>
-                                </button>
-                                <template if:true={item.active}>
-                                    <c-drilldown-navigation-list
-                                        parent-item={item}
-                                        menu-items={item.items}
-                                        onclosesubmenus={handleCloseSubmenus}
-                                        onclosehamburger={handleCloseHamburger}
-                                        onleftrightarrowkeysubmenu={handleLeftRightArrowKeyOnSubmenu}
-                                        focus-on-first-item={setFocusOnFirstSubMenuItem}
-                                        focus-on-last-item={setFocusOnLastSubMenuItem}
-                                        back-button-label={backButtonLabel}
-                                        all-label={allLabel}
-                                        show-back-label=true
-                                        is-last-item={item.isLast}
-                                        
-                                    >
-                                    </c-drilldown-navigation-list>
-                                </template>
-                            </template>
-
-                            <a
-                                if:false={item.hasChildren}
-                                title={item.label}
-                                data-id={item.id}
-                                role="menuitem"
-                                href={item.href}
-                                target={item.target}
-                                onclick={handleLeafClick}
-                                onkeydown={handleKeyDown}
-                                onfocus={handleFocus}
+                                </lightning-dynamic-icon>
+                            </li>
+                        </template>
+                        <template if:false={item.appLauncher}>
+                            <li
+                                key={item.id}
+                                class="slds-is-relative slds-list__item slds-p-vertical_x-small drillDownItem"
+                                role="none"
                             >
-                                {item.label}
-                            </a>
-                        </li>
+                                <template if:true={item.hasChildren}>
+                                    <button
+                                        title={item.label}
+                                        data-id={item.id}
+                                        role="menuitem"
+                                        aria-haspopup="true"
+                                        aria-expanded={item.active}
+                                        aria-selected={item.isSelected}
+                                        onclick={handleParentClick}
+                                        onkeydown={handleKeyDown}
+                                        onfocus={handleFocus}
+                                    >
+
+                                        <template if:true={item.icon}>
+                                            <c-primitive-icon if:true={item.iconPositionLeft}
+                                            icon-name={item.icon}
+                                            variant="bare"
+                                            svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
+                                            no-transform="true"
+                                            >
+                                            </c-primitive-icon>
+                                        </template>
+
+                                        {item.label}
+
+                                        <template if:true={item.icon}>
+                                            <c-primitive-icon if:true={item.iconPositionRight}
+                                            icon-name={item.icon}
+                                            variant="bare"
+                                            svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
+                                            no-transform="true"
+                                            >
+                                            </c-primitive-icon>
+                                        </template>
+
+                                        <lightning-icon
+                                            icon-name="utility:chevrondown"
+                                            variant="bare"
+                                            size="xx-small"
+                                            class="slds-current-color slds-p-left_x-small"
+                                        >
+                                        </lightning-icon>
+                                    </button>
+                                    <template if:true={item.active}>
+                                        <c-drilldown-navigation-list
+                                            parent-item={item}
+                                            menu-items={item.items}
+                                            onclosesubmenus={handleCloseSubmenus}
+                                            onclosehamburger={handleCloseHamburger}
+                                            onleftrightarrowkeysubmenu={handleLeftRightArrowKeyOnSubmenu}
+                                            focus-on-first-item={setFocusOnFirstSubMenuItem}
+                                            focus-on-last-item={setFocusOnLastSubMenuItem}
+                                            back-button-label={backButtonLabel}
+                                            all-label={allLabel}
+                                            show-back-label=true
+                                            is-last-item={item.isLast}
+                                            
+                                        >
+                                        </c-drilldown-navigation-list>
+                                    </template>
+                                </template>
+
+                                <a
+                                    if:false={item.hasChildren}
+                                    title={item.label}
+                                    data-id={item.id}
+                                    role="menuitem"
+                                    href={item.href}
+                                    target={item.target}
+                                    aria-selected={item.isSelected}
+                                    onclick={handleLeafClick}
+                                    onkeydown={handleKeyDown}
+                                    onfocus={handleFocus}
+                                >
+                                    {item.label}
+                                </a>
+                            </li>
+                        </template>
                     </template>
-                </template>
-            </ul>
-        </nav>
+                </ul>
+            </nav>
+        </div>
     </template>
     <template if:true={inHamburgerMenu}>
         <c-drilldown-navigation-list

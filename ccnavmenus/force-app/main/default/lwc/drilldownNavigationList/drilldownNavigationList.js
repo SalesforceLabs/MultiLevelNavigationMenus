@@ -79,6 +79,11 @@ export default class DrilldownNavigationList extends LightningElement {
         this._flatItems[tmpValue.id] = tmpValue;
     }
 
+    get parentIsSelected() {
+        let url = document.URL;
+        return (!this.isStringEmpty(this._parentItem.href) && url.includes(this._parentItem.href)) ? true : false ;
+    }
+
     /**
      * value that should be set to true if the focus should be set on the first menu item
      * @returns {boolean}
@@ -140,27 +145,32 @@ export default class DrilldownNavigationList extends LightningElement {
 
     
     get visibleItems() {
+        let url = document.URL;
+        let items;
         if (
             !this.parentItem ||
             (typeof this.parentItem === 'object' &&
                 Object.keys(this.parentItem).length === 0)
         ) {
-            return this.menuItems;
+            items = JSON.parse(JSON.stringify(this.menuItems));
         }
         else
         {
-            let items = this._listStack.length && this._listStack[this._listStack.length - 1]?.items;
-            items = JSON.parse(JSON.stringify(items));
-
+            items = this._listStack.length && this._listStack[this._listStack.length - 1]?.items;
+        }
+        
+        if(items !== undefined && items !== null && items.length !== undefined && items.length !== null && items.length > 0)
+        {
             for(let i=0; i < items.length; i++)
             {
                 items[i].hasChildren = (items[i].items !== undefined && items[i].items !== null && items[i].items.length > 0);
                 items[i].iconPositionLeft = (items[i].iconPosition !== undefined && items[i].iconPosition !== null && items[i].iconPosition.trim() === 'left');
                 items[i].iconPositionRight = (items[i].iconPosition !== undefined && items[i].iconPosition !== null && items[i].iconPosition.trim() === 'right');
-            }
-            return items;
+                items[i].isSelected = (!this.isStringEmpty(items[i].href) && url.includes(items[i].href)) ? true : false ;
+            }  
         }
         
+        return items;
     }
 
     get hasVisibleItems() {
@@ -204,7 +214,7 @@ export default class DrilldownNavigationList extends LightningElement {
         }
 
         if(!this.isInHamburgerMenu) {
-            classList.push('slds-m-top_small');
+            classList.push('slds-m-top_xx-small');
         }
 
         return classList.join(' ');
@@ -666,6 +676,16 @@ export default class DrilldownNavigationList extends LightningElement {
                 }
             })
         );
+    }
+
+    isObjectEmpty(param)
+    {   
+        return (param === undefined || param === null);
+    }
+
+    isStringEmpty(param)
+    {   
+        return (typeof param === 'string') ? (param === undefined || param === null || param.trim() === '') : this.isObjectEmpty(param);
     }
 
 }

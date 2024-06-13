@@ -29,6 +29,32 @@ global with sharing class menusManagerController {
     }
 
     @AuraEnabled
+    public static String searchMenus(String searchTerm)
+    {
+        Map<String,Object> resultMap = new Map<String,Object>();
+        try {
+            if(ccnavmenus__Menu__c.sObjectType.getDescribe().isAccessible()
+                && Schema.sObjectType.ccnavmenus__Menu__c.fields.Name.isAccessible()
+            )
+            {
+                searchTerm = (searchTerm == null || searchTerm.trim() == '') ? null : '%' + searchTerm.trim() + '%';
+                List<ccnavmenus__Menu__c> menuList = (searchTerm == null || searchTerm.trim() == '') ? 
+                [SELECT Id, Name FROM ccnavmenus__Menu__c ORDER BY Name LIMIT 100] :
+                [SELECT Id, Name FROM ccnavmenus__Menu__c WHERE Name LIKE :searchTerm ORDER BY Name LIMIT 100];
+                resultMap.put('menuList', menuList);
+            }
+            else 
+            {
+                resultMap.put('error', 'CRUD or FLS checks failed on the Menu object. Please review the user\'s permissions.');
+            }
+        }
+        catch(Exception e) {
+            resultMap.put('error', e+'');
+        }
+        return System.JSON.serialize(resultMap);
+    }
+
+    @AuraEnabled
     global static String deleteMenu(Id menuId)
     {
         String result = 'success';
@@ -256,7 +282,7 @@ global with sharing class menusManagerController {
     {
         language = (language == null || language.trim() == '') ? null : language;
 
-        String fields = 'SELECT Id, Name, ccnavmenus__URL__c, ccnavmenus__Menu_Path__c, ccnavmenus__Open_in_New_Window__c, ccnavmenus__Position__c,';
+        String fields = 'SELECT Id, Name, ccnavmenus__Mega_Menu_Description__c, ccnavmenus__URL__c, ccnavmenus__Menu_Path__c, ccnavmenus__Open_in_New_Window__c, ccnavmenus__Position__c,';
         fields += 'ccnavmenus__Public__c,ccnavmenus__SLDS_Icon__c,ccnavmenus__SLDS_Icon_Position__c,ccnavmenus__Language__c,ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
         fields += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c, ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
         fields += 'ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__r.ccnavmenus__Menu_Item__c,';
@@ -559,6 +585,7 @@ global with sharing class menusManagerController {
 
         ccnavmenus__Menu_Item__c mi = new ccnavmenus__Menu_Item__c();
         mi.Name = ti.label;
+        mi.ccnavmenus__Mega_Menu_Description__c = (ti.description != null) ? ti.description : '';
         mi.ccnavmenus__Menu__c = menuId;
         mi.ccnavmenus__URL__c = (ti.href != null) ? ti.href : 'javascript:void(0);';
         mi.ccnavmenus__SLDS_Icon__c = ti.icon;
@@ -578,6 +605,7 @@ global with sharing class menusManagerController {
 
         ccnavmenus__Menu_Item__c mi = new ccnavmenus__Menu_Item__c();
         mi.Name = ti.label;
+        mi.ccnavmenus__Mega_Menu_Description__c = (ti.description != null) ? ti.description : '';
         mi.ccnavmenus__Menu__c = menuId;
         mi.ccnavmenus__URL__c = (ti.href != null) ? ti.href : 'javascript:void(0);';
         mi.ccnavmenus__SLDS_Icon__c = ti.icon;
@@ -597,6 +625,7 @@ global with sharing class menusManagerController {
 
         ccnavmenus__Menu_Item__c mi = new ccnavmenus__Menu_Item__c();
         mi.Name = ti.label;
+        mi.ccnavmenus__Mega_Menu_Description__c = (ti.description != null) ? ti.description : '';
         mi.ccnavmenus__Menu__c = menuId;
         mi.ccnavmenus__URL__c = (ti.href != null) ? ti.href : 'javascript:void(0);';
         mi.ccnavmenus__SLDS_Icon__c = ti.icon;
@@ -616,6 +645,7 @@ global with sharing class menusManagerController {
 
         ccnavmenus__Menu_Item__c mi = new ccnavmenus__Menu_Item__c();
         mi.Name = ti.label;
+        mi.ccnavmenus__Mega_Menu_Description__c = (ti.description != null) ? ti.description : '';
         mi.ccnavmenus__Menu__c = menuId;
         mi.ccnavmenus__URL__c = (ti.href != null) ? ti.href : 'javascript:void(0);';
         mi.ccnavmenus__SLDS_Icon__c = ti.icon;
@@ -635,6 +665,7 @@ global with sharing class menusManagerController {
         
         ccnavmenus__Menu_Item__c mi = new ccnavmenus__Menu_Item__c();
         mi.Name = ti.label;
+        mi.ccnavmenus__Mega_Menu_Description__c = (ti.description != null) ? ti.description : '';
         mi.ccnavmenus__Menu__c = menuId;
         mi.ccnavmenus__URL__c = (ti.href != null) ? ti.href : 'javascript:void(0);';
         mi.ccnavmenus__SLDS_Icon__c = ti.icon;
@@ -654,6 +685,7 @@ global with sharing class menusManagerController {
 
         ccnavmenus__Menu_Item__c mi = new ccnavmenus__Menu_Item__c();
         mi.Name = ti.label;
+        mi.ccnavmenus__Mega_Menu_Description__c = (ti.description != null) ? ti.description : '';
         mi.ccnavmenus__Menu__c = menuId;
         mi.ccnavmenus__URL__c = (ti.href != null) ? ti.href : 'javascript:void(0);';
         mi.ccnavmenus__SLDS_Icon__c = ti.icon;
@@ -673,6 +705,7 @@ global with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.description = toc.ccnavmenus__Mega_Menu_Description__c;
         ti.level = 1;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
@@ -695,6 +728,7 @@ global with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.description = toc.ccnavmenus__Mega_Menu_Description__c;
         ti.level = 2;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
@@ -717,6 +751,7 @@ global with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.description = toc.ccnavmenus__Mega_Menu_Description__c;
         ti.level = 3;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
@@ -739,6 +774,7 @@ global with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.description = toc.ccnavmenus__Mega_Menu_Description__c;
         ti.level = 4;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
@@ -761,6 +797,7 @@ global with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.description = toc.ccnavmenus__Mega_Menu_Description__c;
         ti.level = 5;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
@@ -783,6 +820,7 @@ global with sharing class menusManagerController {
         ti.id = toc.Id;
         ti.label = toc.Name;
         ti.name = toc.ccnavmenus__URL__c;
+        ti.description = toc.ccnavmenus__Mega_Menu_Description__c;
         ti.level = 6;
         ti.icon = toc.ccnavmenus__SLDS_Icon__c;
         ti.iconPosition = toc.ccnavmenus__SLDS_Icon_Position__c;
@@ -811,6 +849,7 @@ global with sharing class menusManagerController {
             && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Public__c.isCreateable()
             && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Language__c.isCreateable()
             && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__External_Id__c.isCreateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Mega_Menu_Description__c.isCreateable()
         );
     }
 
@@ -828,6 +867,7 @@ global with sharing class menusManagerController {
             && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Public__c.isAccessible()
             && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Language__c.isAccessible()
             && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__External_Id__c.isAccessible()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Mega_Menu_Description__c.isAccessible()
         );
     }
 
@@ -845,6 +885,7 @@ global with sharing class menusManagerController {
             && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Public__c.isUpdateable()
             && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Language__c.isUpdateable()
             && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__External_Id__c.isUpdateable()
+            && Schema.sObjectType.ccnavmenus__Menu_Item__c.fields.ccnavmenus__Mega_Menu_Description__c.isUpdateable()
         );
     }
 
@@ -861,6 +902,8 @@ public class treeItem
     public string label;
 
     public string name;
+
+    public string description;
 
     public Integer level;
 
@@ -896,6 +939,8 @@ public class treeItem2
 
     public string name;
 
+    public string description;
+
     public Integer level;
 
     public string icon;
@@ -929,6 +974,8 @@ public class treeItem3
     public string label;
 
     public string name;
+
+    public string description;
 
     public Integer level;
 
@@ -964,6 +1011,8 @@ public class treeItem4
 
     public string name;
 
+    public string description;
+
     public Integer level;
 
     public string icon;
@@ -998,6 +1047,8 @@ public class treeItem5
 
     public string name;
 
+    public string description;
+
     public Integer level;
 
     public string icon;
@@ -1031,6 +1082,8 @@ public class treeItem6
     public string label;
 
     public string name;
+
+    public string description;
 
     public Integer level;
 

@@ -11,7 +11,7 @@ import { addOverflowMenu } from './overflow';
 
 const NAVIGATE_EVENT = 'navigatetopage';
 const SHOW_APP_LAUNCHER = 'showapplauncher';
-const DEFAULT_ALIGNMENT = 'Left';
+const DEFAULT_ALIGNMENT = 'left';
 const labelAppLauncherTitle = 'App Launcher';
 const labelOverflowLabel = 'More';
 const componentNameLabel = 'Nav Menu';
@@ -29,6 +29,7 @@ export default class DrilldownNavigationBar extends LightningElement {
     @api overflowLabel = 'More';
     @api inHamburgerMenu = false;
     @api allLabel = 'Go to';
+    @api menuAlignmentClass;
 
 
 
@@ -130,7 +131,7 @@ export default class DrilldownNavigationBar extends LightningElement {
     }
 
     set menuAlignment(value) {
-        this._menuAlignment = ['Left', 'Center', 'Right'].includes(value)
+        this._menuAlignment = ['left', 'center', 'right'].includes(value)
             ? value
             : DEFAULT_ALIGNMENT;
     }
@@ -154,7 +155,7 @@ export default class DrilldownNavigationBar extends LightningElement {
     }
 
     getNavAvailableWidth() {
-        const navElement = this.template.querySelector('nav');
+        const navElement = this.template.querySelector('div[role="menubarnav"]');
         const navElementWidth = navElement?.getBoundingClientRect()?.width;
         // if the nav element is on it's own row and its container is not limiting its width to 100% (ex. B2B Aura)
         // then the navElement width will be greater than the window width and we need to use the window width
@@ -239,6 +240,7 @@ export default class DrilldownNavigationBar extends LightningElement {
     }
 
     customEvalMenuItems(tmpmenuItems) {
+        let url = document.URL;
         let menuItems = JSON.parse(JSON.stringify(tmpmenuItems));
         for(let i=0; i<menuItems.length;i++)
         {
@@ -246,6 +248,7 @@ export default class DrilldownNavigationBar extends LightningElement {
             menuItems[i].hasChildren = (menuItems[i].items !== undefined && menuItems[i].items !== null && menuItems[i].items.length > 0);
             menuItems[i].iconPositionLeft = (menuItems[i].iconPosition !== undefined && menuItems[i].iconPosition !== null && menuItems[i].iconPosition.trim() === 'left');
             menuItems[i].iconPositionRight = (menuItems[i].iconPosition !== undefined && menuItems[i].iconPosition !== null && menuItems[i].iconPosition.trim() === 'right');
+            menuItems[i].isSelected = (url.includes(menuItems[i].href)) ? true : false;
         }
         return menuItems;            
     }
@@ -271,7 +274,7 @@ export default class DrilldownNavigationBar extends LightningElement {
         if (this.menuItemsChanged) {
             this.menuItemsChanged = false;
             this.calculateNavItemWidth();
-            setTimeout(this.calculateOverflow(), 1000);
+            setTimeout(this.calculateOverflow.bind(this), 1000);
         }
 
     }
@@ -328,9 +331,9 @@ export default class DrilldownNavigationBar extends LightningElement {
         ];
 
         // Default is 'left' and only 'center' and 'right' need to be set explicitly
-        if (this.menuAlignment === 'Center') {
+        if (this.menuAlignment === 'center') {
             cssClasses.push('slds-grid_align-center');
-        } else if (this.menuAlignment === 'Right') {
+        } else if (this.menuAlignment === 'right') {
             cssClasses.push('slds-grid_align-end');
         }
 

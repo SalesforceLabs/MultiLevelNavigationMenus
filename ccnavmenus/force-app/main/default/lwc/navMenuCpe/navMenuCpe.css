@@ -1,0 +1,12 @@
+.extraSpacing {
+    height: 200px;
+}
+
+.docIcon {
+    --slds-c-icon-color-foreground-default: var(--slds-c-button-text-color,var(--sds-c-button-text-color,#0176d3));
+    --slds-c-icon-color-background: transparent;
+}
+
+a.docLink:hover .docIcon {
+    --slds-c-icon-color-foreground-default: var(--slds-c-button-text-color-hover,var(--sds-c-button-text-color-hover,#014486))
+}

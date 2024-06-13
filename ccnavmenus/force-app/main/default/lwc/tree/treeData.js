@@ -58,6 +58,7 @@ export class TreeData {
             label: item.label,
             name: item.name,
             expanded: item.expanded,
+            selected: item.selected,
             metatext: item.metatext,
             href: item.href,
             level: item.level,
@@ -68,6 +69,7 @@ export class TreeData {
             disabled: item.disabled,
             items: []
         };
+        
 
         if (item.items && item.items.length > 0) {
             newItem.items = item.items.map(leaf => {
@@ -116,9 +118,11 @@ export class TreeData {
                     this.indices[node.key] = indexedObj;
                     this.nameKeyMapping[node.name] = node.key;
                     
+                    /*
                     if (node.name === selected 
                         //added by George
                         || (selectedContains && selected.includes(node.href))) {
+            
                         this.syncDataToSelected(
                             node,
                             indexedObj.index,
@@ -126,7 +130,7 @@ export class TreeData {
                         );
 
                         _selectedItem = indexedObj;
-                    }
+                    }*/
                 }
 
                 if (
@@ -162,7 +166,7 @@ export class TreeData {
         }
         function isNodeValid(currentNode, level) {
             const hasCycle = seen.has(currentNode);
-            const hasLabel = level === 0 ? true : !!currentNode.label;
+            const hasLabel = level === 0 ? true : (currentNode.label !== undefined && currentNode.label !== null);
             assert(
                 hasCycle === false,
                 `Data passed to lightning:tree has circular reference. Skipping the node`

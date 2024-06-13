@@ -7,6 +7,7 @@
 
  <template>
     <div class={treeContainerClasses} onclick={handleDropDownClose} id="treeDiv" role="treeContainer">
+        <div class={menuAlignmentClass}>
             <template if:true={widthCalculated}>
                 <c-tree-item
                     if:true={hasChildren}
@@ -29,30 +30,31 @@
                     menu-alignment={menuAlignment}
                 >
                 </c-tree-item>
-        </template>
+            </template>
 
-        <template if:false={widthCalculated}>
-            <c-tree-item
-                if:true={hasChildren}
-                class="slds-tree-hidden"
-                is-root
-                node-key={rootElement}
-                child-items={childrenFirstLevel}
-                focused-child={focusedChild}
-                is-vertical={isVertical}
-                uuid={uuid}
-                
-                menu-aria-announcement={menuAriaAnnouncement}
+            <template if:false={widthCalculated}>
+                <c-tree-item
+                    if:true={hasChildren}
+                    class="slds-tree-hidden"
+                    is-root
+                    node-key={rootElement}
+                    child-items={childrenFirstLevel}
+                    focused-child={focusedChild}
+                    is-vertical={isVertical}
+                    uuid={uuid}
+                    
+                    menu-aria-announcement={menuAriaAnnouncement}
 
-                brand-navigation-color-text={brandNavigationColorText}
-                brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
-                brand-navigation-background-color={brandNavigationBackgroundColor}
-                font-family={fontFamily}
-                text-transform={textTransform}
-                top-level-item-spacing={topLevelItemSpacing}
-                menu-alignment={menuAlignment}
-            >
-            </c-tree-item>
-        </template>
+                    brand-navigation-color-text={brandNavigationColorText}
+                    brand-navigation-bar-background-color={brandNavigationBarBackgroundColor}
+                    brand-navigation-background-color={brandNavigationBackgroundColor}
+                    font-family={fontFamily}
+                    text-transform={textTransform}
+                    top-level-item-spacing={topLevelItemSpacing}
+                    menu-alignment={menuAlignment}
+                >
+                </c-tree-item>
+            </template>
+        </div>
     </div>
 </template>

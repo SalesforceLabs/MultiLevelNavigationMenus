@@ -1,0 +1,249 @@
+/*
+ * Copyright (c) 2020, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+ 
+div[role="ccnavMenuCSS"]
+{ /* 
+    *
+    * 
+    * 
+    * 
+    * 
+    */
+    --ccnavmenus-navContainer-text-color: var(--dxp-g-brand, var(--dxp-g-root-contrast, black));
+    --ccnavmenus-navContainer-background-color: var(--dxp-g-root, white);
+    --ccnavmenus-navContainer-text-color-hover: var(--dxp-g-brand, var(--dxp-g-root-contrast, black));
+    --ccnavmenus-navContainer-background-color-hover: var(--dxp-g-root, white);
+    --ccnavmenus-navContainer-text-color-selected: var();
+    --ccnavmenus-navContainer-background-color-selected: var();
+    --ccnavmenus-navContainer-border-top: var();
+    --ccnavmenus-navContainer-border-bottom: var();
+    --ccnavmenus-navContainer-border-left: var();
+    --ccnavmenus-navContainer-border-right: var();
+    --ccnavmenus-navContainer-border-top-selected: var();
+    --ccnavmenus-navContainer-border-bottom-selected: var();
+    --ccnavmenus-navContainer-border-left-selected: var();
+    --ccnavmenus-navContainer-border-right-selected: var();
+
+    --ccnavmenus-nav-text-color: var(--dxp-g-brand, var(--dxp-g-root-contrast, black));
+    --ccnavmenus-nav-background-color: var(--dxp-g-root, white);
+    --ccnavmenus-nav-text-color-hover: var(--dxp-g-brand, var(--dxp-g-root-contrast, black));
+    --ccnavmenus-nav-background-color-hover: var(--dxp-g-root, white);
+    --ccnavmenus-nav-text-color-selected: var();
+    --ccnavmenus-nav-background-color-selected: var();
+    --ccnavmenus-nav-border-top: var();
+    --ccnavmenus-nav-border-bottom: var();
+    --ccnavmenus-nav-border-left: var();
+    --ccnavmenus-nav-border-right: var();
+    --ccnavmenus-nav-border-top-selected: var();
+    --ccnavmenus-nav-border-bottom-selected: var();
+    --ccnavmenus-nav-border-left-selected: var();
+    --ccnavmenus-nav-border-right-selected: var();
+
+    --ccnavmenus-nav-allLevel-border: var();
+    --ccnavmenus-nav-allLevel-shadowBox: var();
+
+    --ccnavmenus-textTransform: 'none';
+    --ccnavmenus-fontFamily: var(--dxp-g-root-font-family, var(--lwc-fontFamily, 'Salesforce Sans'));
+    --ccnavmenus-topLevelItemSpacing: 20px;
+    --ccnavmenus-menuItemVerticalPadding: 16px;
+    --ccnavmenus-drillDownNav-list-right: initial;
+    --ccnavmenus-drillDownNav-list-left: 0;
+    --ccnavmenus-drillDownNav-closeButton-left: auto;
+    --ccnavmenus-drillDownNav-closeButton-right: 0;
+    --ccnavmenus-drillDownNav-list-before-after-display: inherit;
+    --ccnavmenus-drillDownNav-list-vertical-left: 0;
+    --ccnavmenus-drillDownNav-list-vertical-float: none;
+}
+
+
+nav.applyBackground {
+    background-color: var(--ccnavmenus-navContainer-background-color, var(--dxp-g-root, white));
+
+}
+
+.hamburgerIconContainer {
+    position: relative;
+}
+
+.ccnavmenu-hamburger-icon
+{
+    color: var(--ccnavmenus-navContainer-text-color, var(--ccnavmenus-brandNavigationColorText, var(--dxp-g-root-contrast, var(--lwc-brandNavigationColorText, black))));
+    font-weight: 100;
+}
+
+.ccnavmenu-hamburger-button:focus {
+    outline: auto;
+}
+
+.ccnavmenu-hamburger-icon-toggle
+{
+    font-size: 30px;
+}
+
+.ccnavmenu-hamburger-icon-close
+{
+    font-size: 40px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.ccnavmenu-hamburger-button 
+{
+    background-color: var(--ccnavmenus-navContainer-background-color, var(--ccnavmenus-brandBarNavigationBackgroundColor, var(--lwc-brandNavigationBarBackgroundColor, white)));
+    width: fit-content;
+    border-radius: 0px;
+    height: 50px;
+    width: 50px;
+}
+
+.ccnavmenu-hamburger-button:hover {
+    background-color: var(--ccnavmenus-navContainer-background-color-hover, var(--ccnavmenus-brandNavigationBackgroundColor));
+    border-top: var(--ccnavmenus-navContainer-border-top);
+    border-bottom: var(--ccnavmenus-navContainer-border-bottom);
+    border-left: var(--ccnavmenus-navContainer-border-left);
+    border-right: var(--ccnavmenus-navContainer-border-right);
+}
+
+.ccnavmenu-hamburger-button:focus 
+{
+    border: 0px;
+    box-shadow: none;
+}
+
+.closeButtonDiv
+{
+    position: absolute;
+    top: -40px;
+    left: 0;
+}
+
+.closeButtonDivLeft
+{
+    right: 0;
+    left: auto;
+}
+
+.ccnavmenu-hamburger-button-close
+{
+    background-color: var(--ccnavmenus-brandNavigationBackgroundColor, var(--lwc-brandNavigationBackgroundColor, white));
+    box-shadow: 0 calc(var(--ccnavmenus-boxShadow-blur, 5px) * (-1)) var(--ccnavmenus-boxShadow-blur, 5px) var(--ccnavmenus-boxShadow-color,rgb(132,132,132));
+    top: 4px;
+    right: 0;
+}
+
+.ccnavmenu-hamburger-button-close .ccnavmenu-hamburger-icon:hover {
+    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor, #c9c9c9);
+    box-shadow: inset 0 0px 0 20px rgb(255 255 255 / 70%);
+}
+
+[aria-expanded="true"] > .slds-tree__item .slds-button__icon .menu-icon {
+    transform: rotate(0deg) !important;
+}
+
+.hamburgerMenuContainer
+{
+    position: absolute;
+    width: 19rem;
+    z-index: 100;
+    top: 50px;
+    box-shadow: var(--ccnavmenus-nav-allLevel-shadowBox);
+    background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBackgroundColor));
+}
+
+.hamburgerMenuContainer.hamburgerMenuContainerMega
+{
+    width: 100%;
+    background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBackgroundColor));
+    border: var(--ccnavmenus-nav-allLevel-border);
+    box-shadow: var(--ccnavmenus-nav-allLevel-shadowBox);
+}
+
+
+.ccnavmenu-hamburger-button {
+    background-color: var(--ccnavmenus-navContainer-background-color, transparent);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    padding: 0;
+  }
+
+.hamburgerline {
+    fill: none;
+    stroke: var(--ccnavmenus-navContainer-text-color, var(--ccnavmenus-brandNavigationColorText, var(--dxp-g-root-contrast, var(--lwc-brandNavigationColorText, black))));
+    stroke-width: 6;
+}
+
+.ccnavmenu-hamburger-button:hover .hamburgerline {
+    stroke: var(--ccnavmenus-navContainer-text-color-hover, var(--ccnavmenus-brandNavigationColorText, var(--dxp-g-root-contrast, var(--lwc-brandNavigationColorText, black))));
+}
+
+.showHamburgerAnimation .hamburgerline {
+    transition: stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+                stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hamburgerline.line1 {
+    stroke-dasharray: 60 207;
+    stroke-width: 6;
+}
+
+.hamburgerline.line2 {
+    stroke-dasharray: 60 60;
+    stroke-width: 6;
+}
+
+.hamburgerline.line3 {
+    stroke-dasharray: 60 207;
+    stroke-width: 6;
+}
+
+.opened .hamburgerline.line1 {
+    stroke-dasharray: 90 207;
+    stroke-dashoffset: -134;
+    stroke-width: 6;
+}
+
+.opened .hamburgerline.line2 {
+    stroke-dasharray: 1 60;
+    stroke-dashoffset: -30;
+    stroke-width: 6;
+}
+
+.opened  .hamburgerline.line3{
+    stroke-dasharray: 90 207;
+    stroke-dashoffset: -134;
+    stroke-width: 6;
+}
+
+.showHamburgerAnimation.ccnavmenu-hamburger-button.opened .another-circle {
+    cursor:pointer;
+    stroke-dasharray: 350;
+    stroke-dashoffset: 350px;
+    transition: stroke-dashoffset 600ms ease;
+    transform-origin: 0px 0px 0px;
+    stroke: var(--ccnavmenus-brandNavigationColorText, var(--dxp-g-root-contrast, var(--lwc-brandNavigationColorText, black)));
+    transform: translate(0%, 30%);
+  }
+
+@media (hover: hover) {
+
+    .showHamburgerAnimation.ccnavmenu-hamburger-button:not(.opened):hover > svg > path.hamburgerline:nth-child(1), 
+    .showHamburgerAnimation.ccnavmenu-hamburger-button:not(.opened):hover > svg > path.hamburgerline:nth-child(3) {
+        transform: scaleX(.8) translate(10%, 0);
+        transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+    }
+
+    .showHamburgerAnimation.ccnavmenu-hamburger-button:not(.opened):hover > svg > path.hamburgerline:nth-child(2) {
+        transform: scaleX(.5) translate(45%, 0);
+        transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+    }
+
+    .showHamburgerAnimation.ccnavmenu-hamburger-button.opened .another-circle:hover {
+        stroke-dashoffset: 0;
+      }
+
+}

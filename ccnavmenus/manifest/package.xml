@@ -49,5 +49,15 @@
         <members>*</members>
         <name>ExperiencePropertyTypeBundle</name>
     </types>
+    <types>
+        <members>Check_Menu_Name_Uniqueness</members>
+        <members>Check_Menu_Name_Uniqueness_Subflow</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>Check_Menu_Name_Uniqueness</members>
+        <members>Check_Menu_Name_Uniqueness_Subflow</members>
+        <name>FlowDefinition</name>
+    </types>
     <version>59.0</version>
 </Package>

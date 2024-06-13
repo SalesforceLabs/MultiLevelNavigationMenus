@@ -3,10 +3,10 @@
     <fullName>SLDS_Icon__c</fullName>
     <defaultValue>&quot;utility:connected_apps&quot;</defaultValue>
     <deprecated>false</deprecated>
-    <description>SLDS Icon Name</description>
+    <description>Icon Name</description>
     <externalId>false</externalId>
-    <inlineHelpText>Optional: name of the SLDS icon to appear next to the menu label.</inlineHelpText>
-    <label>SLDS Icon</label>
+    <inlineHelpText>Optional: name of the SLDS icon or Font Awesome icon classes. Icons will appear next to the menu label based on the Icon Position chosen. Example: (SLDS) &quot;utility:home&quot;, (Font Awesome) &quot;fa-solid fa-building&quot;</inlineHelpText>
+    <label>SLDS or Font Awesome Icon Name</label>
     <length>255</length>
     <required>false</required>
     <trackTrending>false</trackTrending>

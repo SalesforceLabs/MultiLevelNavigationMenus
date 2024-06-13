@@ -71,6 +71,12 @@ public class menusManagerControllerTest {
         List<menusManagerController.treeItem> menuItemList = (List<menusManagerController.treeItem>)System.JSON.deserialize(menuItemListJSONString,List<menusManagerController.treeItem>.class);
         System.assert(menuItemList.size() > 0);
 
+        String searchMenuJSON = menusManagerController.searchMenus('test');
+        Map<String,Object> searchMenuMap = (Map<String,Object>)System.JSON.deserializeUntyped(searchMenuJSON);
+        String searchMenuItemListJSONString = System.JSON.serialize(searchMenuMap.get('menuList'));
+        List<menusManagerController.treeItem> searchMenuItemList = (List<menusManagerController.treeItem>)System.JSON.deserialize(searchMenuItemListJSONString,List<menusManagerController.treeItem>.class);
+        System.assert(searchMenuItemList.size() > 0);
+
         List<ccnavmenus__Menu_Item__c> miList = [SELECT Id FROM ccnavmenus__Menu_Item__c WHERE Name = 'MI 6'];
         String menuItemId = miList[0].Id;
         

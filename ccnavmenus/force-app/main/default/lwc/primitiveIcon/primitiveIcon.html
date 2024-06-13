@@ -6,12 +6,19 @@
  -->
 
  <template>
-    <svg
-        class={computedClass}
-        focusable="false"
-        data-key={name}
-        aria-hidden="true"
-    >
-        <use xlink:href={href}></use>
-    </svg>
+    <template lwc:if={isIconFa}>
+        <span class={computedClass}>
+            <span class={iconName}></span>
+        </span>
+    </template>
+    <template lwc:else>
+        <svg
+            class={computedClass}
+            focusable="false"
+            data-key={name}
+            aria-hidden="true"
+        >
+            <use xlink:href={href}></use>
+        </svg>
+    </template>
 </template>

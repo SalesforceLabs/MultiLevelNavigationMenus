@@ -119,8 +119,12 @@ export default class cTreeItem extends LightningElement {
         return (!this.isVertical && this.level === 0) ? cssClasses.join(' ') : '';
     }
 
+    get isLabel() {
+        return (this.label !== undefined && this.label !== null && this.label.trim() !== '');
+    }
+
     connectedCallback() {
-        
+
         this.dispatchEvent(
             new CustomEvent('privateregisteritem', {
                 composed: true,
@@ -212,8 +216,8 @@ export default class cTreeItem extends LightningElement {
     }
 
     get computedButtonClass() {
-        let buttonClasses = 'slds-button slds-button_icon';
-        buttonClasses += (this.computedIconPositionLeft) ? ' slds-m-right_x-small ' : ' slds-m-left_x-small ';
+        let buttonClasses = 'slds-button slds-button_icon slds-p-around_x-small ';
+        //buttonClasses += (this.computedIconPositionLeft) ? ' slds-m-right_x-small ' : ' slds-m-left_x-small ';
         return classSet(buttonClasses)
             .add({
                 'slds-hide': this.isLeaf || this.isDisabled

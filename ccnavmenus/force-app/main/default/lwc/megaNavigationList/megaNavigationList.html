@@ -1,0 +1,200 @@
+<template>
+    <div class={containerClasses} onclick={handleNavClick}>
+        <template lwc:if={isParentItemLink}>
+            <div class="applyBackground slds-grid slds-size_1-of-1 slds-align_absolute-center slds-m-top_small">
+                <span class="menuItemSpan parentItemSpan slds-p-vertical_xx-small">
+                    <a href={parentItem.href} 
+                        tabindex="0" 
+                        target={parentItem.target} 
+                        class="slds-p-around_x-small menuLink" 
+                        aria-selected={parentSelected} 
+                        aria-label={parentItem.label} 
+                        title={parentItem.label}
+                        data-id={parentItem.id}
+                        role="menuitem"
+                        >
+                        <template if:true={parentItem.icon}>
+                            <c-primitive-icon if:true={parentItem.iconPositionLeft}
+                            icon-name={parentItem.icon}
+                            variant="bare"
+                            svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
+                            no-transform="true"
+                            role="menuitem"
+                            >
+                            </c-primitive-icon>
+                        </template>
+                        <span
+                            class="slds-tree__item-label labelSpan"
+                            title={parentItem.label}
+                            role="menuitem"
+                            >
+                            <template lwc:if={parentItem.label}>
+                                <div role="menuitem">{gotoLabel} &nbsp; {parentItem.label}</div>
+                            </template>
+                            <template lwc:else>
+                                <div role="menuitem">{gotoLabel} &nbsp;</div>
+                            </template>
+
+                            <template lwc:if={parentItem.description}>
+                                <span role="menuitem" class="slds-text-body_small">{parentItem.description}</span>
+                            </template>
+                        </span>
+                        <template if:true={parentItem.icon}>
+                            <c-primitive-icon if:true={parentItem.iconPositionRight}
+                            icon-name={parentItem.icon}
+                            variant="bare"
+                            svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
+                            no-transform="true"
+                            role="menuitem"
+                            >
+                            </c-primitive-icon>
+                        </template>
+                        <template if:true={parentItem.metatext}>
+                            <span
+                                class="slds-tree__item-meta slds-truncate"
+                                title={parentItem.metatext}
+                                role="menuitem"
+                            >
+                                <span class="slds-assistive-text">:</span>{parentItem.metatext}
+                            </span>
+                        </template>
+                    </a>
+                </span>
+            </div>
+        </template>
+        <template lwc:if={menuItems}>
+            <div class="applyBackground slds-grid slds-wrap slds-p-vertical_xx-small">
+                <template for:each={localMenuItems} for:item="menuItem">
+                <!-- level 1 -->
+                    <div key={menuItem.id} class={repeatedDivClasses}>
+                        <span class="menuItemSpan slds-has-flexi-truncate slds-p-vertical_xx-small">
+                            <template lwc:if={menuItem.renderLink}>
+                                <a href={menuItem.href} 
+                                    tabindex="0" 
+                                    target={menuItem.target} 
+                                    class="slds-p-around_x-small menuLink" 
+                                    aria-selected={menuItem.selected} 
+                                    aria-label={menuItem.label} 
+                                    title={menuItem.label}
+                                    data-id={menuItem.id}
+                                    role="menuitem"
+                                    >
+                                    <template if:true={menuItem.icon}>
+                                        <c-primitive-icon if:true={menuItem.iconPositionLeft}
+                                        icon-name={menuItem.icon}
+                                        variant="bare"
+                                        svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
+                                        no-transform="true"
+                                        role="menuitem"
+                                        >
+                                        </c-primitive-icon>
+                                    </template>
+                                    <span
+                                        class="slds-tree__item-label labelSpan"
+                                        title={menuItem.label}
+                                        role="menuitem"
+                                        >
+                                        <template lwc:if={menuItem.label}>
+                                            <div role="menuitem">{menuItem.label}</div>
+                                        </template>
+                                        <template lwc:else>
+                                            <div role="menuitem">&nbsp;</div>
+                                        </template>
+
+                                        <template lwc:if={menuItem.description}>
+                                            <span role="menuitem" class="slds-text-body_small">{menuItem.description}</span>
+                                        </template>
+                                    </span>
+                                    <template if:true={menuItem.icon}>
+                                        <c-primitive-icon if:true={menuItem.iconPositionRight}
+                                        icon-name={menuItem.icon}
+                                        variant="bare"
+                                        svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
+                                        no-transform="true"
+                                        role="menuitem"
+                                        >
+                                        </c-primitive-icon>
+                                    </template>
+                                    <template if:true={menuItem.metatext}>
+                                        <span
+                                            class="slds-tree__item-meta slds-truncate"
+                                            title={menuItem.metatext}
+                                            role="menuitem"
+                                        >
+                                            <span class="slds-assistive-text">:</span>{menuItem.metatext}
+                                        </span>
+                                    </template>
+                                </a>
+                            </template>
+
+                            <template lwc:else>
+                                <span class="menuItemSpan slds-has-flexi-truncate slds-p-vertical_xx-small">
+
+                                    <template if:true={menuItem.icon}>
+                                        <c-primitive-icon if:true={menuItem.iconPositionLeft}
+                                        icon-name={menuItem.icon}
+                                        variant="bare"
+                                        svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
+                                        no-transform="true"
+                                        >
+                                        </c-primitive-icon>
+                                    </template>
+                                    <span
+                                        class="slds-tree__item-label labelSpan"
+                                        title={menuItem.label}
+                                        >
+                                        <template lwc:if={menuItem.label}>
+                                            <div>{menuItem.label}</div>
+                                        </template>
+                                        <template lwc:else>
+                                            <div>&nbsp;</div>
+                                        </template>
+
+                                        <template lwc:if={menuItem.description}>
+                                            <span class="slds-text-body_small">{menuItem.description}</span>
+                                        </template>
+                                    </span>
+                                    <template if:true={menuItem.icon}>
+                                        <c-primitive-icon if:true={menuItem.iconPositionRight}
+                                        icon-name={menuItem.icon}
+                                        variant="bare"
+                                        svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
+                                        no-transform="true"
+                                        >
+                                        </c-primitive-icon>
+                                    </template>
+                                    <template if:true={menuItem.metatext}>
+                                        <span
+                                            class="slds-tree__item-meta slds-truncate"
+                                            title={menuItem.metatext}
+                                        >
+                                            <span class="slds-assistive-text">:</span>{menuItem.metatext}
+                                        </span>
+                                    </template>
+
+                                </span>
+
+                            </template>
+
+                        </span>
+
+                        <template lwc:if={menuItem.hasChildren}>
+
+                            <c-mega-navigation-list
+                                parent-item={menuItem}
+                                menu-items={menuItem.items}
+                                goto-label={gotoLabel}
+                                do-not-render-parent-link=true
+                            >
+                            </c-mega-navigation-list>
+
+                        </template>
+
+                    </div>
+
+                </template>
+            </div>
+
+        </template>
+    </div>
+</template>

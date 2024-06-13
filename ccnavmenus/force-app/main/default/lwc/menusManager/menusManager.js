@@ -32,30 +32,19 @@ const MENU_ITEM_COLUMNS_DEFINITION = [
         type: 'text',
         fieldName: 'label',
         label: 'Name',
-        initialWidth: 300
+        initialWidth: 400
     },
     {
         type: 'text',
-        fieldName: 'label',
-        label: 'Label',
-        initialWidth: 300,
-        cellAttributes:
-        { 
-            iconName: 
-            { 
-                fieldName: 'icon' 
-            }, 
-            iconPosition: 
-            {
-                fieldName: 'iconPosition'
-            }
-        }
+        fieldName: 'iconText',
+        label: 'Icon',
+        initialWidth: 400
     },
     {
         type: 'text',
         fieldName: 'href',
         label: 'URL',
-        initialWidth: 300        
+        initialWidth: 400        
     },
     {
         type: 'text',
@@ -83,7 +72,7 @@ const MENU_ITEM_COLUMNS_DEFINITION = [
     }
 ];
 
-const cleanMenuItemFields = ['position','openInNewWindow','level','language','label','_children','isPublic','iconPosition','icon','href'];
+const cleanMenuItemFields = ['description','position','openInNewWindow','level','language','label','_children','isPublic','iconPosition','icon','href'];
 
 
 export default class MenusManager extends LightningElement {
@@ -158,7 +147,30 @@ export default class MenusManager extends LightningElement {
                 let menuItemResult = JSON.parse(result.data);
                 if(menuItemResult.itemsList)
                 {
-                    this.menuItemList = menuItemResult.itemsList;
+                    let itemsListTmp = menuItemResult.itemsList;
+                    for(let i=0;i<itemsListTmp.length; i++)
+                    {
+                        if(itemsListTmp[i].icon)
+                        {
+                            itemsListTmp[i].iconText = 'Icon: ' + itemsListTmp[i].icon + ' Position: ' + itemsListTmp[i].iconPosition + ' Type: ';
+                            if(itemsListTmp[i].icon.indexOf('fa-') > - 1)
+                            {
+                                itemsListTmp[i].iconText += 'Font Awesome';
+                            }
+                            else if(itemsListTmp[i].icon.indexOf(':') > - 1)
+                            {
+                                itemsListTmp[i].iconText += 'SLDS';
+                            }
+                            else 
+                            {
+                                itemsListTmp[i].iconText += 'Invalid';
+                            }
+                        }
+                        
+                    }
+
+
+                    this.menuItemList = itemsListTmp;
                     this.menuItemMap = menuItemResult.itemsMap;
                     this.menu = menuItemResult.menu;
                     this.partitionsList = menuItemResult.orgPartitionsList;
@@ -276,6 +288,7 @@ export default class MenusManager extends LightningElement {
         
 
         loadStyle(this, menusManagerCSS);
+    
     }
 
     renderedCallback()

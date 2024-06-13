@@ -1,0 +1,80 @@
+.applyBackground {
+    background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBackgroundColor,var(--dxp-c-navigation-list-background-color)));
+}
+
+.applyBorder {
+    border: var(--ccnavmenus-nav-allLevel-border);
+}
+
+.applyShadowBox {
+    box-shadow: var(--ccnavmenus-nav-allLevel-shadowBox);
+}
+
+.menuItemSpan {
+    display: flex;
+}
+
+.labelSpan {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.labelSpan .slds-text-body_small {
+    text-decoration: none !important;
+}
+
+.menuItemSpan a.menuLink[aria-selected="true"] .labelSpan .slds-text-body_small {
+    color: var(--ccnavmenus-nav-text-color-selected, var(--ccnavmenus-nav-text-color, var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-navigation-text-color))));
+}
+
+.menuItemSpan a.menuLink:hover .labelSpan .slds-text-body_small,
+.menuItemSpan a.menuLink:active .labelSpan .slds-text-body_small,
+.menuItemSpan a.menuLink:focus .labelSpan .slds-text-body_small
+{
+    color: var(--ccnavmenus-nav-text-color-hover, var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-navigation-text-color)));
+}
+
+.menuItemSpan a.menuLink {
+    text-align: start;
+    text-decoration: none;
+    color: var(--ccnavmenus-nav-text-color, var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-navigation-text-color)));
+    font-size: var(--dxp-c-navigation-item-font-size);
+    font-family: var(--ccnavmenus-fontFamily, inherit);
+    text-transform: var(--ccnavmenus-textTransform);
+    display: block;
+    background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBackgroundColor,var(--dxp-c-navigation-list-background-color)));
+    transition: background-color 0.2s linear;
+    padding-right: 2.4rem;
+    padding-top: calc(var(--ccnavmenus-menuItemVerticalPadding)/2);
+    padding-bottom: calc(var(--ccnavmenus-menuItemVerticalPadding)/2);
+    display: flex;
+    width: 100%;
+}
+
+.menuItemSpan.parentItemSpan a.menuLink {
+    padding-right: 0.5rem;
+}
+
+.menuItemSpan a.menuLink[aria-selected="true"] {
+    color: var(--ccnavmenus-nav-text-color-selected, var(--ccnavmenus-nav-text-color, var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-navigation-text-color))));
+    background-color: var(--ccnavmenus-nav-background-color-selected, var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBackgroundColor,var(--dxp-c-navigation-list-background-color))));
+    border-top: var(--ccnavmenus-nav-border-top-selected);
+    border-bottom: var(--ccnavmenus-nav-border-bottom-selected);
+    border-left: var(--ccnavmenus-nav-border-left-selected);
+    border-right: var(--ccnavmenus-nav-border-right-selected);
+}
+
+.menuItemSpan a.menuLink:hover,
+.menuItemSpan a.menuLink:active,
+.menuItemSpan a.menuLink:focus {
+    color: var(--ccnavmenus-nav-text-color-hover, var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-navigation-text-color)));
+    background-color: var(--ccnavmenus-nav-background-color-hover, var(--ccnavmenus-brandNavigationBackgroundColor,var(--dxp-c-navigation-list-background-color)));
+    border-top: var(--ccnavmenus-nav-border-top);
+    border-bottom: var(--ccnavmenus-nav-border-bottom);
+    border-left: var(--ccnavmenus-nav-border-left);
+    border-right: var(--ccnavmenus-nav-border-right);
+}

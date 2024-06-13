@@ -9,6 +9,7 @@ import { LightningElement, api, track, wire } from 'lwc';
 import fetchMenu from '@salesforce/apex/menusController.getMenu';
 import {loadStyle} from 'lightning/platformResourceLoader';
 import navMenuCSS from '@salesforce/resourceUrl/navMenu';
+import faMain from '@salesforce/resourceUrl/fontawesome';
 import formFactor from '@salesforce/client/formFactor';
 import userId from '@salesforce/user/Id';
 
@@ -210,6 +211,9 @@ export default class NavMenu extends LightningElement {
         }
         
         loadStyle(this, navMenuCSS);
+        loadStyle(this, faMain + '/css/fontawesome.min.css');
+        loadStyle(this, faMain + '/css/brands.min.css');
+        loadStyle(this, faMain + '/css/solid.min.css');
         
         this.isVertical = false;
         this.isVertical = (this.verticalMode === 'on') ? true : this.isVertical;

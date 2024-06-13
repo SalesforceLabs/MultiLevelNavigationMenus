@@ -1,0 +1,77 @@
+/*
+ * Copyright (c) 2020, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+
+.comm-drilldown-navigation__bar a,
+.comm-drilldown-navigation__bar button {
+    white-space: nowrap;
+    padding-right: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
+    padding-left: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
+    padding-top: calc(var(--ccnavmenus-menuItemVerticalPadding)/2);
+    padding-bottom: calc(var(--ccnavmenus-menuItemVerticalPadding)/2);
+    background-color: var(--ccnavmenus-navContainer-background-color, var(--ccnavmenus-brandNavigationBarBackgroundColor));
+    transition: background-color 0.2s linear;
+    color: var(--ccnavmenus-navContainer-text-color, var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-navigation-text-color, var(--dxp-g-root-contrast))));
+    font-family: var(--ccnavmenus-fontFamily, inherit);
+    text-transform: var(--ccnavmenus-textTransform);
+}
+
+.comm-drilldown-navigation__bar a {
+    display: block;
+    text-decoration: none;
+}
+
+.comm-drilldown-navigation__bar button {
+    border: unset;
+}
+
+.comm-drilldown-navigation__bar a[aria-selected="true"],
+.comm-drilldown-navigation__bar button[aria-selected="true"]
+{
+    color: var(--ccnavmenus-navContainer-text-color-selected, var(--ccnavmenus-navContainer-text-color));
+    background-color: var(--ccnavmenus-navContainer-background-color-selected, var(--ccnavmenus-navContainer-background-color));
+    border-top: var(--ccnavmenus-navContainer-border-top-selected);
+    border-bottom: var(--ccnavmenus-navContainer-border-bottom-selected);
+    border-left: var(--ccnavmenus-navContainer-border-left-selected);
+    border-right: var(--ccnavmenus-navContainer-border-right-selected);
+}
+
+.comm-drilldown-navigation__bar a:hover,
+.comm-drilldown-navigation__bar a:active,
+.comm-drilldown-navigation__bar a:focus,
+.comm-drilldown-navigation__bar button:hover,
+.comm-drilldown-navigation__bar button:active,
+.comm-drilldown-navigation__bar button:focus
+{
+    background-color: var(--ccnavmenus-navContainer-background-color-hover);
+    color: var(--ccnavmenus-navContainer-text-color-hover);
+    border-top: var(--ccnavmenus-navContainer-border-top);
+    border-bottom: var(--ccnavmenus-navContainer-border-bottom);
+    border-left: var(--ccnavmenus-navContainer-border-left);
+    border-right: var(--ccnavmenus-navContainer-border-right);
+}
+
+.comm-drilldown-navigation__bar button:focus-visible {
+    outline-color: var(--dxp-c-navigation-list-box-shadow);
+}
+
+ul.display-block {
+    display: block;
+}
+
+ul.display-block > li {
+    display: inline-block;
+}
+
+.megaPopover {
+    position: fixed;
+    left: 0;
+    background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBarBackgroundColor));
+    width: 100%;
+    z-index: 9001;
+    border: var(--ccnavmenus-nav-allLevel-border);
+    box-shadow: var(--ccnavmenus-nav-allLevel-shadowBox);
+}

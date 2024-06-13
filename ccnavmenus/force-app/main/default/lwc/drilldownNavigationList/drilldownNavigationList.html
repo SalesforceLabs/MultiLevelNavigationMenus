@@ -64,6 +64,7 @@
                     role="menuitem"
                     href={parentItem.href}
                     target={parentItem.target}
+                    aria-selected={parentIsSelected}
                     onclick={handleAllClick}
                     onkeydown={handleAllKeyDown}
                     onmouseover={handleHoverOrFocus}
@@ -113,6 +114,7 @@
                             role="menuitem"
                             aria-haspopup="true"
                             aria-expanded="false"
+                            aria-selected={item.isSelected}
                             onclick={handleParentClick}
                             onkeydown={handleParentKeyDown}
                             onanimationend={handleAnimationEnd}
@@ -123,15 +125,15 @@
                             style={customStyles}
                         >
 
-                        <template if:true={item.icon}>
-                            <c-primitive-icon if:true={item.iconPositionLeft}
-                            icon-name={item.icon}
-                            variant="bare"
-                            svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
-                            no-transform="true"
-                            >
-                            </c-primitive-icon>
-                        </template>
+                            <template if:true={item.icon}>
+                                <c-primitive-icon if:true={item.iconPositionLeft}
+                                icon-name={item.icon}
+                                variant="bare"
+                                svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
+                                no-transform="true"
+                                >
+                                </c-primitive-icon>
+                            </template>
 
                             {item.label}
 
@@ -163,6 +165,7 @@
                         role="menuitem"
                         href={item.href}
                         target={item.target}
+                        aria-selected={item.isSelected}
                         onclick={handleLeafClick}
                         onkeydown={handleLeafKeyDown}
                         onanimationend={handleAnimationEnd}
@@ -172,16 +175,16 @@
                         onfocusout={handleHoverOrFocusOut}
                         style={customStyles}
                     >
-                    <template if:true={item.icon}>
-                        <c-primitive-icon if:true={item.iconPositionLeft}
-                        icon-name={item.icon}
-                        variant="bare"
-                        svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
-                        no-transform="true"
-                        data-islink="true"
-                        >
-                        </c-primitive-icon>
-                    </template>
+                        <template if:true={item.icon}>
+                            <c-primitive-icon if:true={item.iconPositionLeft}
+                            icon-name={item.icon}
+                            variant="bare"
+                            svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
+                            no-transform="true"
+                            data-islink="true"
+                            >
+                            </c-primitive-icon>
+                        </template>
 
                         {item.label}
 

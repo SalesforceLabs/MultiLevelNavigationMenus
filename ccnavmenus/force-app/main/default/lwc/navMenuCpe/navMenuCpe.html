@@ -1,0 +1,942 @@
+<template>
+    
+    <div class="slds-m-bottom_medium">
+        <a href="https://multilvlmenusforexpcloudupdates.substack.com/p/documentation" 
+            target="_blank"
+            class="slds-button slds-button_outline-brand docLink"
+            >
+            Documentation
+            <lightning-icon class="slds-m-left_small docIcon" icon-name="utility:new_window" size="xx-small" alternative-text="Open Documentation in New Window" title="Open Documentation in New Window"></lightning-icon>
+            
+        </a>
+    </div>
+
+    <lightning-tabset>
+        <lightning-tab label="General">
+            <template lwc:if={showSpinner}>
+                <span class="spinnerContainer">
+                    <lightning-spinner alternative-text="Loading" variant="brand" size="small"></lightning-spinner>
+                </span>
+            </template>
+
+            <lightning-input 
+                type={propInputs.menuName.type} 
+                label={propInputs.menuName.label} 
+                class={propInputs.menuName.classes} 
+                value={propInputs.menuName.value}
+                onchange={propInputs.menuName.changeHandler} 
+                data-key={propInputs.menuName.key}
+                field-level-help={propInputs.menuName.help} 
+                required={propInputs.menuName.required}
+
+                onfocus={handleMenuNameFocus}
+                onclick={handleMenuNameFocus}
+                onblur={handleMenuNameBlur}
+                >
+            </lightning-input>
+            <div if:true={showMenuOptions} class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid"
+                role="listbox">
+                <a href="javascript:void(0);" onclick={handleCloseIconClick}>
+                    <lightning-icon
+                        icon-name="utility:close"
+                        size="x-small"
+                        alternative-text="Indicates close"
+                        class="slds-float_right slds-p-around_xx-small"
+                    >
+                    </lightning-icon>
+                </a>
+                <ul class="slds-listbox slds-listbox_vertical slds-m-top_medium" role="presentation">
+                    <template for:each={menuOptions} for:item="menuOption">
+                        <li key={menuOption.value} data-value={menuOption.value} role="presentation"
+                            onmousedown={handleMenuOptionClick} class="slds-listbox__item">
+                            <div data-value={menuOption.value} class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small "
+                                role="option">
+                                <span data-value={menuOption.value} class="slds-media__body">
+                                    <span class="slds-truncate" data-value={menuOption.value} title={menuOption.label}>
+                                        {menuOption.label}
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+
+            <div class={propInputs.languageFilter.classes}>
+                <lightning-select
+                    name={propInputs.languageFilter.key}
+                    label={propInputs.languageFilter.label} 
+                    value={propInputs.languageFilter.value}
+                    options={propInputs.languageFilter.options}
+                    onchange={propInputs.languageFilter.changeHandler}
+                    required={propInputs.languageFilter.required}
+                    data-key={propInputs.languageFilter.key}
+                    field-level-help={propInputs.languageFilter.help} 
+                    ></lightning-select>
+            </div>
+
+            <lightning-accordion allow-multiple-sections-open
+            active-section-name=renderingConfig>
+                <lightning-accordion-section name="renderingConfig" label="Rendering Config">
+                    <div class="slds-p-left_small slds-p-top_medium">
+
+                        <lightning-tabset>
+                            <lightning-tab label="Desktop">
+
+                                <div class={propInputs.menuTypeDesktop.classes}>
+                                    <lightning-select
+                                    name={propInputs.menuTypeDesktop.key}
+                                    label={propInputs.menuTypeDesktop.label} 
+                                    value={propInputs.menuTypeDesktop.value}
+                                    options={propInputs.menuTypeDesktop.options}
+                                    onchange={propInputs.menuTypeDesktop.changeHandler}
+                                    required={propInputs.menuTypeDesktop.required}
+                                    data-key={propInputs.menuTypeDesktop.key}
+                                    field-level-help={propInputs.menuTypeDesktop.help} 
+                                    ></lightning-select>
+                                </div>
+
+                                <div class={propInputs.menuModeDesktop.classes}>
+                                    <lightning-select
+                                    name={propInputs.menuModeDesktop.key}
+                                    label={propInputs.menuModeDesktop.label} 
+                                    value={propInputs.menuModeDesktop.value}
+                                    options={propInputs.menuModeDesktop.options}
+                                    onchange={propInputs.menuModeDesktop.changeHandler}
+                                    required={propInputs.menuModeDesktop.required}
+                                    data-key={propInputs.menuModeDesktop.key}
+                                    field-level-help={propInputs.menuModeDesktop.help} 
+                                    ></lightning-select>
+                                </div>
+
+                            </lightning-tab>
+                            <lightning-tab label="Tablet">
+
+                                <div class={propInputs.menuTypeTablet.classes}>
+                                    <lightning-select
+                                    name={propInputs.menuTypeTablet.key}
+                                    label={propInputs.menuTypeTablet.label} 
+                                    value={propInputs.menuTypeTablet.value}
+                                    options={propInputs.menuTypeTablet.options}
+                                    onchange={propInputs.menuTypeTablet.changeHandler}
+                                    required={propInputs.menuTypeTablet.required}
+                                    data-key={propInputs.menuTypeTablet.key}
+                                    field-level-help={propInputs.menuTypeTablet.help} 
+                                    ></lightning-select>
+                                </div>
+
+                                <div class={propInputs.menuModeTablet.classes}>
+                                    <lightning-select
+                                    name={propInputs.menuModeTablet.key}
+                                    label={propInputs.menuModeTablet.label} 
+                                    value={propInputs.menuModeTablet.value}
+                                    options={propInputs.menuModeTablet.options}
+                                    onchange={propInputs.menuModeTablet.changeHandler}
+                                    required={propInputs.menuModeTablet.required}
+                                    data-key={propInputs.menuModeTablet.key}
+                                    field-level-help={propInputs.menuModeTablet.help} 
+                                    ></lightning-select>
+                                </div>
+
+                            </lightning-tab>
+                            <lightning-tab label="Mobile">
+
+                                <div class={propInputs.menuTypeMobile.classes}>
+                                    <lightning-select
+                                    name={propInputs.menuTypeMobile.key}
+                                    label={propInputs.menuTypeMobile.label} 
+                                    value={propInputs.menuTypeMobile.value}
+                                    options={propInputs.menuTypeMobile.options}
+                                    onchange={propInputs.menuTypeMobile.changeHandler}
+                                    required={propInputs.menuTypeMobile.required}
+                                    data-key={propInputs.menuTypeMobile.key}
+                                    field-level-help={propInputs.menuTypeMobile.help} 
+                                    ></lightning-select>
+                                </div>
+
+                                <div class={propInputs.menuModeMobile.classes}>
+                                    <lightning-select
+                                    name={propInputs.menuModeMobile.key}
+                                    label={propInputs.menuModeMobile.label} 
+                                    value={propInputs.menuModeMobile.value}
+                                    options={propInputs.menuModeMobile.options}
+                                    onchange={propInputs.menuModeMobile.changeHandler}
+                                    required={propInputs.menuModeMobile.required}
+                                    data-key={propInputs.menuModeMobile.key}
+                                    field-level-help={propInputs.menuModeMobile.help} 
+                                    ></lightning-select>
+                                </div>
+
+                            </lightning-tab>
+                        </lightning-tabset>
+
+                    </div>
+                </lightning-accordion-section>
+            </lightning-accordion>
+
+
+            <lightning-accordion allow-multiple-sections-open
+            active-section-name=cacheConfig>
+                <lightning-accordion-section name="cacheConfig" label="Cache Config">
+                    <div class="slds-p-left_small slds-p-top_medium">
+
+                        <lightning-input 
+                            type={propInputs.cacheName.type} 
+                            label={propInputs.cacheName.label} 
+                            class={propInputs.cacheName.classes} 
+                            value={propInputs.cacheName.value}
+                            onchange={propInputs.cacheName.changeHandler} 
+                            data-key={propInputs.cacheName.key}
+                            field-level-help={propInputs.cacheName.help} 
+                            required={propInputs.cacheName.required}
+                            >
+                        </lightning-input>
+                        
+                        <lightning-input 
+                            type={propInputs.cacheKey.type} 
+                            label={propInputs.cacheKey.label} 
+                            class={propInputs.cacheKey.classes} 
+                            value={propInputs.cacheKey.value}
+                            onchange={propInputs.cacheKey.changeHandler} 
+                            data-key={propInputs.cacheKey.key}
+                            field-level-help={propInputs.cacheKey.help} 
+                            required={propInputs.cacheKey.required}
+                            >
+                        </lightning-input>
+
+                        <lightning-input 
+                            type={propInputs.cacheEnabled.type} 
+                            label={propInputs.cacheEnabled.label} 
+                            class={propInputs.cacheEnabled.classes} 
+                            checked={propInputs.cacheEnabled.value}
+                            onchange={propInputs.cacheEnabled.changeHandler} 
+                            data-key={propInputs.cacheEnabled.key}
+                            field-level-help={propInputs.cacheEnabled.help} 
+                            required={propInputs.cacheEnabled.required}
+                            >
+                        </lightning-input>
+
+                    </div>
+                </lightning-accordion-section>
+            </lightning-accordion>
+
+            <lightning-accordion allow-multiple-sections-open
+            active-section-name=advancedConfig>
+                <lightning-accordion-section name="advancedConfig" label="Advanced Config">
+                    <div class="slds-p-left_small slds-p-top_medium">
+
+                        <lightning-input 
+                            type={propInputs.debugMode.type} 
+                            label={propInputs.debugMode.label} 
+                            class={propInputs.debugMode.classes} 
+                            checked={propInputs.debugMode.value}
+                            onchange={propInputs.debugMode.changeHandler} 
+                            data-key={propInputs.debugMode.key}
+                            field-level-help={propInputs.debugMode.help} 
+                            required={propInputs.debugMode.required}
+                            >
+                        </lightning-input>
+
+                        <label class="slds-form-element__label slds-m-right_x-large">
+                            {propInputs.urlSubMap.label} 
+                        </label>
+                        <lightning-button 
+                            variant="brand" 
+                            label={propInputs.urlSubMap.buttonLabel} 
+                            title={propInputs.urlSubMap.buttonLabel}  
+                            onclick={propInputs.urlSubMap.clickHandler}  
+                            class={propInputs.urlSubMap.classes} 
+                            >
+
+                        </lightning-button>
+
+                        <template if:true={showModal}>
+                            <section role="dialog" tabindex="-1" class={modalClass} aria-modal="true">
+                                <div class="slds-modal__container">
+                                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={handleCloseModal}>
+                                        <lightning-icon
+                                            icon-name="utility:close"
+                                            size="small"
+                                            alternative-text="Indicates close"
+                                        >
+                                        </lightning-icon>
+                                        <span class="slds-assistive-text">Close</span>
+                                    </button>
+                                    <div class="slds-modal__header">
+                                       Label and URL Parameters Substition Map
+                                    </div>
+                                    <div class="slds-modal__content slds-p-around_medium">
+                                        
+                                        <div class="slds-m-vertical_large slds-align_absolute-center">
+                                            {propInputs.urlSubMap.help}
+                                        </div>
+
+                                        <template if:true={showUrlSubMapTmp}>
+                                            <template lwc:if={urlSubMapTmp}>
+                                                <div class="slds-grid slds-wrap slds-m-bottom_large">
+
+                                                    <template for:each={urlSubMapTmp} for:item="mapping">
+                                                        <div key={mapping.id} class="slds-size_4-of-12">
+                                                            <lightning-input 
+                                                                type="text" 
+                                                                data-id={mapping.id}
+                                                                data-key="replaceThis"
+                                                                label="Replace This" 
+                                                                class="" 
+                                                                value={mapping.replaceThis}
+                                                                field-level-help="Replace the value entered here"
+                                                                >
+                                                            </lightning-input>
+                                                        </div>
+                                                        <div key={mapping.id} class="slds-size_2-of-12 slds-p-top_medium slds-align_absolute-center">
+                                                            <lightning-icon
+                                                                icon-name="utility:macros"
+                                                                size="medium"
+                                                                alternative-text="Indicates mapping"
+                                                            >
+                                                            </lightning-icon>
+                                                        </div>
+                                                        <div key={mapping.id} class="slds-size_4-of-12">
+                                                            <lightning-input 
+                                                                type="text" 
+                                                                label="Replace With" 
+                                                                data-id={mapping.id}
+                                                                data-key="replaceWith"
+                                                                class="" 
+                                                                value={mapping.replaceWith}
+                                                                field-level-help="Replace with the value entered here"
+                                                                >
+                                                            </lightning-input>
+                                                        </div>
+                                                        <div key={mapping.id} class="slds-size_2-of-12 slds-align_absolute-center">
+                                                            <a href="javascript:void(0);" data-id={mapping.id} data-index={index} onclick={handleDeleteMapping}>
+                                                                <lightning-icon
+                                                                    icon-name="utility:delete"
+                                                                    size="small"
+                                                                    alternative-text="Indicates delete"
+                                                                >
+                                                                </lightning-icon>
+                                                            </a>
+                                                        </div>
+                                                    </template>
+
+                                                </div>
+                                            </template>
+                                        </template>
+
+
+                                    </div>
+                                    <div class="slds-modal__footer">
+                                        <button class="slds-button slds-button_brand" onclick={handleAddUrlSubMap}>Add Mapping</button>
+                                        <button class="slds-button slds-button_brand" onclick={handleSaveUrlSubMap}>Save</button>
+                                        <button class="slds-button slds-button_destructive" onclick={handleClearMap}>Clear All</button>
+                                        <button class="slds-button slds-button_brand" onclick={handleCloseModal}>Close</button>
+                                    </div>
+                                </div>
+                            </section>
+                        </template>
+                        <template if:true={displayBackdrop}>
+                            <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+                        </template>
+
+                    </div>
+                </lightning-accordion-section>
+            </lightning-accordion>
+
+            <lightning-accordion allow-multiple-sections-open
+            active-section-name=deployment>
+                <lightning-accordion-section name="deployment" label="Deployment">
+                    <div class="slds-p-left_small slds-p-top_medium">
+                        
+                        <lightning-button label="Save Config" title="Save Config"
+                            onclick={handleExportConfig}></lightning-button>
+
+                        <lightning-button label="Load Config" title="Load Config" class="slds-m-left_medium"
+                            onclick={openImportModal}></lightning-button>
+
+                        <template lwc:if={exportError}>
+                            <div class="slds-text-color_error slds-text-body_small">{exportError}</div>
+                        </template>
+                        <a data-name="exportMenu" class="slds-hide"></a>
+
+
+                        <template if:true={importModalOpen}>
+
+                            <div class="demo-only" style="height: 640px;">
+                                <section role="dialog" tabindex="-1" class={modalClass} aria-modal="true">
+                                    <div class="slds-modal__container">
+                                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={closeImportModal}>
+                                            <lightning-icon
+                                                icon-name="utility:close"
+                                                size="small"
+                                                alternative-text="Indicates close"
+                                            >
+                                            </lightning-icon>
+                                            <span class="slds-assistive-text">Close</span>
+                                        </button>
+                                        <header class="slds-modal__header">
+                                            Load Menu Component Configuration
+                                        </header>
+                                        <div class="slds-modal__content slds-p-around_medium">
+                                            
+                                            <div class="slds-m-vertical_large slds-align_absolute-center slds-text-color_destructive">
+                                                Caution: This action will overwrite the current values of your component properties, can potentially cause corruption, and is not reversible. 
+                                            </div>
+
+                                            <div class="slds-m-vertical_large slds-align_absolute-center">
+                                                <label class="slds-form-element__label" for="fileImport">Select Properties Config File (.json)</label> <br/>
+                                                <input id="fileImport" type="file" data-name="importConfigFile" accept=".json"/>
+                                            </div>
+
+                                            <template lwc:if={importError}>
+                                                <div class="slds-text-color_error slds-text-body_small">{importError}</div>
+                                            </template>
+                                            
+                                        </div>
+                                        <footer class="slds-modal__footer">
+                                            <button class="slds-button slds-button_destructive" onclick={handleImportConfig}>Load</button>
+                                            <button class="slds-button slds-button_brand" onclick={closeImportModal}>Cancel</button>
+                                        </footer>
+                                    </div>
+                                </section>
+                                <div class="slds-backdrop slds-backdrop_open"></div>
+                            </div>
+                        </template>
+
+                    </div>
+                </lightning-accordion-section>
+            </lightning-accordion>
+
+        </lightning-tab>
+
+        <lightning-tab label="Labels">
+
+            <lightning-input 
+                type={propInputs.overflowLabel.type} 
+                label={propInputs.overflowLabel.label} 
+                class={propInputs.overflowLabel.classes} 
+                value={propInputs.overflowLabel.value}
+                onchange={propInputs.overflowLabel.changeHandler} 
+                data-key={propInputs.overflowLabel.key}
+                field-level-help={propInputs.overflowLabel.help} 
+                required={propInputs.overflowLabel.required}
+                >
+            </lightning-input>
+
+            <lightning-input 
+                type={propInputs.drilldownBackLabel.type} 
+                label={propInputs.drilldownBackLabel.label} 
+                class={propInputs.drilldownBackLabel.classes} 
+                value={propInputs.drilldownBackLabel.value}
+                onchange={propInputs.drilldownBackLabel.changeHandler} 
+                data-key={propInputs.drilldownBackLabel.key}
+                field-level-help={propInputs.drilldownBackLabel.help} 
+                required={propInputs.drilldownBackLabel.required}
+                >
+            </lightning-input>
+
+            <lightning-input 
+                type={propInputs.drilldownGotoLabel.type} 
+                label={propInputs.drilldownGotoLabel.label} 
+                class={propInputs.drilldownGotoLabel.classes} 
+                value={propInputs.drilldownGotoLabel.value}
+                onchange={propInputs.drilldownGotoLabel.changeHandler} 
+                data-key={propInputs.drilldownGotoLabel.key}
+                field-level-help={propInputs.drilldownGotoLabel.help} 
+                required={propInputs.drilldownGotoLabel.required}
+                >
+            </lightning-input>
+
+        </lightning-tab>
+
+        <lightning-tab label="Styles">
+
+
+            <lightning-accordion allow-multiple-sections-open
+            active-section-name=stylesGeneral>
+                <lightning-accordion-section name="stylesGeneral" label="General">
+
+                    <div class={propInputs.menuAlignment.classes}>
+                        <lightning-select
+                            name={propInputs.menuAlignment.key}
+                            label={propInputs.menuAlignment.label} 
+                            value={propInputs.menuAlignment.value}
+                            options={propInputs.menuAlignment.options}
+                            onchange={propInputs.menuAlignment.changeHandler}
+                            required={propInputs.menuAlignment.required}
+                            data-key={propInputs.menuAlignment.key}
+                            field-level-help={propInputs.menuAlignment.help} 
+                            ></lightning-select>
+                    </div>
+
+                    <lightning-input 
+                        type={propInputs.menuItemVerticalPadding.type} 
+                        label={propInputs.menuItemVerticalPadding.label} 
+                        class={propInputs.menuItemVerticalPadding.classes} 
+                        value={propInputs.menuItemVerticalPadding.value}
+                        onchange={propInputs.menuItemVerticalPadding.changeHandler} 
+                        data-key={propInputs.menuItemVerticalPadding.key}
+                        field-level-help={propInputs.menuItemVerticalPadding.help} 
+                        required={propInputs.menuItemVerticalPadding.required}
+                        >
+                    </lightning-input>
+
+                    <lightning-input 
+                        type={propInputs.overrideFontFamily.type} 
+                        label={propInputs.overrideFontFamily.label} 
+                        class={propInputs.overrideFontFamily.classes} 
+                        value={propInputs.overrideFontFamily.value}
+                        onchange={propInputs.overrideFontFamily.changeHandler} 
+                        data-key={propInputs.overrideFontFamily.key}
+                        field-level-help={propInputs.overrideFontFamily.help} 
+                        required={propInputs.overrideFontFamily.required}
+                        >
+                    </lightning-input>
+
+                    <div class={propInputs.overrideTextCase.classes}>
+                        <lightning-select
+                            name={propInputs.overrideTextCase.key}
+                            label={propInputs.overrideTextCase.label} 
+                            value={propInputs.overrideTextCase.value}
+                            options={propInputs.overrideTextCase.options}
+                            onchange={propInputs.overrideTextCase.changeHandler}
+                            required={propInputs.overrideTextCase.required}
+                            data-key={propInputs.overrideTextCase.key}
+                            field-level-help={propInputs.overrideTextCase.help} 
+                            ></lightning-select>
+                    </div>
+
+                    <lightning-input 
+                        type={propInputs.menuCSSClasses.type} 
+                        label={propInputs.menuCSSClasses.label} 
+                        class={propInputs.menuCSSClasses.classes} 
+                        value={propInputs.menuCSSClasses.value}
+                        onchange={propInputs.menuCSSClasses.changeHandler} 
+                        data-key={propInputs.menuCSSClasses.key}
+                        field-level-help={propInputs.menuCSSClasses.help} 
+                        required={propInputs.menuCSSClasses.required}
+                        >
+                    </lightning-input>
+
+
+                </lightning-accordion-section>
+            </lightning-accordion>
+            
+            <lightning-accordion allow-multiple-sections-open
+            active-section-name=stylesContainer>
+                <lightning-accordion-section name="stylesContainer" label="For Top-level Containers">
+                    <div class="slds-p-left_large">
+                        <div class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-large">
+                            Styles that apply to top-level containers when Horizontal First-level or Hamburger menu modes are chosen. 
+                            Some examples are the horizontal menu bar and the hamurger icon containers. These do not impact other menu modes.
+                        </div>
+
+                        <lightning-input 
+                            type={propInputs.hideHamburgerMenuAnimation.type} 
+                            label={propInputs.hideHamburgerMenuAnimation.label} 
+                            class={propInputs.hideHamburgerMenuAnimation.classes} 
+                            checked={propInputs.hideHamburgerMenuAnimation.value}
+                            onchange={propInputs.hideHamburgerMenuAnimation.changeHandler} 
+                            data-key={propInputs.hideHamburgerMenuAnimation.key}
+                            field-level-help={propInputs.hideHamburgerMenuAnimation.help} 
+                            required={propInputs.hideHamburgerMenuAnimation.required}
+                            >
+                        </lightning-input>
+
+                        <lightning-input 
+                            type={propInputs.topLevelItemSpacing.type} 
+                            label={propInputs.topLevelItemSpacing.label} 
+                            class={propInputs.topLevelItemSpacing.classes} 
+                            value={propInputs.topLevelItemSpacing.value}
+                            onchange={propInputs.topLevelItemSpacing.changeHandler} 
+                            data-key={propInputs.topLevelItemSpacing.key}
+                            field-level-help={propInputs.topLevelItemSpacing.help} 
+                            required={propInputs.topLevelItemSpacing.required}
+                            >
+                        </lightning-input>
+
+                        <div class="slds-text-heading_small slds-m-top_large">Menu Item States:</div>
+                        <lightning-tabset>
+                            <lightning-tab label="Default">
+
+                                <lightning-input 
+                                    type={propInputs.navContainerTextColor.type} 
+                                    label={propInputs.navContainerTextColor.label} 
+                                    class={propInputs.navContainerTextColor.classes} 
+                                    value={propInputs.navContainerTextColor.value}
+                                    onchange={propInputs.navContainerTextColor.changeHandler} 
+                                    data-key={propInputs.navContainerTextColor.key}
+                                    field-level-help={propInputs.navContainerTextColor.help} 
+                                    required={propInputs.navContainerTextColor.required}
+                                    >
+                                </lightning-input>
+
+                                <lightning-input 
+                                    type={propInputs.navContainerBackgroundColor.type} 
+                                    label={propInputs.navContainerBackgroundColor.label} 
+                                    class={propInputs.navContainerBackgroundColor.classes} 
+                                    value={propInputs.navContainerBackgroundColor.value}
+                                    onchange={propInputs.navContainerBackgroundColor.changeHandler} 
+                                    data-key={propInputs.navContainerBackgroundColor.key}
+                                    field-level-help={propInputs.navContainerBackgroundColor.help} 
+                                    required={propInputs.navContainerBackgroundColor.required}
+                                    >
+                                </lightning-input>
+
+                            </lightning-tab>
+                            <lightning-tab label="Active">
+                                
+                                <div class="slds-text-body_small">*Applies to active, hover, focus states</div>
+
+                                <lightning-input 
+                                    type={propInputs.navContainerAlsoApplyToSelectedState.type} 
+                                    label={propInputs.navContainerAlsoApplyToSelectedState.label} 
+                                    class={propInputs.navContainerAlsoApplyToSelectedState.classes} 
+                                    checked={propInputs.navContainerAlsoApplyToSelectedState.value}
+                                    onchange={propInputs.navContainerAlsoApplyToSelectedState.changeHandler} 
+                                    data-key={propInputs.navContainerAlsoApplyToSelectedState.key}
+                                    field-level-help={propInputs.navContainerAlsoApplyToSelectedState.help} 
+                                    required={propInputs.navContainerAlsoApplyToSelectedState.required}
+                                    >
+                                </lightning-input>
+
+                                <lightning-input 
+                                    type={propInputs.navContainerTextColorHover.type} 
+                                    label={propInputs.navContainerTextColorHover.label} 
+                                    class={propInputs.navContainerTextColorHover.classes} 
+                                    value={propInputs.navContainerTextColorHover.value}
+                                    onchange={propInputs.navContainerTextColorHover.changeHandler} 
+                                    data-key={propInputs.navContainerTextColorHover.key}
+                                    field-level-help={propInputs.navContainerTextColorHover.help} 
+                                    required={propInputs.navContainerTextColorHover.required}
+                                    >
+                                </lightning-input>
+
+                                <lightning-input 
+                                    type={propInputs.navContainerBackgroundColorHover.type} 
+                                    label={propInputs.navContainerBackgroundColorHover.label} 
+                                    class={propInputs.navContainerBackgroundColorHover.classes} 
+                                    value={propInputs.navContainerBackgroundColorHover.value}
+                                    onchange={propInputs.navContainerBackgroundColorHover.changeHandler} 
+                                    data-key={propInputs.navContainerBackgroundColorHover.key}
+                                    field-level-help={propInputs.navContainerBackgroundColorHover.help} 
+                                    required={propInputs.navContainerBackgroundColorHover.required}
+                                    >
+                                </lightning-input>
+
+                                <div class={propInputs.navContainerBorderStyle.classes}>
+                                    <lightning-select
+                                        name={propInputs.navContainerBorderStyle.key}
+                                        label={propInputs.navContainerBorderStyle.label} 
+                                        value={propInputs.navContainerBorderStyle.value}
+                                        options={propInputs.navContainerBorderStyle.options}
+                                        onchange={propInputs.navContainerBorderStyle.changeHandler}
+                                        required={propInputs.navContainerBorderStyle.required}
+                                        data-key={propInputs.navContainerBorderStyle.key}
+                                        field-level-help={propInputs.navContainerBorderStyle.help} 
+                                        ></lightning-select>
+                                </div>
+
+                                <div class={propInputs.navContainerBorderDirection.classes}>
+                                    <lightning-checkbox-group 
+                                        name={propInputs.navContainerBorderDirection.key}
+                                        label={propInputs.navContainerBorderDirection.label} 
+                                        options={propInputs.navContainerBorderDirection.options}
+                                        value={propInputs.navContainerBorderDirection.value}
+                                        onchange={propInputs.navContainerBorderDirection.changeHandler}
+                                        required={propInputs.navContainerBorderDirection.required}
+                                        ></lightning-checkbox-group>
+                                </div>
+
+                                <lightning-input 
+                                    type={propInputs.navContainerBorderColor.type} 
+                                    label={propInputs.navContainerBorderColor.label} 
+                                    class={propInputs.navContainerBorderColor.classes} 
+                                    value={propInputs.navContainerBorderColor.value}
+                                    onchange={propInputs.navContainerBorderColor.changeHandler} 
+                                    data-key={propInputs.navContainerBorderColor.key}
+                                    field-level-help={propInputs.navContainerBorderColor.help} 
+                                    required={propInputs.navContainerBorderColor.required}
+                                    >
+                                </lightning-input>
+
+                                <lightning-input 
+                                    type={propInputs.navContainerBorderWidth.type} 
+                                    label={propInputs.navContainerBorderWidth.label} 
+                                    class={propInputs.navContainerBorderWidth.classes} 
+                                    value={propInputs.navContainerBorderWidth.value}
+                                    onchange={propInputs.navContainerBorderWidth.changeHandler} 
+                                    data-key={propInputs.navContainerBorderWidth.key}
+                                    field-level-help={propInputs.navContainerBorderWidth.help} 
+                                    required={propInputs.navContainerBorderWidth.required}
+                                    >
+                                </lightning-input>
+
+                            </lightning-tab>
+                        </lightning-tabset>
+
+                    </div>
+
+                </lightning-accordion-section>
+            </lightning-accordion>
+
+            <lightning-accordion allow-multiple-sections-open
+            active-section-name=stylesAllOtherLevels>
+                <lightning-accordion-section name="stylesAllOtherLevels" label="For All Other Levels">
+                    <div class="slds-p-left_large">
+                        <div class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-large">
+                            Styles that apply to menu drop-down containers or when "Apply Type to All Levels" are chosen. 
+                            These do impact all menu modes.
+                        </div>
+
+                        <div class="slds-text-heading_small slds-m-top_large">Border and Box Shadow:</div>
+                        <lightning-tabset>
+                            <lightning-tab label="Border">
+                                <div class={propInputs.navAllLevelBorderStyle.classes}>
+                                    <lightning-select
+                                        name={propInputs.navAllLevelBorderStyle.key}
+                                        label={propInputs.navAllLevelBorderStyle.label} 
+                                        value={propInputs.navAllLevelBorderStyle.value}
+                                        options={propInputs.navAllLevelBorderStyle.options}
+                                        onchange={propInputs.navAllLevelBorderStyle.changeHandler}
+                                        required={propInputs.navAllLevelBorderStyle.required}
+                                        data-key={propInputs.navAllLevelBorderStyle.key}
+                                        field-level-help={propInputs.navAllLevelBorderStyle.help} 
+                                        ></lightning-select>
+                                </div>
+
+                                <lightning-input 
+                                    type={propInputs.navAllLevelBorderColor.type} 
+                                    label={propInputs.navAllLevelBorderColor.label} 
+                                    class={propInputs.navAllLevelBorderColor.classes} 
+                                    value={propInputs.navAllLevelBorderColor.value}
+                                    onchange={propInputs.navAllLevelBorderColor.changeHandler} 
+                                    data-key={propInputs.navAllLevelBorderColor.key}
+                                    field-level-help={propInputs.navAllLevelBorderColor.help} 
+                                    required={propInputs.navAllLevelBorderColor.required}
+                                    >
+                                </lightning-input>
+
+                                <lightning-input 
+                                    type={propInputs.navAllLevelBorderWidth.type} 
+                                    label={propInputs.navAllLevelBorderWidth.label} 
+                                    class={propInputs.navAllLevelBorderWidth.classes} 
+                                    value={propInputs.navAllLevelBorderWidth.value}
+                                    onchange={propInputs.navAllLevelBorderWidth.changeHandler} 
+                                    data-key={propInputs.navAllLevelBorderWidth.key}
+                                    field-level-help={propInputs.navAllLevelBorderWidth.help} 
+                                    required={propInputs.navAllLevelBorderWidth.required}
+                                    >
+                                </lightning-input>
+                            </lightning-tab>
+                            <lightning-tab label="Box Shadow">
+                                <div class={propInputs.navAllLevelShadowBoxType.classes}>
+                                    <lightning-select
+                                        name={propInputs.navAllLevelShadowBoxType.key}
+                                        label={propInputs.navAllLevelShadowBoxType.label} 
+                                        value={propInputs.navAllLevelShadowBoxType.value}
+                                        options={propInputs.navAllLevelShadowBoxType.options}
+                                        onchange={propInputs.navAllLevelShadowBoxType.changeHandler}
+                                        required={propInputs.navAllLevelShadowBoxType.required}
+                                        data-key={propInputs.navAllLevelShadowBoxType.key}
+                                        field-level-help={propInputs.navAllLevelShadowBoxType.help} 
+                                        ></lightning-select>
+                                </div>
+
+                                <lightning-input 
+                                    type={propInputs.navAllLevelShadowBoxColor.type} 
+                                    label={propInputs.navAllLevelShadowBoxColor.label} 
+                                    class={propInputs.navAllLevelShadowBoxColor.classes} 
+                                    value={propInputs.navAllLevelShadowBoxColor.value}
+                                    onchange={propInputs.navAllLevelShadowBoxColor.changeHandler} 
+                                    data-key={propInputs.navAllLevelShadowBoxColor.key}
+                                    field-level-help={propInputs.navAllLevelShadowBoxColor.help} 
+                                    required={propInputs.navAllLevelShadowBoxColor.required}
+                                    >
+                                </lightning-input>
+
+                                <lightning-input 
+                                    type={propInputs.navAllLevelShadowBoxXOffset.type} 
+                                    label={propInputs.navAllLevelShadowBoxXOffset.label} 
+                                    class={propInputs.navAllLevelShadowBoxXOffset.classes} 
+                                    value={propInputs.navAllLevelShadowBoxXOffset.value}
+                                    onchange={propInputs.navAllLevelShadowBoxXOffset.changeHandler} 
+                                    data-key={propInputs.navAllLevelShadowBoxXOffset.key}
+                                    field-level-help={propInputs.navAllLevelShadowBoxXOffset.help} 
+                                    required={propInputs.navAllLevelShadowBoxXOffset.required}
+                                    >
+                                </lightning-input>
+
+                                <lightning-input 
+                                    type={propInputs.navAllLevelShadowBoxYOffset.type} 
+                                    label={propInputs.navAllLevelShadowBoxYOffset.label} 
+                                    class={propInputs.navAllLevelShadowBoxYOffset.classes} 
+                                    value={propInputs.navAllLevelShadowBoxYOffset.value}
+                                    onchange={propInputs.navAllLevelShadowBoxYOffset.changeHandler} 
+                                    data-key={propInputs.navAllLevelShadowBoxYOffset.key}
+                                    field-level-help={propInputs.navAllLevelShadowBoxYOffset.help} 
+                                    required={propInputs.navAllLevelShadowBoxYOffset.required}
+                                    >
+                                </lightning-input>
+
+                                <lightning-input 
+                                    type={propInputs.navAllLevelShadowBoxBlur.type} 
+                                    label={propInputs.navAllLevelShadowBoxBlur.label} 
+                                    class={propInputs.navAllLevelShadowBoxBlur.classes} 
+                                    value={propInputs.navAllLevelShadowBoxBlur.value}
+                                    onchange={propInputs.navAllLevelShadowBoxBlur.changeHandler} 
+                                    data-key={propInputs.navAllLevelShadowBoxBlur.key}
+                                    field-level-help={propInputs.navAllLevelShadowBoxBlur.help} 
+                                    required={propInputs.navAllLevelShadowBoxBlur.required}
+                                    >
+                                </lightning-input>
+
+                                <lightning-input 
+                                    type={propInputs.navAllLevelShadowBoxSpread.type} 
+                                    label={propInputs.navAllLevelShadowBoxSpread.label} 
+                                    class={propInputs.navAllLevelShadowBoxSpread.classes} 
+                                    value={propInputs.navAllLevelShadowBoxSpread.value}
+                                    onchange={propInputs.navAllLevelShadowBoxSpread.changeHandler} 
+                                    data-key={propInputs.navAllLevelShadowBoxSpread.key}
+                                    field-level-help={propInputs.navAllLevelShadowBoxSpread.help} 
+                                    required={propInputs.navAllLevelShadowBoxSpread.required}
+                                    >
+                                </lightning-input>
+                            </lightning-tab>
+                        </lightning-tabset>
+
+                        <div class="slds-text-heading_small slds-m-top_large">Menu Item States:</div>
+                        <lightning-tabset>
+                            <lightning-tab label="Default">
+
+                                <lightning-input 
+                                    type={propInputs.navTextColor.type} 
+                                    label={propInputs.navTextColor.label} 
+                                    class={propInputs.navTextColor.classes} 
+                                    value={propInputs.navTextColor.value}
+                                    onchange={propInputs.navTextColor.changeHandler} 
+                                    data-key={propInputs.navTextColor.key}
+                                    field-level-help={propInputs.navTextColor.help} 
+                                    required={propInputs.navTextColor.required}
+                                    >
+                                </lightning-input>
+                    
+                                <lightning-input 
+                                    type={propInputs.navBackgroundColor.type} 
+                                    label={propInputs.navBackgroundColor.label} 
+                                    class={propInputs.navBackgroundColor.classes} 
+                                    value={propInputs.navBackgroundColor.value}
+                                    onchange={propInputs.navBackgroundColor.changeHandler} 
+                                    data-key={propInputs.navBackgroundColor.key}
+                                    field-level-help={propInputs.navBackgroundColor.help} 
+                                    required={propInputs.navBackgroundColor.required}
+                                    >
+                                </lightning-input>  
+
+                            </lightning-tab>
+                            <lightning-tab label="Active">
+                                
+                                <div class="slds-text-body_small">*Applies to active, hover, focus states</div>
+
+                                <lightning-input 
+                                    type={propInputs.navAlsoApplyToSelectedState.type} 
+                                    label={propInputs.navAlsoApplyToSelectedState.label} 
+                                    class={propInputs.navAlsoApplyToSelectedState.classes} 
+                                    checked={propInputs.navAlsoApplyToSelectedState.value}
+                                    onchange={propInputs.navAlsoApplyToSelectedState.changeHandler} 
+                                    data-key={propInputs.navAlsoApplyToSelectedState.key}
+                                    field-level-help={propInputs.navAlsoApplyToSelectedState.help} 
+                                    required={propInputs.navAlsoApplyToSelectedState.required}
+                                    >
+                                </lightning-input>
+
+                                <lightning-input 
+                                    type={propInputs.navTextColorHover.type} 
+                                    label={propInputs.navTextColorHover.label} 
+                                    class={propInputs.navTextColorHover.classes} 
+                                    value={propInputs.navTextColorHover.value}
+                                    onchange={propInputs.navTextColorHover.changeHandler} 
+                                    data-key={propInputs.navTextColorHover.key}
+                                    field-level-help={propInputs.navTextColorHover.help} 
+                                    required={propInputs.navTextColorHover.required}
+                                    >
+                                </lightning-input>
+
+                                <lightning-input 
+                                    type={propInputs.navBackgroundColorHover.type} 
+                                    label={propInputs.navBackgroundColorHover.label} 
+                                    class={propInputs.navBackgroundColorHover.classes} 
+                                    value={propInputs.navBackgroundColorHover.value}
+                                    onchange={propInputs.navBackgroundColorHover.changeHandler} 
+                                    data-key={propInputs.navBackgroundColorHover.key}
+                                    field-level-help={propInputs.navBackgroundColorHover.help} 
+                                    required={propInputs.navBackgroundColorHover.required}
+                                    >
+                                </lightning-input>
+
+
+                                <div class={propInputs.navBorderStyle.classes}>
+                                    <lightning-select
+                                        name={propInputs.navBorderStyle.key}
+                                        label={propInputs.navBorderStyle.label} 
+                                        value={propInputs.navBorderStyle.value}
+                                        options={propInputs.navBorderStyle.options}
+                                        onchange={propInputs.navBorderStyle.changeHandler}
+                                        required={propInputs.navBorderStyle.required}
+                                        data-key={propInputs.navBorderStyle.key}
+                                        field-level-help={propInputs.navBorderStyle.help} 
+                                        ></lightning-select>
+                                </div>
+
+                                <div class={propInputs.navBorderDirection.classes}>
+                                    <lightning-checkbox-group 
+                                        name={propInputs.navBorderDirection.key}
+                                        label={propInputs.navBorderDirection.label} 
+                                        options={propInputs.navBorderDirection.options}
+                                        value={propInputs.navBorderDirection.value}
+                                        onchange={propInputs.navBorderDirection.changeHandler}
+                                        required={propInputs.navBorderDirection.required}
+                                        ></lightning-checkbox-group>
+                                </div>
+
+                                <lightning-input 
+                                    type={propInputs.navBorderColor.type} 
+                                    label={propInputs.navBorderColor.label} 
+                                    class={propInputs.navBorderColor.classes} 
+                                    value={propInputs.navBorderColor.value}
+                                    onchange={propInputs.navBorderColor.changeHandler} 
+                                    data-key={propInputs.navBorderColor.key}
+                                    field-level-help={propInputs.navBorderColor.help} 
+                                    required={propInputs.navBorderColor.required}
+                                    >
+                                </lightning-input>
+
+                                <lightning-input 
+                                    type={propInputs.navBorderWidth.type} 
+                                    label={propInputs.navBorderWidth.label} 
+                                    class={propInputs.navBorderWidth.classes} 
+                                    value={propInputs.navBorderWidth.value}
+                                    onchange={propInputs.navBorderWidth.changeHandler} 
+                                    data-key={propInputs.navBorderWidth.key}
+                                    field-level-help={propInputs.navBorderWidth.help} 
+                                    required={propInputs.navBorderWidth.required}
+                                    >
+                                </lightning-input>
+                                
+
+                            </lightning-tab>
+                        </lightning-tabset>
+                    </div>
+
+                </lightning-accordion-section>
+            </lightning-accordion>
+
+        </lightning-tab>
+
+    </lightning-tabset>
+
+    <div class="extraSpacing">
+
+    </div>
+
+</template>

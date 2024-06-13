@@ -17,7 +17,7 @@
                             data-key={item.node.key}
                             key={item.node.key}
                             node-key={item.node.key}
-                            aria-selected={item.selected}
+                            aria-selected={item.node.selected}
                             aria-level={item.node.level}
                             label={item.node.label}
                             href={item.node.href}
@@ -57,7 +57,7 @@
                             data-key={item.node.key}
                             key={item.node.key}
                             node-key={item.node.key}
-                            aria-selected={item.selected}
+                            aria-selected={item.node.selected}
                             aria-level={item.node.level}
                             label={item.node.label}
                             href={item.node.href}
@@ -130,7 +130,7 @@
                 </template>
                 <span class="slds-has-flexi-truncate">
                     <span class="slds-hide" id={ariaLabelledById} if:true={isFirstNode}>{computedMenuAriaAnnouncement}</span>
-                    <a href={href} tabindex="0" role={linkRole} target={target} class="menuLink" aria-expanded={linkIsExpanded} aria-labelledby={ariaLabelledById} aria-label={linkTitle} title={linkTitle}>
+                    <a href={href} tabindex="0" role={linkRole} target={target} class="slds-p-horizontal_x-small menuLink" aria-expanded={linkIsExpanded} aria-labelledby={ariaLabelledById} aria-label={linkTitle} title={linkTitle}>
                         <template if:true={icon}>
                             <c-primitive-icon if:true={iconPositionLeft}
                             icon-name={icon}
@@ -144,7 +144,14 @@
                             class="slds-tree__item-label slds-truncate"
                             title={label}
                             role={linkRole}
-                            >{label}</span>
+                            >
+                            <template lwc:if={isLabel}>
+                                {label}
+                            </template>
+                            <template lwc:else>
+                                &nbsp;
+                            </template>
+                        </span>
                         <template if:true={icon}>
                             <c-primitive-icon if:true={iconPositionRight}
                             icon-name={icon}
@@ -199,7 +206,7 @@
                                         data-key={item.node.key}
                                         key={item.node.key}
                                         node-key={item.node.key}
-                                        aria-selected={item.selected}
+                                        aria-selected={item.node.selected}
                                         aria-level={item.node.level}
                                         label={item.node.label}
                                         href={item.node.href}
@@ -239,7 +246,7 @@
                                         data-key={item.node.key}
                                         key={item.node.key}
                                         node-key={item.node.key}
-                                        aria-selected={item.selected}
+                                        aria-selected={item.node.selected}
                                         aria-level={item.node.level}
                                         label={item.node.label}
                                         href={item.node.href}

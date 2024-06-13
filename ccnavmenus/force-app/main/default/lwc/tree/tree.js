@@ -89,7 +89,8 @@ export default class cTree extends LightningElement {
         return itemsFirstLevel;
     }
 
-    @api get items() {
+    @api get items() {     
+
         return this._items || [];
     }
 
@@ -118,9 +119,11 @@ export default class cTree extends LightningElement {
         return this._focusedChild;
     }
 
+    @api menuAlignmentClass = '';
+
     @api get treeContainerClasses() {
         let treeContainerClasses = 'slds-tree_container';
-        treeContainerClasses += (this.isVertical !== undefined && this.isVertical !== null && this.isVertical) ? ' slds-tree_container-vertical' : ' slds-tree_container-horizontal';
+        treeContainerClasses += (this.isVertical !== undefined && this.isVertical !== null && this.isVertical) ? ' slds-tree_container-vertical slds-p-around_small ' : ' slds-tree_container-horizontal';
         return treeContainerClasses;
     }
 
@@ -151,7 +154,7 @@ export default class cTree extends LightningElement {
                 this.selectedItem
             );
 
-            this.syncCurrentFocused();
+           // this.syncCurrentFocused();
         }
     }
 
@@ -169,7 +172,7 @@ export default class cTree extends LightningElement {
             this._selectedItem = treeRoot.selectedItem;
             this._key = this._childNodes.length > 0 ? treeRoot.key : null;
             if (this._key) {
-                this.syncCurrentFocused();
+                //this.syncCurrentFocused();
             }
         }
     }
@@ -493,7 +496,7 @@ export default class cTree extends LightningElement {
             {
                 return;
             }
-            else if( (e.target.tagName === 'CCNAVMENUS-NAV-MENU'  && e.target.uuid !== this.uuid) || 
+            else if( ((e.target.tagName === 'CCNAVMENUS-NAV-MENU' || e.target.tagName === 'CCNAVMENUS-NAV-MENU2')  && e.target.uuid !== this.uuid) || 
                         e.target.uuid === undefined || 
                     (e.target.forceClose !== undefined && e.target.forceClose === true) )
             {

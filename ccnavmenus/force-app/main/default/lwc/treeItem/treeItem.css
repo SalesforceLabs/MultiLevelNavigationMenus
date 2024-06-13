@@ -24,28 +24,9 @@ div {
     transform: none !important;
 }
 
-a.menuLink
-{
-    color: var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-link-text-color, var(--dxp-s-link-text-color,var(--dxp-g-brand, black)))) !important;
-    display: flex;
-    text-transform: var(--ccnavmenus-textTransform);
-    font-family: var(--ccnavmenus-fontFamily);
-    text-decoration: none;
-}
-
-a.menuLink:focus
-{
-    text-decoration: none;
-    outline: auto;
-}
 
 .slds-button:focus {
     outline: auto;
-}
-
-.slds-tree__item > button
-{
-    color: var(--ccnavmenus-brandNavigationColorText, black);
 }
 
 c-tree-item[role="treeitem"][data-is-vertical="false"] {
@@ -56,66 +37,8 @@ c-tree-item[role="treeitem"][data-is-vertical="false"] {
     display: block;
 }
 
-.slds-tree__item:hover {
-    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor, #c9c9c9);
-    box-shadow: inset 0 0px 0 20px rgba(255, 255, 255, 0.7);
-}
-
 .slds-tree__item {
     text-decoration: none !important;
-}
-
-c-tree-item[role="treeitem"][aria-selected="true"] > .slds-tree__item {
-    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor, white);
-    box-shadow: inset var(--ccnavmenus-brandNavigationBarBackgroundColor, white) 4px 0px 0px, 
-                inset 0 0px 0 20px rgba(255, 255, 255, 0.7);
-}
-
-c-tree-item[aria-level="1"] > div.slds-tree__item
-{
-    background-color: var(--ccnavmenus-brandNavigationBarBackgroundColor, white);
-}
-
-.vertical-groupDiv-1 {
-    background-color: var(--ccnavmenus-brandNavigationBackgroundColor, white);
-}
-
-.horizontal-groupDiv-1 {
-    position: absolute;
-    margin-top: 10px;
-    min-width: var(--ccnavmenus-horizontalItem-min-width, 20rem);
-    max-width: var(--ccnavmenus-horizontalItem-max-width, auto);
-    background-color: var(--ccnavmenus-brandNavigationBackgroundColor, white);
-    border: 1px solid gray;
-    z-index: 9999;
-    padding-right: 1rem;
-    padding-top: 0.3rem;
-    padding-bottom: 0.3rem;
-}
-
-.horizontal-groupDiv-1:after, 
-.horizontal-groupDiv-1:before {
-	bottom: 100%;
-	left: 2.7rem;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-}
-
-.horizontal-groupDiv-1:after {
-	border-color: rgba(255, 255, 255, 0);
-	border-bottom-color: var(--ccnavmenus-brandNavigationBackgroundColor, white);
-	border-width: 9px;
-    margin-left: -9px;
-}
-.horizontal-groupDiv-1:before {
-	border-color: rgba(0, 0, 0, 0);
-	border-bottom-color: #000000;
-	border-width: 10px;
-	margin-left: -10px;
 }
 
 button[title='Expand Tree Branch'].slds-is-disabled {
@@ -128,9 +51,22 @@ c-tree-item[aria-level="1"][data-is-vertical="false"] > div {
     position: relative;
 }
 
+.horizontalMenuItem div[role="ccnavMenu-treeItemCSS"] > div[role="menuitem"],
+.horizontalMenuItem div[role="ccnavMenu-treeItemCSS"] > div[role="link"] { 
+    padding-right: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
+    padding-left: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
+}
 
-div[role="ccnavMenu-treeItemCSS"] > div {
-    padding-left: var(--ccnavmenus-midLevelItemSpacing, 10px);
+.groupMenuItem div[role="ccnavMenu-treeItemCSS"] > div[role="menuitem"],
+.groupMenuItem div[role="ccnavMenu-treeItemCSS"] > div[role="link"] {
+    padding-left: 10px;
+    padding-right: 0;
+}
+
+div[role="ccnavMenu-treeItemCSS"] > div[role="menuitem"],
+div[role="ccnavMenu-treeItemCSS"] > div[role="link"] {
+    padding-top: calc(var(--ccnavmenus-menuItemVerticalPadding, 16px)/2);
+    padding-bottom: calc(var(--ccnavmenus-menuItemVerticalPadding, 16px)/2);
 }
 
 div[role="ccnavMenu-treeItemCSS"] > div[data-is-leaf="true"] {
@@ -166,6 +102,146 @@ ul > li.groupMenuItem > c-tree-item[data-is-vertical="true"][data-level="1"] > d
     right: 2.7rem;
     left: auto;
 }
+
+
+
+/* Default Style Overrides */
+
+a.menuLink
+{
+    color: var(--ccnavmenus-nav-text-color, var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-link-text-color, var(--dxp-s-link-text-color,var(--dxp-g-brand, black))))) ;
+    display: flex;
+    text-transform: var(--ccnavmenus-textTransform);
+    font-family: var(--ccnavmenus-fontFamily);
+    text-decoration: none;
+    height: 100%;
+    align-items: center;
+}
+
+.horizontalMenuItem a.menuLink,
+.horizontalMenuItem .slds-tree__item > button,
+c-tree-item[aria-level="1"] > div.slds-tree__item
+{
+    color: var(--ccnavmenus-navContainer-text-color, var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-link-text-color, var(--dxp-s-link-text-color,var(--dxp-g-brand, black))))) ;
+}
+
+.slds-tree__item > button,
+.groupMenuItem .slds-tree__item > button,
+.groupMenuItem .slds-tree__item a.menuLink
+{
+    color: var(--ccnavmenus-nav-text-color, var(--ccnavmenus-brandNavigationColorText, black));
+}
+
+.vertical-groupDiv-1 {
+    background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBackgroundColor, white));
+}
+
+.horizontal-groupDiv-1 {
+    position: absolute;
+    
+    min-width: var(--ccnavmenus-horizontalItem-min-width, 20rem);
+    max-width: var(--ccnavmenus-horizontalItem-max-width, auto);
+    background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBackgroundColor, white));
+    border: 1px solid gray;
+    z-index: 9999;
+    padding: var(--dxp-g-spacing-small, 0.75rem);
+    border: var(--ccnavmenus-nav-allLevel-border);
+    box-shadow: var(--ccnavmenus-nav-allLevel-shadowBox);
+}
+
+
+
+
+/* Selected Style Overrides */
+
+.horizontalMenuItem c-tree-item[role="treeitem"][aria-selected="true"] > div[role="ccnavMenu-treeItemCSS"] > div.slds-tree__item {
+    background-color:  var(--ccnavmenus-navContainer-background-color-selected);
+    border-top: var(--ccnavmenus-navContainer-border-top-selected);
+    border-bottom: var(--ccnavmenus-navContainer-border-bottom-selected);
+    border-left: var(--ccnavmenus-navContainer-border-left-selected);
+    border-right: var(--ccnavmenus-navContainer-border-right-selected);
+}
+
+.horizontalMenuItem c-tree-item[role="treeitem"][aria-selected="true"] > div[role="ccnavMenu-treeItemCSS"] > div.slds-tree__item a.menuLink {
+    color: var(--ccnavmenus-navContainer-text-color-selected, var(--ccnavmenus-navContainer-text-color, var(--ccnavmenus-brandNavigationColorText, white))) ;
+}
+
+.horizontalMenuItem c-tree-item[role="treeitem"][aria-selected="true"] > div[role="ccnavMenu-treeItemCSS"] > div.slds-tree__item > button[ccnavmenus-treeItem_treeItem] {
+    color: var(--ccnavmenus-navContainer-text-color-selected, var(--ccnavmenus-navContainer-text-color, var(--ccnavmenus-brandNavigationColorText, white)));
+}
+
+.groupMenuItem c-tree-item[role="treeitem"][aria-selected="true"] > div[role="ccnavMenu-treeItemCSS"] > div.slds-tree__item {
+    background-color:  var(--ccnavmenus-nav-background-color-selected);
+    border-top: var(--ccnavmenus-nav-border-top-selected);
+    border-bottom: var(--ccnavmenus-nav-border-bottom-selected);
+    border-left: var(--ccnavmenus-nav-border-left-selected);
+    border-right: var(--ccnavmenus-nav-border-right-selected);
+}
+
+.groupMenuItem c-tree-item[role="treeitem"][aria-selected="true"] > div[role="ccnavMenu-treeItemCSS"] > div.slds-tree__item a.menuLink {
+    color: var(--ccnavmenus-nav-text-color-selected) ;
+}
+
+.groupMenuItem c-tree-item[role="treeitem"][aria-selected="true"] > div[role="ccnavMenu-treeItemCSS"] > div.slds-tree__item > button[ccnavmenus-treeItem_treeItem] {
+    color: var(--ccnavmenus-nav-text-color-selected);
+}
+
+
+/* Hover Style Overrides */
+
+a.menuLink:hover,
+a.menuLink:focus
+{
+    color: var(--ccnavmenus-nav-text-color-hover, var(--ccnavmenus-brandNavigationColorText));
+    text-decoration: none;
+    outline: auto;
+}
+
+.horizontalMenuItem a.menuLink:hover,
+.horizontalMenuItem a.menuLink:focus,
+.horizontalMenuItem c-tree-item[role="treeitem"] > div[role="ccnavMenu-treeItemCSS"] > div.slds-tree__item a.menuLink:hover,
+.horizontalMenuItem c-tree-item[role="treeitem"] > div[role="ccnavMenu-treeItemCSS"] > div.slds-tree__item a.menuLink:focus
+{
+    color: var(--ccnavmenus-navContainer-text-color-hover, var(--ccnavmenus-brandNavigationColorText));
+    text-decoration: none;
+    outline: auto;
+}
+
+.horizontalMenuItem .slds-tree__item:hover > button,
+.horizontalMenuItem c-tree-item[role="treeitem"] > div[role="ccnavMenu-treeItemCSS"] > div.slds-tree__item:hover > button[ccnavmenus-treeItem_treeItem],
+.horizontalMenuItem .slds-tree__item:hover a.menuLink,
+.horizontalMenuItem c-tree-item[role="treeitem"] > div[role="ccnavMenu-treeItemCSS"] > div.slds-tree__item:hover a.menuLink
+{
+    color: var(--ccnavmenus-navContainer-text-color-hover, var(--ccnavmenus-brandNavigationColorText, black));
+}
+
+
+.horizontalMenuItem .slds-tree__item:hover,
+.horizontalMenuItem c-tree-item[role="treeitem"] > div[role="ccnavMenu-treeItemCSS"] > div.slds-tree__item:hover {
+    background-color: var(--ccnavmenus-navContainer-background-color-hover, var(--ccnavmenus-brandNavigationBarBackgroundColor, #c9c9c9));
+    border-top: var(--ccnavmenus-navContainer-border-top);
+    border-bottom: var(--ccnavmenus-navContainer-border-bottom);
+    border-left: var(--ccnavmenus-navContainer-border-left);
+    border-right: var(--ccnavmenus-navContainer-border-right);
+}
+
+.slds-tree__item:hover > button,
+.groupMenuItem c-tree-item[role="treeitem"] > div[role="ccnavMenu-treeItemCSS"] > div.slds-tree__item:hover > button[ccnavmenus-treeItem_treeItem],
+.groupMenuItem c-tree-item[role="treeitem"] > div[role="ccnavMenu-treeItemCSS"] > div.slds-tree__item:hover a.menuLink
+{
+    color: var(--ccnavmenus-nav-text-color-hover, var(--ccnavmenus-brandNavigationColorText, black));
+}
+
+.slds-tree__item:hover,
+.groupMenuItem c-tree-item[role="treeitem"] > div[role="ccnavMenu-treeItemCSS"] > div.slds-tree__item:hover
+{
+    background-color: var(--ccnavmenus-nav-background-color-hover, var(--ccnavmenus-brandNavigationBarBackgroundColor, #c9c9c9));
+    border-top: var(--ccnavmenus-nav-border-top);
+    border-bottom: var(--ccnavmenus-nav-border-bottom);
+    border-left: var(--ccnavmenus-nav-border-left);
+    border-right: var(--ccnavmenus-nav-border-right);
+}
+
 
 @media (max-width: 650)
 {
