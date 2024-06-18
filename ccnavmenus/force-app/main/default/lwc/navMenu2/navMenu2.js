@@ -1096,13 +1096,13 @@ export default class NavMenu2 extends LightningElement {
             let replaceMask = this.userInfo.AccountId;
             this.urlSubMapJsonModified = this.urlSubMapJsonModified.replace(regEx,replaceMask);
         }
-        console.log('Account Name: ' + this.userInfo.Account.Name);
-        if(this.userInfo.Account.Name !== undefined && this.userInfo.Account.Name !== null)
+        
+        if(this.userInfo?.Account?.Name !== undefined && this.userInfo?.Account?.Name !== null)
         {
 
             let searchMask = this.escapeRegex('[@User.AccountName]');
             let regEx = new RegExp(searchMask, "ig");
-            let replaceMask = this.userInfo.Account.Name;
+            let replaceMask = this.userInfo?.Account?.Name;
             this.urlSubMapJsonModified = this.urlSubMapJsonModified.replace(regEx,replaceMask);
         }
 

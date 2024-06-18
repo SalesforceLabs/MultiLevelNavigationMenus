@@ -67,7 +67,7 @@ ul.display-block > li {
 }
 
 .megaPopover {
-    position: fixed;
+    position: absolute;
     left: 0;
     background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBarBackgroundColor));
     width: 100%;

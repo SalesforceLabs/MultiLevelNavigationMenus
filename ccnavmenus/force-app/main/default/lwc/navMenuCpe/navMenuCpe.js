@@ -144,7 +144,7 @@ export default class NavMenuCpe extends LightningElement {
                 options:[
                     { label: 'Tree', value: 'tree' },
                     { label: 'Drilldown', value: 'drilldown' },
-                    { label: 'Mega (not recommended)', value: 'mega' }
+                    { label: 'Mega', value: 'mega' }
                 ],
             },
             menuModeMobile: {
@@ -159,6 +159,7 @@ export default class NavMenuCpe extends LightningElement {
                 classes: defaultCSSClasses + '', //css classes for html lightning-input tag
                 changeHandler: this.handleMenuModeMobileChange, //onchange handler for html lightning-input tag
                 options:[
+                    { label: 'Horizontal First Level', value: 'horizontalFirstLevel' },
                     { label: 'Apply Type to All Levels', value: 'allLevels' },
                     { label: 'Behind Hamburger Toggle', value: 'hamburger' },
                     { label: 'Hidden', value: 'hidden'}
@@ -371,7 +372,7 @@ export default class NavMenuCpe extends LightningElement {
             },
             navContainerAlsoApplyToSelectedState: {
                 key: 'navContainerAlsoApplyToSelectedState', //key used for html lightning-input tag identifier, must match key in propInputs
-                label: 'Also Apply to Selected State', //label used for html lighting-input tag
+                label: 'Also Apply when Page URL Matches Menu Item URL', //label used for html lighting-input tag
                 type: 'checkbox', //type used for html lightning-input tag
                 help: 'When menu item is selected or current page url matches menu item', //tooltip / help text used for html lightning-input tag
                 required: false, //required used for html lightning-input tag
@@ -494,7 +495,7 @@ export default class NavMenuCpe extends LightningElement {
             },
             navAlsoApplyToSelectedState: {
                 key: 'navAlsoApplyToSelectedState', //key used for html lightning-input tag identifier, must match key in propInputs
-                label: 'Also Apply to Selected State', //label used for html lighting-input tag
+                label: 'Also Apply when Page URL Matches Menu Item URL', //label used for html lighting-input tag
                 type: 'checkbox', //type used for html lightning-input tag
                 help: 'When menu item is selected or current page url matches menu item', //tooltip / help text used for html lightning-input tag
                 required: false, //required used for html lightning-input tag

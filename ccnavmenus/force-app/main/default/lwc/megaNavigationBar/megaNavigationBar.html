@@ -16,7 +16,7 @@
                     <template if:true={item.appLauncher}>
                         <li
                             key={item.id}
-                            class="slds-is-relative slds-list__item appIcon"
+                            class="slds-list__item appIcon"
                             role="none"
                         >
                             <lightning-dynamic-icon
@@ -34,7 +34,7 @@
                     <template if:false={item.appLauncher}>
                         <li
                             key={item.id}
-                            class="slds-is-relative slds-list__item slds-p-vertical_x-small drillDownItem"
+                            class="slds-list__item slds-p-vertical_x-small drillDownItem"
                             role="none"
                         >
                             <template if:true={item.hasChildren}>

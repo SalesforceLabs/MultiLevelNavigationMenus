@@ -49,7 +49,7 @@ export default class cTree extends LightningElement {
         expanded: false,
         href: 'javascript:void(0);',
         level: 1,
-        initWidth: 70,
+        initWidth: 125,
         calcWidth: undefined,
         items: []
     };

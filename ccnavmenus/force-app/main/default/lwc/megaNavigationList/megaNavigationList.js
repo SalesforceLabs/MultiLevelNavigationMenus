@@ -5,6 +5,9 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { LightningElement, track, api } from 'lwc';
+import formFactor from '@salesforce/client/formFactor';
+import { debounce } from './navbar_utils';
+
 
 export default class MegaNavigationList extends LightningElement {
     @api menuItems;
@@ -15,6 +18,7 @@ export default class MegaNavigationList extends LightningElement {
     @api doNotRenderParentLink = false;
     @api containerClasses = '';
     
+    @track megaListContainerWidth;
 
     get parentSelected() {
         let url = document.URL;
@@ -52,11 +56,109 @@ export default class MegaNavigationList extends LightningElement {
 
     }
 
+    getWidth(el) {
+        let width = 0;
+        if(el !== undefined && el !== null)
+        {
+            width = el.getBoundingClientRect().width + parseInt(getComputedStyle(el).marginLeft) + parseInt(getComputedStyle(el).marginRight)
+            + parseInt(getComputedStyle(el).paddingLeft) + parseInt(getComputedStyle(el).paddingRight);
+        }
+        return width;
+    }
+
+
     get repeatedDivClasses() {
 
-        return (this.isFirstLevel === true) ? 'slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_3-of-12 slds-m-top_x-large' : 'slds-size_12-of-12 slds-p-left_medium';
+        let tmpClasses = '';
+        if(this.isFirstLevel !== true)
+        {
+            tmpClasses = 'slds-size_12-of-12 slds-p-left_medium';
+        }
+        else 
+        {
+            let megaListContainerEl = this.template.querySelector('div[role="megaListContainer"]');
+            
+            if(!this.isObjectEmpty(megaListContainerEl) && this.isObjectEmpty(this.megaListContainerWidth))
+            {
+                this.megaListContainerWidth = this.getWidth(megaListContainerEl);
+            }
+            
+            if(!this.isObjectEmpty(this.megaListContainerWidth))
+            {
+                if(this.megaListContainerWidth < 768)
+                {
+                    tmpClasses = 'slds-size_1-of-1 slds-m-top_x-large';
+                }
+                else if(this.megaListContainerWidth < 1024)
+                {
+                    tmpClasses = 'slds-size_6-of-12 slds-m-top_x-large';
+                }
+                else 
+                {
+                    tmpClasses = 'slds-size_3-of-12 slds-m-top_x-large';
+                }
+            }
+            else 
+            {
+                if(formFactor === 'Small')
+                {
+                    tmpClasses = 'slds-size_1-of-1 slds-m-top_x-large';
+                }
+                else if(formFactor === 'Medium')
+                {
+                    tmpClasses = 'slds-size_6-of-12 slds-m-top_x-large';
+                }
+                else 
+                {
+                    tmpClasses = 'slds-size_3-of-12 slds-m-top_x-large';
+                }
+            }
+
+        }
+
+        return tmpClasses;
 
     }
+
+    connectedCallback() {
+        /* Fires for clicks anywhere in the document to allow closing the menu for outside clicks.
+         * However, since a click inside the menu would also trigger this event,
+         * `DrilldownNavigationBar.handleNavClick()` catches click events from inside the menu and
+         * prevents them from being caught here.
+         * */
+        window.addEventListener('resize', this._resizeListener);
+
+    }
+
+    disconnectedCallback() {
+        window.removeEventListener('resize', this._resizeListener);
+    }
+
+    renderedCallback() {
+
+        let megaListContainerEl = this.template.querySelector('div[role="megaListContainer"]');
+            
+        if(!this.isObjectEmpty(megaListContainerEl))
+        {
+            let tmpMegaListContainerWidth = this.getWidth(megaListContainerEl);
+            if(this.megaListContainerWidth !== tmpMegaListContainerWidth)
+            {
+                this.megaListContainerWidth = tmpMegaListContainerWidth;
+            }
+        }
+
+    }
+
+    _resizeListener = debounce(() => {
+        
+        let megaListContainerEl = this.template.querySelector('div[role="megaListContainer"]');
+            
+        if(!this.isObjectEmpty(megaListContainerEl))
+        {
+            this.megaListContainerWidth = this.getWidth(megaListContainerEl);
+        }
+
+    }, 300);
 
     handleNavClick(event) {
         let preventDefaultAndPropagation = false;

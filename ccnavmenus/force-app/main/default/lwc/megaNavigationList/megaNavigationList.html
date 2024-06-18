@@ -1,7 +1,7 @@
 <template>
-    <div class={containerClasses} onclick={handleNavClick}>
+    <div class={containerClasses} role="megaListContainer" onclick={handleNavClick}>
         <template lwc:if={isParentItemLink}>
-            <div class="applyBackground slds-grid slds-size_1-of-1 slds-align_absolute-center slds-m-top_small">
+            <div class="applyBackground slds-grid slds-size_8-of-12 slds-align_absolute-center slds-m-top_small">
                 <span class="menuItemSpan parentItemSpan slds-p-vertical_xx-small">
                     <a href={parentItem.href} 
                         tabindex="0" 

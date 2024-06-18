@@ -26,7 +26,7 @@ div {
 
 
 .slds-button:focus {
-    outline: auto;
+    outline: none;
 }
 
 c-tree-item[role="treeitem"][data-is-vertical="false"] {
@@ -71,10 +71,6 @@ div[role="ccnavMenu-treeItemCSS"] > div[role="link"] {
 
 div[role="ccnavMenu-treeItemCSS"] > div[data-is-leaf="true"] {
     padding-left: 32px;
-}
-
-[data-level="1"] > div[role="ccnavMenu-treeItemCSS"] > div[data-is-leaf="true"] {
-    padding-left: 0px;
 }
 
 li.groupMenuItem > c-tree-item > div[role="ccnavMenu-treeItemCSS"] {
@@ -194,7 +190,7 @@ a.menuLink:focus
 {
     color: var(--ccnavmenus-nav-text-color-hover, var(--ccnavmenus-brandNavigationColorText));
     text-decoration: none;
-    outline: auto;
+    outline: none;
 }
 
 .horizontalMenuItem a.menuLink:hover,
@@ -204,7 +200,7 @@ a.menuLink:focus
 {
     color: var(--ccnavmenus-navContainer-text-color-hover, var(--ccnavmenus-brandNavigationColorText));
     text-decoration: none;
-    outline: auto;
+    outline: none;
 }
 
 .horizontalMenuItem .slds-tree__item:hover > button,
