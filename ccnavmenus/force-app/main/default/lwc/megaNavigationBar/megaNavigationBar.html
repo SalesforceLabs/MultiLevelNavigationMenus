@@ -53,9 +53,11 @@
                                 <template if:true={item.icon}>
                                     <c-primitive-icon if:true={item.iconPositionLeft}
                                     icon-name={item.icon}
-                                    variant="bare"
+                                    variant="bare2"
+                                    class="slds-current-color"
                                     svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
                                     no-transform="true"
+                                    position="left"
                                     >
                                     </c-primitive-icon>
                                 </template>
@@ -65,20 +67,23 @@
                                     <template if:true={item.icon}>
                                         <c-primitive-icon if:true={item.iconPositionRight}
                                         icon-name={item.icon}
-                                        variant="bare"
+                                        variant="bare2"
+                                        class="slds-current-color"
                                         svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
                                         no-transform="true"
+                                        position="right"
                                         >
                                         </c-primitive-icon>
                                     </template>
 
-                                    <lightning-icon
+                                    <c-primitive-icon
                                         icon-name="utility:chevrondown"
-                                        variant="bare"
+                                        variant="bare2"
                                         size="xx-small"
-                                        class="slds-current-color slds-p-left_x-small"
+                                        class="slds-current-color slds-p-around_x-small"
+                                        position="right"
                                     >
-                                    </lightning-icon>
+                                    </c-primitive-icon>
                                 </button>
 
                                 <template if:true={item.active}>

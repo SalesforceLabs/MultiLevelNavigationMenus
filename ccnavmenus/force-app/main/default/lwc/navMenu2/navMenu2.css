@@ -6,13 +6,7 @@
  */
  
 div[role="ccnavMenuCSS"]
-{ /* 
-    *
-    * 
-    * 
-    * 
-    * 
-    */
+{ 
     --ccnavmenus-navContainer-text-color: var(--dxp-g-brand, var(--dxp-g-root-contrast, black));
     --ccnavmenus-navContainer-background-color: var(--dxp-g-root, white);
     --ccnavmenus-navContainer-text-color-hover: var(--dxp-g-brand, var(--dxp-g-root-contrast, black));
@@ -44,10 +38,14 @@ div[role="ccnavMenuCSS"]
     --ccnavmenus-nav-border-right-selected: var();
 
     --ccnavmenus-nav-allLevel-border: var();
+    --ccnavmenus-nav-allLevel-border-radius: 0;
     --ccnavmenus-nav-allLevel-shadowBox: var();
 
     --ccnavmenus-textTransform: 'none';
     --ccnavmenus-fontFamily: var(--dxp-g-root-font-family, var(--lwc-fontFamily, 'Salesforce Sans'));
+    --ccnavmenus-fontSize: var(--dxp-s-html-font-size, 16px);
+    --ccnavmenus-icon-multiplier: 1;
+    --ccnavmenus-icon-spacing: 10px;
     --ccnavmenus-topLevelItemSpacing: 20px;
     --ccnavmenus-menuItemVerticalPadding: 16px;
     --ccnavmenus-drillDownNav-list-right: initial;
@@ -58,7 +56,6 @@ div[role="ccnavMenuCSS"]
     --ccnavmenus-drillDownNav-list-vertical-left: 0;
     --ccnavmenus-drillDownNav-list-vertical-float: none;
 }
-
 
 nav.applyBackground {
     background-color: var(--ccnavmenus-navContainer-background-color, var(--dxp-g-root, white));

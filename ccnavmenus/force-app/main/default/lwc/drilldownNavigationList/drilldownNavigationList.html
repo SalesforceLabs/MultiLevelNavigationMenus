@@ -45,13 +45,14 @@
                         style={customStyles}
                     >
                         {backButtonLabelComputed}
-                        <lightning-icon
+                        <c-primitive-icon
                             icon-name="utility:chevronleft"
-                            variant="bare"
+                            variant="bare2"
                             size="xx-small"
                             class="slds-current-color slds-p-right_x-small slds-p-top_xxx-small slds-float_left backButtonIcon"
+                            position="left"
                         >
-                        </lightning-icon>
+                        </c-primitive-icon>
                     </button>
                 </li>
             </template>
@@ -79,9 +80,11 @@
                             &nbsp;
                             <c-primitive-icon if:true={parentItem.iconPositionLeft}
                             icon-name={parentItem.icon}
-                            variant="bare"
+                            variant="bare2"
+                            class="slds-current-color"
                             svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
                             no-transform="true"
+                            position="left"
                             >
                             </c-primitive-icon>
                         </template>
@@ -91,9 +94,11 @@
                             <template if:true={parentItem.icon}>
                                 <c-primitive-icon if:true={parentItem.iconPositionRight}
                                 icon-name={parentItem.icon}
-                                variant="bare"
+                                variant="bare2"
+                                class="slds-current-color"
                                 svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
                                 no-transform="true"
+                                position="right"
                                 >
                                 </c-primitive-icon>
                             </template>
@@ -128,9 +133,11 @@
                             <template if:true={item.icon}>
                                 <c-primitive-icon if:true={item.iconPositionLeft}
                                 icon-name={item.icon}
-                                variant="bare"
+                                variant="bare2"
+                                class="slds-current-color"
                                 svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
                                 no-transform="true"
+                                position="left"
                                 >
                                 </c-primitive-icon>
                             </template>
@@ -140,20 +147,23 @@
                             <template if:true={item.icon}>
                                 <c-primitive-icon if:true={item.iconPositionRight}
                                 icon-name={item.icon}
-                                variant="bare"
+                                variant="bare2"
+                                class="slds-current-color"
                                 svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
                                 no-transform="true"
+                                position="right"
                                 >
                                 </c-primitive-icon>
                             </template>
 
-                            <lightning-icon
+                            <c-primitive-icon
                                 icon-name="utility:chevronright"
-                                variant="bare"
+                                variant="bare2"
                                 size="xx-small"
                                 class="comm-drilldown-navigation__chevron-right slds-current-color slds-p-left_x-small slds-is-absolute"
+                                position="right"
                             >
-                            </lightning-icon>
+                            </c-primitive-icon>
                         </button>
                     </template>
 
@@ -178,10 +188,12 @@
                         <template if:true={item.icon}>
                             <c-primitive-icon if:true={item.iconPositionLeft}
                             icon-name={item.icon}
-                            variant="bare"
+                            variant="bare2"
+                            class="slds-current-color"
                             svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
                             no-transform="true"
                             data-islink="true"
+                            position="left"
                             >
                             </c-primitive-icon>
                         </template>
@@ -191,9 +203,11 @@
                         <template if:true={item.icon}>
                             <c-primitive-icon if:true={item.iconPositionRight}
                             icon-name={item.icon}
-                            variant="bare"
+                            variant="bare2"
+                            class="slds-current-color"
                             svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
                             no-transform="true"
+                            position="right"
                             >
                             </c-primitive-icon>
                         </template>

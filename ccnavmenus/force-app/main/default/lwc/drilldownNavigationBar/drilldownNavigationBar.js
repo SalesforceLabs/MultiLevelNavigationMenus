@@ -6,8 +6,8 @@
  */
 
 import { api, LightningElement, track } from 'lwc';
-import { debounce } from './navbar_utils';
 import { addOverflowMenu } from './overflow';
+import * as generalUtils from 'c/gtaUtilsGeneral';
 
 const NAVIGATE_EVENT = 'navigatetopage';
 const SHOW_APP_LAUNCHER = 'showapplauncher';
@@ -156,18 +156,20 @@ export default class DrilldownNavigationBar extends LightningElement {
 
     getNavAvailableWidth() {
         const navElement = this.template.querySelector('div[role="menubarnav"]');
-        const navElementWidth = navElement?.getBoundingClientRect()?.width;
+        //const navElementWidth = navElement?.getBoundingClientRect()?.width;
+        const navElementWidth = generalUtils.getContainerElementWidth(navElement);
+        const winWidth = generalUtils.getWindowWidth();
         // if the nav element is on it's own row and its container is not limiting its width to 100% (ex. B2B Aura)
         // then the navElement width will be greater than the window width and we need to use the window width
-        return navElementWidth > window.innerWidth
-            ? window.innerWidth
+        return navElementWidth > winWidth
+            ? winWidth
             : navElementWidth;
     }
 
     calculateNavItemWidth() {
         const elements = this.template.querySelectorAll('nav ul > li');
         elements.forEach((el) => {
-            this.itemWidth.push(this.getWidth(el));
+            this.itemWidth.push(generalUtils.getElementWidth(el));
         });
     }
 
@@ -179,19 +181,9 @@ export default class DrilldownNavigationBar extends LightningElement {
     }
 
     getOverflowWidth() {
-        return this.getWidth(
+        return generalUtils.getElementWidth(
             this.template.querySelector('nav ul > li:last-of-type')
         );
-    }
-
-    getWidth(el) {
-        let width = 0;
-        if(el !== undefined && el !== null)
-        {
-            width = el.getBoundingClientRect().width + parseInt(getComputedStyle(el).marginLeft) + parseInt(getComputedStyle(el).marginRight)
-            + parseInt(getComputedStyle(el).paddingLeft) + parseInt(getComputedStyle(el).paddingRight);
-        }
-        return width;
     }
 
     calculateOverflow() {
@@ -234,7 +226,7 @@ export default class DrilldownNavigationBar extends LightningElement {
         }
         else 
         {
-            this.visibleMenuItems = JSON.parse(JSON.stringify(this.menuItems));
+            this.visibleMenuItems = generalUtils.cloneObjectWithJSON(this.menuItems);
         }
 
     }
@@ -245,10 +237,10 @@ export default class DrilldownNavigationBar extends LightningElement {
         for(let i=0; i<menuItems.length;i++)
         {
             menuItems[i].isLast = ((menuItems.length - 1) === i);
-            menuItems[i].hasChildren = (menuItems[i].items !== undefined && menuItems[i].items !== null && menuItems[i].items.length > 0);
-            menuItems[i].iconPositionLeft = (menuItems[i].iconPosition !== undefined && menuItems[i].iconPosition !== null && menuItems[i].iconPosition.trim() === 'left');
-            menuItems[i].iconPositionRight = (menuItems[i].iconPosition !== undefined && menuItems[i].iconPosition !== null && menuItems[i].iconPosition.trim() === 'right');
-            menuItems[i].isSelected = (url.includes(menuItems[i].href)) ? true : false;
+            menuItems[i].hasChildren = (generalUtils.isArrayEmpty(menuItems[i].items) === false);
+            menuItems[i].iconPositionLeft = (generalUtils.isStringEmpty(menuItems[i].iconPosition) === false && menuItems[i].iconPosition.trim() === 'left');
+            menuItems[i].iconPositionRight = (generalUtils.isStringEmpty(menuItems[i].iconPosition) === false && menuItems[i].iconPosition.trim() === 'right');
+            menuItems[i].isSelected = (!generalUtils.isStringEmpty(menuItems[i].href) && !menuItems[i].href.trim().includes('void(0)') && menuItems[i].href.trim() !== '#' && url.includes(menuItems[i].href));
         }
         return menuItems;            
     }
@@ -269,7 +261,7 @@ export default class DrilldownNavigationBar extends LightningElement {
         }
         this._resetTabIndex = true;
 
-        this.knownWindowWidth = window.innerWidth;
+        this.knownWindowWidth = generalUtils.getWindowWidth();
 
         if (this.menuItemsChanged) {
             this.menuItemsChanged = false;
@@ -279,7 +271,7 @@ export default class DrilldownNavigationBar extends LightningElement {
 
     }
 
-    _resizeListener = debounce(() => {
+    _resizeListener = generalUtils.debounce(() => {
         const currentWidth = window.innerWidth;
 
         const widthHasChanged = this.knownWindowWidth !== currentWidth;
@@ -323,7 +315,7 @@ export default class DrilldownNavigationBar extends LightningElement {
     /**
      * Getter to calculate the correct slds class for the menu list given the alignment value
      */
-    get menuAlignmentClass() {
+    get menuAlignmentClassCalculated() {
         const cssClasses = [
             'comm-drilldown-navigation__bar',
             'slds-grid',
@@ -568,10 +560,19 @@ export default class DrilldownNavigationBar extends LightningElement {
             if (this._focusedItemId) {
                 let oldFocusItem =
                     listItems[this.findItemIndex(this._focusedItemId)];
-                oldFocusItem.tabIndex = -1;
+                if(generalUtils.isObjectEmpty(oldFocusItem) === false)
+                {
+                    oldFocusItem.tabIndex = -1;
+                }
+                
             }
-            itemToFocus.tabIndex = 0;
-            itemToFocus.focus();
+
+            if(generalUtils.isObjectEmpty(itemToFocus) === false)
+            {
+                itemToFocus.tabIndex = 0;
+                itemToFocus.focus();
+            }
+            
             if (targetSubMenuActive) {
                 this.setItemActive(menuItemId, true);
             }

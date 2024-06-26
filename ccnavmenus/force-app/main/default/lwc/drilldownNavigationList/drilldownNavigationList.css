@@ -18,6 +18,7 @@
     box-shadow: var(--ccnavmenus-nav-allLevel-shadowBox);
     z-index: 1;
     border: var(--ccnavmenus-nav-allLevel-border);
+    border-radius: var(--ccnavmenus-nav-allLevel-border-radius, 0);
 }
 
 .comm-drilldown-navigation__list:hover {
@@ -39,6 +40,7 @@
     color: var(--ccnavmenus-nav-text-color, var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-navigation-text-color)));
     font-size: var(--dxp-s-body-font-size,var(--dxp-g-font-size-3, var(--dxp-c-navigation-item-font-size)));
     font-family: var(--ccnavmenus-fontFamily, inherit);
+    font-size: var(--ccnavmenus-fontSize, 16px);
     text-transform: var(--ccnavmenus-textTransform);
     display: block;
     background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBackgroundColor,var(--dxp-c-navigation-list-background-color)));

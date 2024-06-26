@@ -12,6 +12,7 @@ import { normalizeString as normalize } from 'c/utilsPrivate';
 import * as iconUtils from 'c/iconUtils';
 import standardTemplate from './primitiveIcon.html';
 import { getIconSvgTemplates } from 'lightning/configProvider';
+import {isStringEmpty} from 'c/gtaUtilsGeneral';
 
 export default class cPrimitiveIcon extends LightningElement {
     @api iconName;
@@ -21,6 +22,7 @@ export default class cPrimitiveIcon extends LightningElement {
     @api variant;
     @api noTransform = false;
     @api focusable = false;
+    @api position;
 
     privateIconSvgTemplates = getIconSvgTemplates();
 
@@ -66,6 +68,15 @@ export default class cPrimitiveIcon extends LightningElement {
     get computedClass() {
         const { normalizedSize, normalizedVariant } = this;
         const classes = classSet(this.svgClass);
+
+        if(isStringEmpty(this.position) === false && this.position === 'left')
+        {
+            classes.add('extraSpaceRight');
+        }
+        else if(isStringEmpty(this.position) === false && this.position === 'right')
+        {
+            classes.add('extraSpaceLeft');
+        }
 
         if (normalizedVariant !== 'bare') {
             classes.add('slds-icon');

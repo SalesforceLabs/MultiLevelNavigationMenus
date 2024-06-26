@@ -6,7 +6,7 @@
  */
 import { LightningElement, track, api } from 'lwc';
 import formFactor from '@salesforce/client/formFactor';
-import { debounce } from './navbar_utils';
+import * as generalUtils from 'c/gtaUtilsGeneral';
 
 
 export default class MegaNavigationList extends LightningElement {
@@ -22,11 +22,11 @@ export default class MegaNavigationList extends LightningElement {
 
     get parentSelected() {
         let url = document.URL;
-        return (!this.isObjectEmpty(this.parentItem) && !this.isStringEmpty(this.parentItem.href) && !this.parentItem.href.trim().includes('void(0)') && this.parentItem.href.trim() !== '#' && url.includes(this.parentItem.href));
+        return (!generalUtils.isObjectEmpty(this.parentItem) && !generalUtils.isStringEmpty(this.parentItem.href) && !this.parentItem.href.trim().includes('void(0)') && this.parentItem.href.trim() !== '#' && url.includes(this.parentItem.href));
     }
 
     get isParentItemLink() {
-        return (!this.isObjectEmpty(this.parentItem) && this.doNotRenderParentLink === false && this.parentItem.type !== 'MoreMenu' && this.parentItem.level === 1 && !this.isStringEmpty(this.parentItem.href) && !this.parentItem.href.trim().includes('void(0)') && !this.parentItem.href.trim().includes('#'));
+        return (!generalUtils.isObjectEmpty(this.parentItem) && this.doNotRenderParentLink === false && this.parentItem.type !== 'MoreMenu' && this.parentItem.level === 1 && !generalUtils.isStringEmpty(this.parentItem.href) && !this.parentItem.href.trim().includes('void(0)') && !this.parentItem.href.trim().includes('#'));
     }
 
     get localMenuItems() {
@@ -34,19 +34,19 @@ export default class MegaNavigationList extends LightningElement {
         let localMenuItemsTmp = [];
         let url = document.URL;
 
-        if(this.menuItems !== undefined && this.menuItems !== null && this.menuItems.length > 0)
+        if(generalUtils.isArrayEmpty(this.menuItems) === false)
         {
-            localMenuItemsTmp = JSON.parse(JSON.stringify(this.menuItems));
+            localMenuItemsTmp = generalUtils.cloneObjectWithJSON(this.menuItems);
 
             for(let i=0;i<localMenuItemsTmp.length; i++)
             {
-                localMenuItemsTmp[i].renderLink = (!this.isStringEmpty(localMenuItemsTmp[i])
+                localMenuItemsTmp[i].renderLink = (!generalUtils.isStringEmpty(localMenuItemsTmp[i])
                                                     && localMenuItemsTmp[i].href.trim().indexOf('#') < 0 && localMenuItemsTmp[i].href.trim().indexOf('void(0)') < 0 );
-                localMenuItemsTmp[i].hasChildren = (!this.isObjectEmpty(localMenuItemsTmp[i].items) && localMenuItemsTmp[i].items.length > 0) ? true : false;
+                localMenuItemsTmp[i].hasChildren = generalUtils.isArrayEmpty(localMenuItemsTmp[i].items) === false;
 
-                localMenuItemsTmp[i].iconPositionLeft =  (!this.isStringEmpty(localMenuItemsTmp[i].iconPosition) && localMenuItemsTmp[i].iconPosition === 'left');  
-                localMenuItemsTmp[i].iconPositionRight =  (!this.isStringEmpty(localMenuItemsTmp[i].iconPosition) && localMenuItemsTmp[i].iconPosition === 'right');
-                localMenuItemsTmp[i].selected = (!this.isStringEmpty(localMenuItemsTmp[i].href) && !localMenuItemsTmp[i].href.trim().includes('void(0)') && !localMenuItemsTmp[i].href.trim().includes('#') && url.includes(localMenuItemsTmp[i].href));
+                localMenuItemsTmp[i].iconPositionLeft =  (!generalUtils.isStringEmpty(localMenuItemsTmp[i].iconPosition) && localMenuItemsTmp[i].iconPosition === 'left');  
+                localMenuItemsTmp[i].iconPositionRight =  (!generalUtils.isStringEmpty(localMenuItemsTmp[i].iconPosition) && localMenuItemsTmp[i].iconPosition === 'right');
+                localMenuItemsTmp[i].selected = (!generalUtils.isStringEmpty(localMenuItemsTmp[i].href) && !localMenuItemsTmp[i].href.trim().includes('void(0)') && !localMenuItemsTmp[i].href.trim().includes('#') && url.includes(localMenuItemsTmp[i].href));
                 
             }
 
@@ -54,16 +54,6 @@ export default class MegaNavigationList extends LightningElement {
         
         return localMenuItemsTmp;
 
-    }
-
-    getWidth(el) {
-        let width = 0;
-        if(el !== undefined && el !== null)
-        {
-            width = el.getBoundingClientRect().width + parseInt(getComputedStyle(el).marginLeft) + parseInt(getComputedStyle(el).marginRight)
-            + parseInt(getComputedStyle(el).paddingLeft) + parseInt(getComputedStyle(el).paddingRight);
-        }
-        return width;
     }
 
 
@@ -78,12 +68,12 @@ export default class MegaNavigationList extends LightningElement {
         {
             let megaListContainerEl = this.template.querySelector('div[role="megaListContainer"]');
             
-            if(!this.isObjectEmpty(megaListContainerEl) && this.isObjectEmpty(this.megaListContainerWidth))
+            if(!generalUtils.isObjectEmpty(megaListContainerEl) && generalUtils.isObjectEmpty(this.megaListContainerWidth))
             {
-                this.megaListContainerWidth = this.getWidth(megaListContainerEl);
+                this.megaListContainerWidth = generalUtils.getElementWidth(megaListContainerEl);
             }
             
-            if(!this.isObjectEmpty(this.megaListContainerWidth))
+            if(!generalUtils.isObjectEmpty(this.megaListContainerWidth))
             {
                 if(this.megaListContainerWidth < 768)
                 {
@@ -138,9 +128,9 @@ export default class MegaNavigationList extends LightningElement {
 
         let megaListContainerEl = this.template.querySelector('div[role="megaListContainer"]');
             
-        if(!this.isObjectEmpty(megaListContainerEl))
+        if(!generalUtils.isObjectEmpty(megaListContainerEl))
         {
-            let tmpMegaListContainerWidth = this.getWidth(megaListContainerEl);
+            let tmpMegaListContainerWidth = generalUtils.getContainerElementWidth(megaListContainerEl);
             if(this.megaListContainerWidth !== tmpMegaListContainerWidth)
             {
                 this.megaListContainerWidth = tmpMegaListContainerWidth;
@@ -149,13 +139,13 @@ export default class MegaNavigationList extends LightningElement {
 
     }
 
-    _resizeListener = debounce(() => {
+    _resizeListener = generalUtils.debounce(() => {
         
         let megaListContainerEl = this.template.querySelector('div[role="megaListContainer"]');
             
-        if(!this.isObjectEmpty(megaListContainerEl))
+        if(!generalUtils.isObjectEmpty(megaListContainerEl))
         {
-            this.megaListContainerWidth = this.getWidth(megaListContainerEl);
+            this.megaListContainerWidth = generalUtils.getContainerElementWidth(megaListContainerEl);
         }
 
     }, 300);
@@ -170,16 +160,6 @@ export default class MegaNavigationList extends LightningElement {
             event.stopPropagation();
             event.preventDefault();
         }
-    }
-
-    isObjectEmpty(param)
-    {   
-        return (param === undefined || param === null);
-    }
-
-    isStringEmpty(param)
-    {   
-        return (typeof param === 'string') ? (param === undefined || param === null || param.trim() === '') : this.isObjectEmpty(param);
     }
 
 

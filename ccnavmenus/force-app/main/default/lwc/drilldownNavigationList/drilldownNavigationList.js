@@ -7,6 +7,8 @@
 
 import { api, LightningElement, track } from 'lwc';
 import { flattenItems } from './flatten';
+import * as generalUtils from 'c/gtaUtilsGeneral';
+import * as componentUtils from 'c/gtaUtilsComponent';
 
 const NAVIGATE_EVENT = 'navigatetopage';
 const closeLabel = 'Close';
@@ -53,7 +55,7 @@ export default class DrilldownNavigationList extends LightningElement {
         let tmpValue = JSON.parse(JSON.stringify(value));
         for(let i=0; i < tmpValue.length; i++)
         {
-            tmpValue[i].hasChildren = (tmpValue[i].items !== undefined && tmpValue[i].items !== null && tmpValue[i].items.length > 0);
+            tmpValue[i].hasChildren = (generalUtils.isObjectEmpty(tmpValue[i].items) === false && tmpValue[i].items.length > 0);
         }
         this._flatItems = flattenItems(tmpValue);
         this._menuItems = tmpValue;
@@ -68,11 +70,11 @@ export default class DrilldownNavigationList extends LightningElement {
     }
 
     set parentItem(value) {
-        let tmpValue = JSON.parse(JSON.stringify(value));
+        let tmpValue = generalUtils.cloneObjectWithJSON(value);
 
-        tmpValue.hasChildren = (tmpValue.items !== undefined && tmpValue.items !== null && tmpValue.items.length > 0);
-        tmpValue.iconPositionLeft = (tmpValue.iconPosition !== undefined && tmpValue.iconPosition !== null && tmpValue.iconPosition.trim() === 'left');
-        tmpValue.iconPositionRight = (tmpValue.iconPosition !== undefined && tmpValue.iconPosition !== null && tmpValue.iconPosition.trim() === 'right');
+        tmpValue.hasChildren = (generalUtils.isObjectEmpty(tmpValue.items) === false && tmpValue.items.length > 0);
+        tmpValue.iconPositionLeft = (generalUtils.isStringEmpty(tmpValue.iconPosition) === false && tmpValue.iconPosition.trim() === 'left');
+        tmpValue.iconPositionRight = (generalUtils.isStringEmpty(tmpValue.iconPosition) === false && tmpValue.iconPosition.trim() === 'right');
 
         this._parentItem = tmpValue;
         this._listStack.push(tmpValue);
@@ -81,7 +83,7 @@ export default class DrilldownNavigationList extends LightningElement {
 
     get parentIsSelected() {
         let url = document.URL;
-        return (!this.isStringEmpty(this._parentItem.href) && url.includes(this._parentItem.href)) ? true : false ;
+        return (!generalUtils.isStringEmpty(this._parentItem.href) && url.includes(this._parentItem.href)) ? true : false ;
     }
 
     /**
@@ -159,14 +161,14 @@ export default class DrilldownNavigationList extends LightningElement {
             items = this._listStack.length && this._listStack[this._listStack.length - 1]?.items;
         }
         
-        if(items !== undefined && items !== null && items.length !== undefined && items.length !== null && items.length > 0)
+        if(generalUtils.isArrayEmpty(items) === false)
         {
             for(let i=0; i < items.length; i++)
             {
-                items[i].hasChildren = (items[i].items !== undefined && items[i].items !== null && items[i].items.length > 0);
-                items[i].iconPositionLeft = (items[i].iconPosition !== undefined && items[i].iconPosition !== null && items[i].iconPosition.trim() === 'left');
-                items[i].iconPositionRight = (items[i].iconPosition !== undefined && items[i].iconPosition !== null && items[i].iconPosition.trim() === 'right');
-                items[i].isSelected = (!this.isStringEmpty(items[i].href) && url.includes(items[i].href)) ? true : false ;
+                items[i].hasChildren = (generalUtils.isArrayEmpty(items[i].items) === false);
+                items[i].iconPositionLeft = (generalUtils.isStringEmpty(items[i].iconPosition) === false && items[i].iconPosition.trim() === 'left');
+                items[i].iconPositionRight = (generalUtils.isStringEmpty(items[i].iconPosition) === false && items[i].iconPosition.trim() === 'right');
+                items[i].isSelected = (!generalUtils.isStringEmpty(items[i].href) && url.includes(items[i].href)) ? true : false ;
             }  
         }
         
@@ -322,9 +324,9 @@ export default class DrilldownNavigationList extends LightningElement {
 
     handleParentClick(event) {
         const newItem = this._flatItems[event?.currentTarget?.dataset?.id];
-        let newItemTmp = JSON.parse(JSON.stringify(newItem));
-        newItemTmp.iconPositionLeft = (newItemTmp.iconPosition !== undefined && newItemTmp.iconPosition !== null && newItemTmp.iconPosition.trim() === 'left');
-        newItemTmp.iconPositionRight = (newItemTmp.iconPosition !== undefined && newItemTmp.iconPosition !== null && newItemTmp.iconPosition.trim() === 'right');
+        let newItemTmp = generalUtils.cloneObjectWithJSON(newItem);
+        newItemTmp.iconPositionLeft = (generalUtils.isStringEmpty(newItemTmp.iconPosition) === false && newItemTmp.iconPosition.trim() === 'left');
+        newItemTmp.iconPositionRight = (generalUtils.isStringEmpty(newItemTmp.iconPosition) === false && newItemTmp.iconPosition.trim() === 'right');
         this._isBackButtonClicked = false;
         this._showAnimation = true;
         this._parentItem = newItemTmp;
@@ -393,15 +395,15 @@ export default class DrilldownNavigationList extends LightningElement {
 
     shouldCloseHamburgerMenu(event) {
 
-        if(event.target !== undefined && event.target !== null && event.target.tagName === 'A' && event.target.dataset.id !== undefined
-            && event.target.dataset.id !== null && event.target.href !== undefined && event.target.href !== null && event.target.href.trim() !== 'javascript:void(0);'
+        if(generalUtils.isObjectEmpty(event.target) === false && event.target.tagName === 'A' && generalUtils.isObjectEmpty(event.target.dataset.id) === false
+            && generalUtils.isObjectEmpty(event.target.href) === false && event.target.href.trim() !== 'javascript:void(0);'
             && event.target.href.trim() !== 'javascript:void(0)')
         {
             return true;
         }
 
-        if(event.target !== undefined && event.target !== null && event.target.tagName === 'C-PRIMITIVE-ICON' && event.target.dataset.islink !== undefined
-            && event.target.dataset.islink !== null && event.target.dataset.islink === 'true')
+        if(generalUtils.isObjectEmpty(event.target) === false && event.target.tagName === 'C-PRIMITIVE-ICON' 
+            && generalUtils.isObjectEmpty(event.target.dataset.islink) === false && event.target.dataset.islink === 'true')
         {
             return true;
         }
@@ -593,10 +595,8 @@ export default class DrilldownNavigationList extends LightningElement {
                     event.stopPropagation();
                     event.preventDefault();
                    
-                    let newLink = document.createElement('a');
-                    newLink.setAttribute('href',event.target.href);
-                    newLink.setAttribute('target', event.target.target);
-                    newLink.click();
+                    componentUtils.doLinkNavigate(event.target.href, event.target.target);
+                    
                     
                 break;
             case 'ArrowRight':
@@ -676,16 +676,6 @@ export default class DrilldownNavigationList extends LightningElement {
                 }
             })
         );
-    }
-
-    isObjectEmpty(param)
-    {   
-        return (param === undefined || param === null);
-    }
-
-    isStringEmpty(param)
-    {   
-        return (typeof param === 'string') ? (param === undefined || param === null || param.trim() === '') : this.isObjectEmpty(param);
     }
 
 }

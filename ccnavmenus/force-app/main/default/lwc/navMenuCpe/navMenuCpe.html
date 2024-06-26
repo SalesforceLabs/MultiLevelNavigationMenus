@@ -357,7 +357,6 @@
                         <template lwc:if={exportError}>
                             <div class="slds-text-color_error slds-text-body_small">{exportError}</div>
                         </template>
-                        <a data-name="exportMenu" class="slds-hide"></a>
 
 
                         <template if:true={importModalOpen}>
@@ -481,6 +480,31 @@
                         >
                     </lightning-input>
 
+                    <div class={propInputs.sldsIconSize.classes}>
+                        <lightning-select
+                            name={propInputs.sldsIconSize.key}
+                            label={propInputs.sldsIconSize.label} 
+                            value={propInputs.sldsIconSize.value}
+                            options={propInputs.sldsIconSize.options}
+                            onchange={propInputs.sldsIconSize.changeHandler}
+                            required={propInputs.sldsIconSize.required}
+                            data-key={propInputs.sldsIconSize.key}
+                            field-level-help={propInputs.sldsIconSize.help} 
+                            ></lightning-select>
+                    </div>
+
+                    <lightning-input 
+                    type={propInputs.iconSpacing.type} 
+                    label={propInputs.iconSpacing.label} 
+                    class={propInputs.iconSpacing.classes} 
+                    value={propInputs.iconSpacing.value}
+                    onchange={propInputs.iconSpacing.changeHandler} 
+                    data-key={propInputs.iconSpacing.key}
+                    field-level-help={propInputs.iconSpacing.help} 
+                    required={propInputs.iconSpacing.required}
+                    >
+                </lightning-input>
+
                     <lightning-input 
                         type={propInputs.overrideFontFamily.type} 
                         label={propInputs.overrideFontFamily.label} 
@@ -492,6 +516,42 @@
                         required={propInputs.overrideFontFamily.required}
                         >
                     </lightning-input>
+
+                    <div class="slds-text-heading_small slds-m-top_large">Font Size Overrides:</div>
+                    <lightning-tabset>
+                        <lightning-tab label="Desktop">
+
+                            <lightning-input 
+                                type={propInputs.overrideFontSize.type} 
+                                label={propInputs.overrideFontSize.label} 
+                                class={propInputs.overrideFontSize.classes} 
+                                value={propInputs.overrideFontSize.value}
+                                onchange={propInputs.overrideFontSize.changeHandler} 
+                                data-key={propInputs.overrideFontSize.key}
+                                field-level-help={propInputs.overrideFontSize.help} 
+                                required={propInputs.overrideFontSize.required}
+                                >
+                            </lightning-input>
+
+                        </lightning-tab>
+
+                        <lightning-tab label="Mobile">
+
+                            <lightning-input 
+                                type={propInputs.overrideFontSizeMobile.type} 
+                                label={propInputs.overrideFontSizeMobile.label} 
+                                class={propInputs.overrideFontSizeMobile.classes} 
+                                value={propInputs.overrideFontSizeMobile.value}
+                                onchange={propInputs.overrideFontSizeMobile.changeHandler} 
+                                data-key={propInputs.overrideFontSizeMobile.key}
+                                field-level-help={propInputs.overrideFontSizeMobile.help} 
+                                required={propInputs.overrideFontSizeMobile.required}
+                                >
+                            </lightning-input>
+
+                        </lightning-tab>
+                    </lightning-tabset>
+
 
                     <div class={propInputs.overrideTextCase.classes}>
                         <lightning-select
@@ -728,6 +788,19 @@
                                     required={propInputs.navAllLevelBorderWidth.required}
                                     >
                                 </lightning-input>
+
+                                <lightning-input 
+                                    type={propInputs.navAllLevelBorderRadius.type} 
+                                    label={propInputs.navAllLevelBorderRadius.label} 
+                                    class={propInputs.navAllLevelBorderRadius.classes} 
+                                    value={propInputs.navAllLevelBorderRadius.value}
+                                    onchange={propInputs.navAllLevelBorderRadius.changeHandler} 
+                                    data-key={propInputs.navAllLevelBorderRadius.key}
+                                    field-level-help={propInputs.navAllLevelBorderRadius.help} 
+                                    required={propInputs.navAllLevelBorderRadius.required}
+                                    >
+                                </lightning-input>
+
                             </lightning-tab>
                             <lightning-tab label="Box Shadow">
                                 <div class={propInputs.navAllLevelShadowBoxType.classes}>

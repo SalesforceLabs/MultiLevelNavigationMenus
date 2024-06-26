@@ -1,5 +1,8 @@
 import { LightningElement, track, api, wire } from 'lwc';
 import searchMenus from '@salesforce/apex/menusManagerController.searchMenus';
+import * as generalUtils from 'c/gtaUtilsGeneral';
+import * as componentUtils from 'c/gtaUtilsComponent';
+
 
 const typeDelay = 1000;
 const defaultCSSClasses = 'slds-m-bottom_medium';
@@ -291,6 +294,30 @@ export default class NavMenuCpe extends LightningElement {
                 classes: defaultCSSClasses + '', //css classes for html lightning-input tag
                 changeHandler: this.handleMenuItemVerticalPaddingChange, //onchange handler for html lightning-input tag
             },
+            overrideFontSize: {
+                key: 'overrideFontSize', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'Override Font Size (in px)', //label used for html lighting-input tag
+                type: 'number', //type used for html lightning-input tag
+                help: 'Override font size, defaults to theme values', //tooltip / help text used for html lightning-input tag
+                required: false, //required used for html lightning-input tag
+                valuePath: 'styles.overrideFontSize', //property path within the value object
+                value: undefined, //default value
+                doSetDefaultValue: false, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
+                changeHandler: this.handleOverrideFontSizeChange, //onchange handler for html lightning-input tag
+            },
+            overrideFontSizeMobile: {
+                key: 'overrideFontSizeMobile', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'Override Font Size Mobile (in px)', //label used for html lighting-input tag
+                type: 'number', //type used for html lightning-input tag
+                help: 'Override font size in mobile, defaults to theme values', //tooltip / help text used for html lightning-input tag
+                required: false, //required used for html lightning-input tag
+                valuePath: 'styles.overrideFontSizeMobile', //property path within the value object
+                value: undefined, //default value
+                doSetDefaultValue: false, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
+                changeHandler: this.handleOverrideFontSizeMobileChange, //onchange handler for html lightning-input tag
+            },
             topLevelItemSpacing: {
                 key: 'topLevelItemSpacing', //key used for html lightning-input tag identifier, must match key in propInputs
                 label: 'Horizontal Bar Menu Item Horizontal Spacing (in px)', //label used for html lighting-input tag
@@ -345,6 +372,37 @@ export default class NavMenuCpe extends LightningElement {
                     { label: 'Uppercase', value: 'uppercase' },
                     { label: 'Lowercase', value: 'lowercase' }
                 ],
+            },
+            sldsIconSize: {
+                key: 'sldsIconSize', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'SLDS Icon Size', //label used for html lighting-input tag
+                type: 'select', //type used for html lightning-input tag
+                help: 'SLDS Icon Size. Affected by both the font and this value together. Font Awesome Icons are only affected by the font size.', //tooltip / help text used for html lightning-input tag
+                required: true, //required used for html lightning-input tag
+                valuePath: 'styles.sldsIconSize', //property path within the value object
+                value: '1', //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + ' slds-m-top_medium', //css classes for html lightning-input tag
+                changeHandler: this.handleSldsIconSizeChange, //onchange handler for html lightning-input tag
+                options:[
+                    { label: 'X-Small', value: '0.5' },
+                    { label: 'Small', value: '0.75' },
+                    { label: 'Medium', value: '1' },
+                    { label: 'Large', value: '1.25' },
+                    { label: 'X-Large', value: '1.5' }
+                ],
+            },
+            iconSpacing: {
+                key: 'iconSpacing', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'Icon Horizontal Spacing (in px)', //label used for html lighting-input tag
+                type: 'number', //type used for html lightning-input tag
+                help: 'Icon Horizontal padding in px', //tooltip / help text used for html lightning-input tag
+                required: true, //required used for html lightning-input tag
+                valuePath: 'styles.iconSpacing', //property path within the value object
+                value: 10, //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
+                changeHandler: this.handleIconSpacingChange, //onchange handler for html lightning-input tag
             },
             menuCSSClasses: {
                 key: 'menuCSSClasses', //key used for html lightning-input tag identifier, must match key in propInputs
@@ -480,6 +538,18 @@ export default class NavMenuCpe extends LightningElement {
                 doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
                 classes: defaultCSSClasses + '', //css classes for html lightning-input tag
                 changeHandler: this.handleNavContainerBorderWidthChange, //onchange handler for html lightning-input tag
+            },
+            navAllLevelBorderRadius: {
+                key: 'navAllLevelBorderRadius', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'Border Radius (in px)', //label used for html lighting-input tag
+                type: 'number', //type used for html lightning-input tag
+                help: 'Border Radius', //tooltip / help text used for html lightning-input tag
+                required: true, //required used for html lightning-input tag
+                valuePath: 'styles.navAllLevelBorderRadius', //property path within the value object
+                value: 0, //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
+                changeHandler: this.handleNavAllLevelBorderRadiusChange, //onchange handler for html lightning-input tag
             },
             navTextColor: {
                 key: 'navTextColor', //key used for html lightning-input tag identifier, must match key in propInputs
@@ -737,6 +807,7 @@ export default class NavMenuCpe extends LightningElement {
     }
 
     set value(value) {
+       
         let valuetmp = JSON.parse(value);
         let isValueUndefined = this._value === undefined;
         this._value = {};
@@ -744,18 +815,18 @@ export default class NavMenuCpe extends LightningElement {
 
         for (let key in this.propInputs) {
             
-            if(Object.prototype.hasOwnProperty.call(this.propInputs, key) && this.propInputs[key].doSetDefaultValue === true)
+            if(generalUtils.objectHasProperty(this.propInputs, key) && this.propInputs[key].doSetDefaultValue === true)
             {
-                let tmpVal = this.getObjPropValue(valuetmp, this.propInputs[key].valuePath);
-                if(this.isObjectEmpty(tmpVal))
+                let tmpVal = generalUtils.getObjPropValue(valuetmp, this.propInputs[key].valuePath);
+                if(generalUtils.isObjectEmpty(tmpVal))
                 {
                     tmpVal = this.propInputs[key].value;
                     if(((this.propInputs[key].type === 'text' || this.propInputs[key].type === 'select' ||  this.propInputs[key].type === 'search') 
-                        && !this.isStringEmpty(tmpVal)) 
+                        && !generalUtils.isStringEmpty(tmpVal)) 
                         ||
-                        ((this.propInputs[key].type === 'toggle' || this.propInputs[key].type === 'checkbox' || this.propInputs[key].type === 'number' ) && !this.isObjectEmpty(tmpVal)))
+                        ((this.propInputs[key].type === 'toggle' || this.propInputs[key].type === 'checkbox' || this.propInputs[key].type === 'number' ) && !generalUtils.isObjectEmpty(tmpVal)))
                     {
-                        valuetmp = this.setObjPropValue(valuetmp, this.propInputs[key].valuePath, tmpVal);
+                        valuetmp = generalUtils.setObjPropValue(valuetmp, this.propInputs[key].valuePath, tmpVal);
                         value = JSON.stringify(valuetmp);
                         hasValueChanged = true;
                     }
@@ -765,13 +836,13 @@ export default class NavMenuCpe extends LightningElement {
                 {
                     if(this.propInputs[key].type === 'arrayObject' && key === 'urlSubMap')
                     {
-                        this.urlSubMapTmp = JSON.parse(JSON.stringify(tmpVal));
+                        this.urlSubMapTmp = generalUtils.cloneObjectWithJSON(tmpVal);
                         for(let i=0; i<this.urlSubMapTmp.length; i++)
                         {
-                            this.urlSubMapTmp[i].id = crypto.randomUUID();
+                            this.urlSubMapTmp[i].id = generalUtils.generateUniqueIdentifier();
                         }
                         
-                        if(!this.isObjectEmpty(this.urlSubMapTmp))
+                        if(!generalUtils.isObjectEmpty(this.urlSubMapTmp))
                         {
                             this.propInputs[key].buttonLabel = 'Edit';                
                         } 
@@ -800,75 +871,16 @@ export default class NavMenuCpe extends LightningElement {
 
     getValueObj()
     {
-        let tmpvalueObj = (this.isStringEmpty(this.value)) ? {} : JSON.parse(this.value);
-        tmpvalueObj.general = (this.isObjectEmpty(tmpvalueObj.general) ) ? {} : tmpvalueObj.general;
-        tmpvalueObj.styles = (this.isObjectEmpty(tmpvalueObj.styles) ) ? {} : tmpvalueObj.styles;
-        tmpvalueObj.labels = (this.isObjectEmpty(tmpvalueObj.labels) ) ? {} : tmpvalueObj.labels;
+        let tmpvalueObj = (generalUtils.isStringEmpty(this.value)) ? {} : JSON.parse(this.value);
+        tmpvalueObj.general = (generalUtils.isObjectEmpty(tmpvalueObj.general) ) ? {} : tmpvalueObj.general;
+        tmpvalueObj.styles = (generalUtils.isObjectEmpty(tmpvalueObj.styles) ) ? {} : tmpvalueObj.styles;
+        tmpvalueObj.labels = (generalUtils.isObjectEmpty(tmpvalueObj.labels) ) ? {} : tmpvalueObj.labels;
         return tmpvalueObj;
     }
 
-    isObjectEmpty(param)
-    {   
-        return (param === undefined || param === null);
-    }
-
-    isStringEmpty(param)
-    {   
-        return (typeof param === 'string') ? (param === undefined || param === null || param.trim() === '') : this.isObjectEmpty(param);
-    }
-
-    displayInputError(identifier, text)
+    displayInputErrorByDataKey(identifier, text)
     {
-
-        let inputCmp = this.template.querySelector('[data-key="'+identifier+'"]');
-        if(inputCmp !== undefined && inputCmp !== null)
-        {
-            inputCmp.setCustomValidity('');
-            inputCmp.reportValidity();
-
-            inputCmp.setCustomValidity(text);
-            inputCmp.reportValidity();
-        }
-    }
-
-    getObjPropValue(data, keys) {
-        // If plain string, split it to array
-        if(typeof keys === 'string') {
-          keys = keys.split('.')
-        }
-        
-        // Get key
-        let key = keys.shift();
-        
-        // Get data for that key
-        let keyData = data[key];
-        
-        // Check if there is data
-        if(this.isObjectEmpty(keyData)) {
-          return undefined;
-        }
-         
-        // Check if we reached the end of query string
-        if(keys.length === 0){
-          return keyData;
-        }
-        
-        // recusrive call!
-        return this.getObjPropValue(Object.assign({}, keyData), keys);
-    }
-
-    setObjPropValue(data, path, value) {
-        let schema = data;
-        let pList = path.split('.');
-        let len = pList.length;
-        for(let i = 0; i < len-1; i++) {
-            let elem = pList[i];
-            if( !schema[elem] ) schema[elem] = {}
-            schema = schema[elem];
-        }
-
-        schema[pList[len-1]] = value;
-        return data;
+        componentUtils.displayLightningInputError(this, '[data-key="'+identifier+'"]', text);
     }
     
     connectedCallback() {
@@ -931,9 +943,9 @@ export default class NavMenuCpe extends LightningElement {
             
             let inputvalue = e.detail.value.trim();
             
-            if(!this.isStringEmpty(inputvalue))
+            if(!generalUtils.isStringEmpty(inputvalue))
             {
-                this.displayInputError('menuName', '');
+                this.displayInputErrorByDataKey('menuName', '');
             }
 
             
@@ -953,7 +965,7 @@ export default class NavMenuCpe extends LightningElement {
 
 
     handleMenuNameFocus(e) {
-        this.displayInputError('menuName', '');
+        this.displayInputErrorByDataKey('menuName', '');
         let inputvalue = e.currentTarget.value.trim();
         this.loadMenus(inputvalue, true);
         
@@ -962,10 +974,10 @@ export default class NavMenuCpe extends LightningElement {
     handleMenuNameBlur(e) {
         this.showMenuOptions = false;
         let inputvalue = e.currentTarget.value.trim();
-        this.displayInputError('menuName', '');
-        if(this.isStringEmpty(inputvalue))
+        this.displayInputErrorByDataKey('menuName', '');
+        if(generalUtils.isStringEmpty(inputvalue))
         {
-            this.displayInputError('menuName','Please enter a value for the Menu Name.');
+            this.displayInputErrorByDataKey('menuName','Please enter a value for the Menu Name.');
         }
         else 
         {
@@ -984,7 +996,7 @@ export default class NavMenuCpe extends LightningElement {
         let tmpvalueObj = this.getValueObj();
         this.propInputs.menuName.value = selectedValue;
         let menuNameEl = this.template.querySelector('[data-key="menuName"]');
-        if(!this.isObjectEmpty(menuNameEl))
+        if(!generalUtils.isObjectEmpty(menuNameEl))
         {
             menuNameEl.focus();
         }
@@ -1117,8 +1129,8 @@ export default class NavMenuCpe extends LightningElement {
 
     validateCacheValues() {
 
-        this.displayInputError('cacheName', '');
-        this.displayInputError('cacheKey', '');
+        this.displayInputErrorByDataKey('cacheName', '');
+        this.displayInputErrorByDataKey('cacheKey', '');
 
         let isCacheNameValid = true, isCacheKeyValid = true, isCacheEnabledValid = true;
         let cacheNameError = '';
@@ -1129,18 +1141,16 @@ export default class NavMenuCpe extends LightningElement {
         let cacheName = this.propInputs.cacheName.value;
         let cacheKey = this.propInputs.cacheKey.value;
 
-        let alphanumericExp = /^([0-9]|[a-z])+([0-9a-z]*)$/i;
-
         if(cacheEnabled === true)
         {
-            if((cacheName !== undefined && cacheName !== null && cacheName.trim() !== '') === false)
+            if(generalUtils.isStringEmpty(cacheName) === true)
             {
                 cacheNameError = 'Cache Name is required.';
                 isCacheNameValid = false;
                 isCacheEnabledValid = false;
             }
 
-            if((cacheKey !== undefined && cacheKey !== null && cacheKey.trim() !== '') === false)
+            if(generalUtils.isStringEmpty(cacheKey) === true)
             {
                 cacheKeyError = 'Cache Key is required.';
                 isCacheKeyValid = false;
@@ -1149,17 +1159,17 @@ export default class NavMenuCpe extends LightningElement {
         }
         else 
         {
-            this.displayInputError('cacheName', '');
-            this.displayInputError('cacheKey', '');
+            this.displayInputErrorByDataKey('cacheName', '');
+            this.displayInputErrorByDataKey('cacheKey', '');
         }
 
-        if(cacheName !== undefined && cacheName !== null && cacheName.trim() !== '' && cacheName.match(alphanumericExp) === null)
+        if(generalUtils.isStringEmpty(cacheName) === false && generalUtils.isAlphaNumeric(cacheName) === false)
         {
             cacheNameError = 'Cache Name must be alphanumeric only.';
             isCacheNameValid = false;
         }
 
-        if(cacheKey !== undefined && cacheKey !== null && cacheKey.trim() !== '' && cacheKey.match(alphanumericExp) === null)
+        if(generalUtils.isStringEmpty(cacheKey) === false && generalUtils.isAlphaNumeric(cacheKey) === false)
         {
             cacheKeyError = 'Cache Key must be alphanumeric only.';
             isCacheKeyValid = false;
@@ -1186,12 +1196,12 @@ export default class NavMenuCpe extends LightningElement {
             
             if(isCacheNameValid === false)
             {
-                this.displayInputError('cacheName', cacheNameError);
+                this.displayInputErrorByDataKey('cacheName', cacheNameError);
             }
 
             if(isCacheKeyValid === false)
             {
-                this.displayInputError('cacheKey', cacheKeyError);
+                this.displayInputErrorByDataKey('cacheKey', cacheKeyError);
             }
 
 
@@ -1225,9 +1235,9 @@ export default class NavMenuCpe extends LightningElement {
 
     handleAddUrlSubMap(e) {
 
-        this.urlSubMapTmp = (this.isObjectEmpty(this.urlSubMapTmp)) ? [] : this.urlSubMapTmp;
+        this.urlSubMapTmp = (generalUtils.isObjectEmpty(this.urlSubMapTmp)) ? [] : this.urlSubMapTmp;
         let tmpRow = {};
-            tmpRow.id = crypto.randomUUID();
+            tmpRow.id = generalUtils.generateUniqueIdentifier();
             tmpRow.replaceThis = '';
             tmpRow.replaceWith = '';
     
@@ -1254,7 +1264,7 @@ export default class NavMenuCpe extends LightningElement {
         for(let i=0; i<mapElList.length; i++)
         {
             let mapEl = mapElList[i];
-            if(!this.isStringEmpty(mapEl.value))
+            if(!generalUtils.isStringEmpty(mapEl.value))
             { 
                 subMap[mapEl.dataset.id] = {};
                 subMap[mapEl.dataset.id].replaceThis = mapEl.value;
@@ -1273,28 +1283,28 @@ export default class NavMenuCpe extends LightningElement {
 
 
         let urlSubMapTmpClone;
-        if(!this.isObjectEmpty(this.urlSubMapTmp))
+        if(!generalUtils.isObjectEmpty(this.urlSubMapTmp))
         {
             for(let i=0; i<this.urlSubMapTmp.length; i++)
             {
-                if(!this.isObjectEmpty(subMap[this.urlSubMapTmp[i].id]))
+                if(!generalUtils.isObjectEmpty(subMap[this.urlSubMapTmp[i].id]))
                 {
                     this.urlSubMapTmp[i].replaceThis = subMap[this.urlSubMapTmp[i].id].replaceThis;
                     this.urlSubMapTmp[i].replaceWith = subMap[this.urlSubMapTmp[i].id].replaceWith;
                 }
             }
 
-            this.urlSubMapTmp = this.urlSubMapTmp.filter( item => !this.isStringEmpty(item.replaceThis));
+            this.urlSubMapTmp = this.urlSubMapTmp.filter( item => !generalUtils.isStringEmpty(item.replaceThis));
             this.urlSubMapTmp = (this.urlSubMapTmp.length > 0) ? this.urlSubMapTmp : undefined ;
             
-            urlSubMapTmpClone = JSON.parse(JSON.stringify(this.urlSubMapTmp));
+            urlSubMapTmpClone = generalUtils.cloneObjectWithJSON(this.urlSubMapTmp);
             for(let i=0; i<urlSubMapTmpClone.length; i++)
             {
                 delete urlSubMapTmpClone[i].id;
             }
 
         }
-        this.propInputs.urlSubMap.buttonLabel = (this.isObjectEmpty(urlSubMapTmpClone)) ? 'Create' : 'Edit';       
+        this.propInputs.urlSubMap.buttonLabel = (generalUtils.isObjectEmpty(urlSubMapTmpClone)) ? 'Create' : 'Edit';       
         let tmpvalueObj = this.getValueObj();
         tmpvalueObj.general.urlSubMap = urlSubMapTmpClone;
 
@@ -1397,6 +1407,18 @@ export default class NavMenuCpe extends LightningElement {
         this.dispatchEvent(new CustomEvent("valuechange", 
             {detail: {value: JSON.stringify(tmpvalueObj)}}));
     }
+    
+    handleSldsIconSizeChange(e) {
+
+        let selectedValue = e.detail.value;
+        this.propInputs.sldsIconSize.value = selectedValue;
+
+        let tmpvalueObj = this.getValueObj();
+        tmpvalueObj.styles.sldsIconSize = selectedValue;
+
+        this.dispatchEvent(new CustomEvent("valuechange", 
+            {detail: {value: JSON.stringify(tmpvalueObj)}}));
+    }
 
     handleOverrideFontFamilyChange(e) {
 
@@ -1442,9 +1464,9 @@ export default class NavMenuCpe extends LightningElement {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         this.propInputs.menuItemVerticalPadding.textDelayTimeout = setTimeout(() => {
             
-            this.displayInputError('menuItemVerticalPadding', '');
+            this.displayInputErrorByDataKey('menuItemVerticalPadding', '');
             let inputvalue = e.detail.value;
-            if(!this.isStringEmpty(inputvalue))
+            if(!generalUtils.isStringEmpty(inputvalue))
             {
                 try {
 
@@ -1458,13 +1480,73 @@ export default class NavMenuCpe extends LightningElement {
                         {detail: {value: JSON.stringify(tmpvalueObj)}}));
 
                 } catch(e) {
-                    this.displayInputError('menuItemVerticalPadding', 'Invalid number provided.');
+                    this.displayInputErrorByDataKey('menuItemVerticalPadding', 'Invalid number provided.');
                 }
             }
             else 
             {
-                this.displayInputError('menuItemVerticalPadding', 'Invalid number provided.');
+                this.displayInputErrorByDataKey('menuItemVerticalPadding', 'Invalid number provided.');
             }
+
+        }, typeDelay);
+        
+    }
+
+    handleOverrideFontSizeChange(e) {
+
+        window.clearTimeout(this.propInputs.overrideFontSize.textDelayTimeout);
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this.propInputs.overrideFontSize.textDelayTimeout = setTimeout(() => {
+            
+            this.displayInputErrorByDataKey('overrideFontSize', '');
+            let inputvalue = e.detail.value;
+           
+            try {
+
+                inputvalue = (generalUtils.isStringEmpty(inputvalue) === true) ? undefined : parseInt(inputvalue);
+                this.propInputs.overrideFontSize.value = inputvalue;
+
+                let tmpvalueObj = this.getValueObj();
+                tmpvalueObj.styles.overrideFontSize = inputvalue;
+
+                this.dispatchEvent(new CustomEvent("valuechange", 
+                    {detail: {value: JSON.stringify(tmpvalueObj)}}));
+
+            } catch(e) {
+                this.displayInputErrorByDataKey('overrideFontSize', 'Invalid number provided.');
+            }
+            
+
+
+        }, typeDelay);
+        
+    }
+
+    handleOverrideFontSizeMobileChange(e) {
+
+        window.clearTimeout(this.propInputs.overrideFontSizeMobile.textDelayTimeout);
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this.propInputs.overrideFontSizeMobile.textDelayTimeout = setTimeout(() => {
+            
+            this.displayInputErrorByDataKey('overrideFontSizeMobile', '');
+            let inputvalue = e.detail.value;
+           
+            try {
+
+                inputvalue = (generalUtils.isStringEmpty(inputvalue) === true) ? undefined : parseInt(inputvalue);
+                this.propInputs.overrideFontSizeMobile.value = inputvalue;
+
+                let tmpvalueObj = this.getValueObj();
+                tmpvalueObj.styles.overrideFontSizeMobile = inputvalue;
+
+                this.dispatchEvent(new CustomEvent("valuechange", 
+                    {detail: {value: JSON.stringify(tmpvalueObj)}}));
+
+            } catch(e) {
+                this.displayInputErrorByDataKey('overrideFontSizeMobile', 'Invalid number provided.');
+            }
+            
+
 
         }, typeDelay);
         
@@ -1476,9 +1558,9 @@ export default class NavMenuCpe extends LightningElement {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         this.propInputs.topLevelItemSpacing.textDelayTimeout = setTimeout(() => {
             
-            this.displayInputError('topLevelItemSpacing', '');
+            this.displayInputErrorByDataKey('topLevelItemSpacing', '');
             let inputvalue = e.detail.value;
-            if(!this.isStringEmpty(inputvalue))
+            if(!generalUtils.isStringEmpty(inputvalue))
             {
                 try {
 
@@ -1492,12 +1574,46 @@ export default class NavMenuCpe extends LightningElement {
                         {detail: {value: JSON.stringify(tmpvalueObj)}}));
 
                 } catch(e) {
-                    this.displayInputError('topLevelItemSpacing', 'Invalid number provided.');
+                    this.displayInputErrorByDataKey('topLevelItemSpacing', 'Invalid number provided.');
                 }
             }
             else 
             {
-                this.displayInputError('topLevelItemSpacing', 'Invalid number provided.');
+                this.displayInputErrorByDataKey('topLevelItemSpacing', 'Invalid number provided.');
+            }
+
+        }, typeDelay);
+        
+    }
+
+    handleIconSpacingChange(e) {
+
+        window.clearTimeout(this.propInputs.iconSpacing.textDelayTimeout);
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this.propInputs.iconSpacing.textDelayTimeout = setTimeout(() => {
+            
+            this.displayInputErrorByDataKey('iconSpacing', '');
+            let inputvalue = e.detail.value;
+            if(!generalUtils.isStringEmpty(inputvalue))
+            {
+                try {
+
+                    inputvalue = parseInt(inputvalue);
+                    this.propInputs.iconSpacing.value = inputvalue;
+
+                    let tmpvalueObj = this.getValueObj();
+                    tmpvalueObj.styles.iconSpacing = inputvalue;
+
+                    this.dispatchEvent(new CustomEvent("valuechange", 
+                        {detail: {value: JSON.stringify(tmpvalueObj)}}));
+
+                } catch(e) {
+                    this.displayInputErrorByDataKey('iconSpacing', 'Invalid number provided.');
+                }
+            }
+            else 
+            {
+                this.displayInputErrorByDataKey('iconSpacing', 'Invalid number provided.');
             }
 
         }, typeDelay);
@@ -1635,9 +1751,9 @@ export default class NavMenuCpe extends LightningElement {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         this.propInputs.navContainerBorderWidth.textDelayTimeout = setTimeout(() => {
             
-            this.displayInputError('navContainerBorderWidth', '');
+            this.displayInputErrorByDataKey('navContainerBorderWidth', '');
             let inputvalue = e.detail.value;
-            if(!this.isStringEmpty(inputvalue))
+            if(!generalUtils.isStringEmpty(inputvalue))
             {
                 try {
 
@@ -1651,12 +1767,46 @@ export default class NavMenuCpe extends LightningElement {
                         {detail: {value: JSON.stringify(tmpvalueObj)}}));
 
                 } catch(e) {
-                    this.displayInputError('navContainerBorderWidth', 'Invalid number provided.');
+                    this.displayInputErrorByDataKey('navContainerBorderWidth', 'Invalid number provided.');
                 }
             }
             else 
             {
-                this.displayInputError('navContainerBorderWidth', 'Invalid number provided.');
+                this.displayInputErrorByDataKey('navContainerBorderWidth', 'Invalid number provided.');
+            }
+
+        }, typeDelay);
+        
+    }
+
+    handleNavAllLevelBorderRadiusChange(e) {
+
+        window.clearTimeout(this.propInputs.navAllLevelBorderRadius.textDelayTimeout);
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this.propInputs.navAllLevelBorderRadius.textDelayTimeout = setTimeout(() => {
+            
+            this.displayInputErrorByDataKey('navAllLevelBorderRadius', '');
+            let inputvalue = e.detail.value;
+            if(!generalUtils.isStringEmpty(inputvalue))
+            {
+                try {
+
+                    inputvalue = parseInt(inputvalue);
+                    this.propInputs.navAllLevelBorderRadius.value = inputvalue;
+
+                    let tmpvalueObj = this.getValueObj();
+                    tmpvalueObj.styles.navAllLevelBorderRadius = inputvalue;
+
+                    this.dispatchEvent(new CustomEvent("valuechange", 
+                        {detail: {value: JSON.stringify(tmpvalueObj)}}));
+
+                } catch(e) {
+                    this.displayInputErrorByDataKey('navAllLevelBorderRadius', 'Invalid number provided.');
+                }
+            }
+            else 
+            {
+                this.displayInputErrorByDataKey('navAllLevelBorderRadius', 'Invalid number provided.');
             }
 
         }, typeDelay);
@@ -1704,9 +1854,9 @@ export default class NavMenuCpe extends LightningElement {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         this.propInputs.navBorderWidth.textDelayTimeout = setTimeout(() => {
             
-            this.displayInputError('navBorderWidth', '');
+            this.displayInputErrorByDataKey('navBorderWidth', '');
             let inputvalue = e.detail.value;
-            if(!this.isStringEmpty(inputvalue))
+            if(!generalUtils.isStringEmpty(inputvalue))
             {
                 try {
 
@@ -1720,12 +1870,12 @@ export default class NavMenuCpe extends LightningElement {
                         {detail: {value: JSON.stringify(tmpvalueObj)}}));
 
                 } catch(e) {
-                    this.displayInputError('navBorderWidth', 'Invalid number provided.');
+                    this.displayInputErrorByDataKey('navBorderWidth', 'Invalid number provided.');
                 }
             }
             else 
             {
-                this.displayInputError('navBorderWidth', 'Invalid number provided.');
+                this.displayInputErrorByDataKey('navBorderWidth', 'Invalid number provided.');
             }
 
         }, typeDelay);
@@ -1772,9 +1922,9 @@ export default class NavMenuCpe extends LightningElement {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         this.propInputs.navAllLevelBorderWidth.textDelayTimeout = setTimeout(() => {
             
-            this.displayInputError('navAllLevelBorderWidth', '');
+            this.displayInputErrorByDataKey('navAllLevelBorderWidth', '');
             let inputvalue = e.detail.value;
-            if(!this.isStringEmpty(inputvalue))
+            if(!generalUtils.isStringEmpty(inputvalue))
             {
                 try {
 
@@ -1788,12 +1938,12 @@ export default class NavMenuCpe extends LightningElement {
                         {detail: {value: JSON.stringify(tmpvalueObj)}}));
 
                 } catch(e) {
-                    this.displayInputError('navAllLevelBorderWidth', 'Invalid number provided.');
+                    this.displayInputErrorByDataKey('navAllLevelBorderWidth', 'Invalid number provided.');
                 }
             }
             else 
             {
-                this.displayInputError('navAllLevelBorderWidth', 'Invalid number provided.');
+                this.displayInputErrorByDataKey('navAllLevelBorderWidth', 'Invalid number provided.');
             }
 
         }, typeDelay);
@@ -1829,9 +1979,9 @@ export default class NavMenuCpe extends LightningElement {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         this.propInputs.navAllLevelShadowBoxXOffset.textDelayTimeout = setTimeout(() => {
             
-            this.displayInputError('navAllLevelShadowBoxXOffset', '');
+            this.displayInputErrorByDataKey('navAllLevelShadowBoxXOffset', '');
             let inputvalue = e.detail.value;
-            if(!this.isStringEmpty(inputvalue))
+            if(!generalUtils.isStringEmpty(inputvalue))
             {
                 try {
 
@@ -1845,12 +1995,12 @@ export default class NavMenuCpe extends LightningElement {
                         {detail: {value: JSON.stringify(tmpvalueObj)}}));
 
                 } catch(e) {
-                    this.displayInputError('navAllLevelShadowBoxXOffset', 'Invalid number provided.');
+                    this.displayInputErrorByDataKey('navAllLevelShadowBoxXOffset', 'Invalid number provided.');
                 }
             }
             else 
             {
-                this.displayInputError('navAllLevelShadowBoxXOffset', 'Invalid number provided.');
+                this.displayInputErrorByDataKey('navAllLevelShadowBoxXOffset', 'Invalid number provided.');
             }
 
         }, typeDelay);
@@ -1863,9 +2013,9 @@ export default class NavMenuCpe extends LightningElement {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         this.propInputs.navAllLevelShadowBoxYOffset.textDelayTimeout = setTimeout(() => {
             
-            this.displayInputError('navAllLevelShadowBoxYOffset', '');
+            this.displayInputErrorByDataKey('navAllLevelShadowBoxYOffset', '');
             let inputvalue = e.detail.value;
-            if(!this.isStringEmpty(inputvalue))
+            if(!generalUtils.isStringEmpty(inputvalue))
             {
                 try {
 
@@ -1879,12 +2029,12 @@ export default class NavMenuCpe extends LightningElement {
                         {detail: {value: JSON.stringify(tmpvalueObj)}}));
 
                 } catch(e) {
-                    this.displayInputError('navAllLevelShadowBoxYOffset', 'Invalid number provided.');
+                    this.displayInputErrorByDataKey('navAllLevelShadowBoxYOffset', 'Invalid number provided.');
                 }
             }
             else 
             {
-                this.displayInputError('navAllLevelShadowBoxYOffset', 'Invalid number provided.');
+                this.displayInputErrorByDataKey('navAllLevelShadowBoxYOffset', 'Invalid number provided.');
             }
 
         }, typeDelay);
@@ -1897,9 +2047,9 @@ export default class NavMenuCpe extends LightningElement {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         this.propInputs.navAllLevelShadowBoxBlur.textDelayTimeout = setTimeout(() => {
             
-            this.displayInputError('navAllLevelShadowBoxBlur', '');
+            this.displayInputErrorByDataKey('navAllLevelShadowBoxBlur', '');
             let inputvalue = e.detail.value;
-            if(!this.isStringEmpty(inputvalue))
+            if(!generalUtils.isStringEmpty(inputvalue))
             {
                 try {
 
@@ -1913,12 +2063,12 @@ export default class NavMenuCpe extends LightningElement {
                         {detail: {value: JSON.stringify(tmpvalueObj)}}));
 
                 } catch(e) {
-                    this.displayInputError('navAllLevelShadowBoxBlur', 'Invalid number provided.');
+                    this.displayInputErrorByDataKey('navAllLevelShadowBoxBlur', 'Invalid number provided.');
                 }
             }
             else 
             {
-                this.displayInputError('navAllLevelShadowBoxBlur', 'Invalid number provided.');
+                this.displayInputErrorByDataKey('navAllLevelShadowBoxBlur', 'Invalid number provided.');
             }
 
         }, typeDelay);
@@ -1931,9 +2081,9 @@ export default class NavMenuCpe extends LightningElement {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         this.propInputs.navAllLevelShadowBoxSpread.textDelayTimeout = setTimeout(() => {
             
-            this.displayInputError('navAllLevelShadowBoxSpread', '');
+            this.displayInputErrorByDataKey('navAllLevelShadowBoxSpread', '');
             let inputvalue = e.detail.value;
-            if(!this.isStringEmpty(inputvalue))
+            if(!generalUtils.isStringEmpty(inputvalue))
             {
                 try {
 
@@ -1947,12 +2097,12 @@ export default class NavMenuCpe extends LightningElement {
                         {detail: {value: JSON.stringify(tmpvalueObj)}}));
 
                 } catch(e) {
-                    this.displayInputError('navAllLevelShadowBoxSpread', 'Invalid number provided.');
+                    this.displayInputErrorByDataKey('navAllLevelShadowBoxSpread', 'Invalid number provided.');
                 }
             }
             else 
             {
-                this.displayInputError('navAllLevelShadowBoxSpread', 'Invalid number provided.');
+                this.displayInputErrorByDataKey('navAllLevelShadowBoxSpread', 'Invalid number provided.');
             }
 
         }, typeDelay);
@@ -1963,25 +2113,14 @@ export default class NavMenuCpe extends LightningElement {
     {
         this.exportError = undefined;
         let tmpvalueObj = this.getValueObj();
-        if(!this.isStringEmpty(tmpvalueObj?.general?.menuName))
+        if(!generalUtils.isStringEmpty(tmpvalueObj?.general?.menuName))
         {
-            this.download(tmpvalueObj.general.menuName + '.json', JSON.stringify(tmpvalueObj, undefined, 4));
+            generalUtils.downloadTextFile(tmpvalueObj.general.menuName + '-config.json', JSON.stringify(tmpvalueObj, undefined, 4));
         }
         else
         {
             this.exportError = 'Menu Name is required.';
         }
-    }
-
-    download(filename, text) {
-        var element = this.template.querySelector('a[data-name="exportMenu"]');
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-        element.setAttribute('download', filename);
-            
-        element.click();
-      
-        element.setAttribute('href','');
-        element.setAttribute('download', '');
     }
 
     openImportModal() 
@@ -1994,20 +2133,16 @@ export default class NavMenuCpe extends LightningElement {
         this.importModalOpen = false;
     }
 
+
     handleImportConfig(e)
     {
         this.importError = undefined;
-        let fileElement = this.template.querySelector('input[data-name="importConfigFile"]');
-        let file = fileElement.files.item(0);
-        if(file === undefined || file === null)
-        {
-            this.importError = 'No file selected.';
-        }
-        else 
-        {
-            const reader = new FileReader();
-            reader.onload = (ev) => {
-                let JSONConfigImportString = ev.target.result;
+        let fileElement = componentUtils.getElement(this, 'input[data-name="importConfigFile"]');
+
+        generalUtils.readTextFile(fileElement).then(
+            (result) => {
+                let JSONConfigImportString = result;
+                console.log(JSONConfigImportString);
                 let JSONConfigImport;
                 try {
                     JSONConfigImport = JSON.parse(JSONConfigImportString);
@@ -2017,18 +2152,18 @@ export default class NavMenuCpe extends LightningElement {
 
                 try {
 
-                    if(!this.isObjectEmpty(JSONConfigImport))
+                    if(!generalUtils.isObjectEmpty(JSONConfigImport))
                     {
                         let tmpvalueObj = this.getValueObj();
                         let hasValueChanged = false;
                         for (let key in this.propInputs) 
                         {
-                            if(Object.prototype.hasOwnProperty.call(this.propInputs, key))
+                            if(generalUtils.objectHasProperty(this.propInputs, key))
                             {
-                                let tmpVal = this.getObjPropValue(JSONConfigImport, this.propInputs[key].valuePath);
-                                if(!this.isObjectEmpty(tmpVal))
+                                let tmpVal = generalUtils.getObjPropValue(JSONConfigImport, this.propInputs[key].valuePath);
+                                if(!generalUtils.isObjectEmpty(tmpVal))
                                 {
-                                    tmpvalueObj = this.setObjPropValue(tmpvalueObj, this.propInputs[key].valuePath, tmpVal);
+                                    tmpvalueObj = generalUtils.setObjPropValue(tmpvalueObj, this.propInputs[key].valuePath, tmpVal);
                                     hasValueChanged = true;
                                 }
                             }
@@ -2050,11 +2185,14 @@ export default class NavMenuCpe extends LightningElement {
                 } catch(err2) {
                     this.importError = 'Error during import: ' + err2;
                 }
+            },
+            (error) => {
+                this.importError = error + '';
+            }
+        );
+            
                 
-
-            };
-            reader.readAsText(file);
-        }
+        
     }
 
 }

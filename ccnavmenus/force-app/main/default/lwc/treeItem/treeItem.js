@@ -8,6 +8,7 @@
 import { LightningElement, api, track } from 'lwc';
 import { classSet } from 'c/utils';
 import { keyCodes } from 'c/utilsPrivate';
+import * as generalUtils from 'c/gtaUtilsGeneral';
 
 const i18n = {
     collapseBranch: 'Collapse ',
@@ -71,11 +72,11 @@ export default class cTreeItem extends LightningElement {
     }
 
     @api get iconPositionLeft() {
-        return this.iconPosition !== undefined && this.iconPosition !== null && this.iconPosition.trim() === 'left';
+        return generalUtils.isStringEmpty(this.iconPosition) === false && this.iconPosition.trim() === 'left';
     }
 
     @api get iconPositionRight() {
-        return this.iconPosition !== undefined && this.iconPosition !== null && this.iconPosition.trim() === 'right';
+        return generalUtils.isStringEmpty(this.iconPosition) === false && this.iconPosition.trim() === 'right';
     }
 
     @api get treeItemElements() {
@@ -120,7 +121,7 @@ export default class cTreeItem extends LightningElement {
     }
 
     get isLabel() {
-        return (this.label !== undefined && this.label !== null && this.label.trim() !== '');
+        return (generalUtils.isStringEmpty(this.label) === false);
     }
 
     connectedCallback() {
@@ -139,7 +140,7 @@ export default class cTreeItem extends LightningElement {
 
         this.addEventListener('keydown', this.handleKeydown.bind(this));
 
-        if(this.textTransform === undefined || this.textTransform === null || this.textTransform.trim() === '' || this.textTransform.trim() === 'inherit')
+        if(generalUtils.isStringEmpty(this.textTransform) === true || this.textTransform.trim() === 'inherit')
         {   
             this.textTransform = getComputedStyle(document.documentElement).getPropertyValue('--lwc-textTransform');
         }
@@ -154,7 +155,8 @@ export default class cTreeItem extends LightningElement {
             }
         }
 
-        let deviceWidth = document?.documentElement?.clientWidth || document?.body?.clientWidth;
+        //let deviceWidth = document?.documentElement?.clientWidth || document?.body?.clientWidth;
+        let deviceWidth = generalUtils.getWindowWidth();
 
         let treeItemCSS = this.template.querySelector('div[role="ccnavMenu-treeItemCSS"]');
         if(deviceWidth < 768)
@@ -202,10 +204,9 @@ export default class cTreeItem extends LightningElement {
         {
             return 'link';
         }
-        else 
-        {
-            return 'menuitem';
-        }
+
+        return 'menuitem';
+        
     }
 
     get showExpanded() { 
@@ -225,6 +226,10 @@ export default class cTreeItem extends LightningElement {
             .toString();
     }
 
+    get showIconSpacer() {
+        return (this.isLeaf || this.isDisabled) && ((this.isVertical === false && this.level !== 1) || this.isVertical === true);
+    }
+
     get computedIconName() {
         let iconName = document.dir === 'rtl'
             ? 'utility:chevronleft'
@@ -241,10 +246,9 @@ export default class cTreeItem extends LightningElement {
         {
             return '-1';
         }
-        else 
-        {
-            return '0';
-        }
+
+        return '0';
+        
 
     }
 
@@ -254,10 +258,9 @@ export default class cTreeItem extends LightningElement {
         {
             return 'false';
         }
-        else 
-        {
-            return 'true';
-        }
+
+        return 'true';
+        
         
     }
 
@@ -271,10 +274,9 @@ export default class cTreeItem extends LightningElement {
         {
             return 'announceNavMenu';
         }
-        else 
-        {
-            return 'announceNavMenu-' + Date.now();
-        }
+
+        return 'announceNavMenu-' + Date.now();
+        
     }
 
     get isFirstNode()
@@ -288,7 +290,7 @@ export default class cTreeItem extends LightningElement {
             return '';
         }
         let tmpLinkIsExpanded = false;
-        tmpLinkIsExpanded = this.children.length > 0 && this.isExpanded;
+        tmpLinkIsExpanded = generalUtils.isArrayEmpty(this.children) === false && this.isExpanded;
         return tmpLinkIsExpanded;
     }
 

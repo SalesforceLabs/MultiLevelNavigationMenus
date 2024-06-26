@@ -24,6 +24,9 @@ div {
     transform: none !important;
 }
 
+.iconSpacer {
+    width: 32px;
+}
 
 .slds-button:focus {
     outline: none;
@@ -46,8 +49,6 @@ button[title='Expand Tree Branch'].slds-is-disabled {
 }
 
 c-tree-item[aria-level="1"][data-is-vertical="false"] > div {
-    padding-right: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
-    padding-left: calc(var(--ccnavmenus-topLevelItemSpacing)/2);
     position: relative;
 }
 
@@ -60,7 +61,6 @@ c-tree-item[aria-level="1"][data-is-vertical="false"] > div {
 .groupMenuItem div[role="ccnavMenu-treeItemCSS"] > div[role="menuitem"],
 .groupMenuItem div[role="ccnavMenu-treeItemCSS"] > div[role="link"] {
     padding-left: 10px;
-    padding-right: 0;
 }
 
 div[role="ccnavMenu-treeItemCSS"] > div[role="menuitem"],
@@ -109,6 +109,7 @@ a.menuLink
     display: flex;
     text-transform: var(--ccnavmenus-textTransform);
     font-family: var(--ccnavmenus-fontFamily);
+    font-size: var(--ccnavmenus-fontSize, 16px);
     text-decoration: none;
     height: 100%;
     align-items: center;
@@ -126,6 +127,8 @@ c-tree-item[aria-level="1"] > div.slds-tree__item
 .groupMenuItem .slds-tree__item a.menuLink
 {
     color: var(--ccnavmenus-nav-text-color, var(--ccnavmenus-brandNavigationColorText, black));
+    align-self: center;
+    margin-top: 0;
 }
 
 .vertical-groupDiv-1 {
@@ -138,10 +141,10 @@ c-tree-item[aria-level="1"] > div.slds-tree__item
     min-width: var(--ccnavmenus-horizontalItem-min-width, 20rem);
     max-width: var(--ccnavmenus-horizontalItem-max-width, auto);
     background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBackgroundColor, white));
-    border: 1px solid gray;
     z-index: 9999;
     padding: var(--dxp-g-spacing-small, 0.75rem);
     border: var(--ccnavmenus-nav-allLevel-border);
+    border-radius: var(--ccnavmenus-nav-allLevel-border-radius, 0);
     box-shadow: var(--ccnavmenus-nav-allLevel-shadowBox);
 }
 

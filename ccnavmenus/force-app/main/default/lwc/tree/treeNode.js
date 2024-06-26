@@ -5,6 +5,8 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
  */
 
+import { isStringEmpty, isArrayEmpty } from 'c/gtaUtilsGeneral';
+
 function computeKey(parentKey, childNum) {
     if (!parentKey) {
         return '0';
@@ -37,7 +39,7 @@ export function getTreeNode(node, level, parentKey, childNum) {
         nodeRef: node,
         isLeaf:
             !node.items ||
-            (Array.isArray(node.items) && node.items.length === 0),
+            (isArrayEmpty(node.items) === true),
         get isExpanded() {
             return this.isLeaf ? true : node.expanded || false;
         },
@@ -51,7 +53,7 @@ export function getTreeNode(node, level, parentKey, childNum) {
         get selected() {
             
             let url = document.URL;
-            if(node.href !== undefined && node.href !== null && node.href.trim() !== '' && url.includes(node.href))
+            if(isStringEmpty(node.href) === false && url.includes(node.href))
             {
                 return true;
             }

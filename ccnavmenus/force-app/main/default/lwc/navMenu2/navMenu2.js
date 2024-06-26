@@ -10,11 +10,13 @@ import fetchMenu from '@salesforce/apex/menusController.getMenu';
 import {loadStyle} from 'lightning/platformResourceLoader';
 import navMenuCSS from '@salesforce/resourceUrl/navMenu';
 import faMain from '@salesforce/resourceUrl/fontawesome';
-import formFactor from '@salesforce/client/formFactor';
-import userId from '@salesforce/user/Id';
 import { CurrentPageReference } from 'lightning/navigation';
-import ActiveLanguageCode from '@salesforce/i18n/lang';
 
+import * as generalUtils from 'c/gtaUtilsGeneral';
+import * as experienceUtils from 'c/gtaUtilsExperience';
+import * as cacheUtils from 'c/gtaUtilsCache';
+import * as userUtils from 'c/gtaUtilsUser';
+import * as deviceUtils from 'c/gtaUtilsDevice';
 
 
 export default class NavMenu2 extends LightningElement {
@@ -27,19 +29,19 @@ export default class NavMenu2 extends LightningElement {
     }
 
     get configJSONPrettyPrintString() {
-        return JSON.stringify(this.configObj, undefined, 4);
+        return generalUtils.prettyPrintJSON(this.configObj);
     }
 
     /* General Config */ 
     menuId = 'nameFilter';
     get menuName() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.general?.menuName) || this.configObj?.general?.menuName.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.general?.menuName) || this.configObj?.general?.menuName.trim() === 'undefined') 
         ? '' : this.configObj?.general?.menuName;
         return tmpvalue;
     }
 
     get language() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.general?.languageFilter) || this.configObj?.general?.languageFilter.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.general?.languageFilter) || this.configObj?.general?.languageFilter.trim() === 'undefined') 
         ? 'auto' : this.configObj?.general?.languageFilter;
         return tmpvalue;
     }
@@ -48,11 +50,11 @@ export default class NavMenu2 extends LightningElement {
     get showMenu() {
 
         let showMenuTmp = true;
-        if(formFactor === 'Medium')
+        if(deviceUtils.getFormFactor() === 'Medium')
         {
             showMenuTmp = (this.configObj?.general?.menuModeTablet === 'hidden') ? false : showMenuTmp;
         }
-        else if(formFactor === 'Small') 
+        else if(deviceUtils.getFormFactor() === 'Small') 
         {
             showMenuTmp = (this.configObj?.general?.menuModeMobile === 'hidden') ? false : showMenuTmp;
         }
@@ -68,11 +70,11 @@ export default class NavMenu2 extends LightningElement {
     get isHamburgerMenu() {
 
         let isHamburgerMenuTmp = false;
-        if(formFactor === 'Medium')
+        if(deviceUtils.getFormFactor() === 'Medium')
         {
             isHamburgerMenuTmp = (this.configObj?.general?.menuModeTablet === 'hamburger') ? true : isHamburgerMenuTmp;
         }
-        else if(formFactor === 'Small') 
+        else if(deviceUtils.getFormFactor() === 'Small') 
         {
             isHamburgerMenuTmp = (this.configObj?.general?.menuModeMobile === 'hamburger') ? true : isHamburgerMenuTmp;
         }
@@ -88,11 +90,11 @@ export default class NavMenu2 extends LightningElement {
     get isVertical() {
 
         let isVerticalTmp = false;
-        if(formFactor === 'Medium')
+        if(deviceUtils.getFormFactor() === 'Medium')
         {
             isVerticalTmp = (this.configObj?.general?.menuModeTablet === 'allLevels') ? true : isVerticalTmp;
         }
-        else if(formFactor === 'Small') 
+        else if(deviceUtils.getFormFactor() === 'Small') 
         {
             isVerticalTmp = (this.configObj?.general?.menuModeMobile === 'allLevels') ? true : isVerticalTmp;
         }
@@ -109,11 +111,11 @@ export default class NavMenu2 extends LightningElement {
     {
 
         let isDrillDownTmp = false;
-        if(formFactor === 'Medium')
+        if(deviceUtils.getFormFactor() === 'Medium')
         {
             isDrillDownTmp = (this.configObj?.general?.menuTypeTablet === 'drilldown') ? true : isDrillDownTmp;
         }
-        else if(formFactor === 'Small') 
+        else if(deviceUtils.getFormFactor() === 'Small') 
         {
             isDrillDownTmp = (this.configObj?.general?.menuTypeMobile === 'drilldown') ? true : isDrillDownTmp;
         }
@@ -129,11 +131,11 @@ export default class NavMenu2 extends LightningElement {
     {
 
         let isMegaTmp = false;
-        if(formFactor === 'Medium')
+        if(deviceUtils.getFormFactor() === 'Medium')
         {
             isMegaTmp = (this.configObj?.general?.menuTypeTablet === 'mega') ? true : isMegaTmp;
         }
-        else if(formFactor === 'Small') 
+        else if(deviceUtils.getFormFactor() === 'Small') 
         {
             isMegaTmp = (this.configObj?.general?.menuTypeMobile === 'mega') ? true : isMegaTmp;
         }
@@ -146,7 +148,7 @@ export default class NavMenu2 extends LightningElement {
     }
 
     get debugMode() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.general?.debugMode)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.general?.debugMode)) 
         ? false : this.configObj?.general?.debugMode;
         return tmpvalue;
     }
@@ -157,47 +159,45 @@ export default class NavMenu2 extends LightningElement {
 
     /* [{"replaceThis":"[!recordId]","replaceWith":"{!recordId}"}] */ 
     get urlSubMapJson() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.general?.urlSubMap)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.general?.urlSubMap)) 
         ? undefined : JSON.stringify(this.configObj?.general?.urlSubMap);
         return tmpvalue;
     }
 
     get cacheEnabled() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.general?.cacheEnabled)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.general?.cacheEnabled)) 
         ? false : this.configObj?.general?.cacheEnabled;
 
         if(tmpvalue === true)
         {
             
-            let alphanumericExp = /^([0-9]|[a-z])+([0-9a-z]*)$/i;
-
-            if(!this.isStringEmpty(this.cacheName) && this.cacheName.match(alphanumericExp) !== null 
-            && !this.isStringEmpty(this.cacheKey) && this.cacheKey.match(alphanumericExp) !== null )
+            if(!generalUtils.isStringEmpty(this.cacheName) && generalUtils.isAlphaNumeric(this.cacheName) === true 
+            && !generalUtils.isStringEmpty(this.cacheKey) && generalUtils.isAlphaNumeric(this.cacheKey) === true )
             {
-                this.cacheKeyCalculated = this.cacheKey + userId + this.language;
+                this.cacheKeyCalculated = this.cacheKey + userUtils.getUserId() + this.language;
             }
             else 
             {
                 tmpvalue = false;
-                this.consoleLog('cache_name_key_error','clientCacheStatus: ');
+                generalUtils.consoleLog(this.debugMode, 'cache_name_key_error','clientCacheStatus: ');
             }
         }
         else 
         {
-            this.consoleLog('cache_disabled','clientCacheStatus: ');
+            generalUtils.consoleLog(this.debugMode, 'cache_disabled','clientCacheStatus: ');
         }
 
         return tmpvalue;
     }
     
     get cacheName() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.general?.cacheName) || this.configObj?.general?.cacheName.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.general?.cacheName) || this.configObj?.general?.cacheName.trim() === 'undefined') 
         ? '' : this.configObj?.general?.cacheName;
         return tmpvalue;
     }
 
     get cacheKey() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.general?.cacheKey) || this.configObj?.general?.cacheKey.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.general?.cacheKey) || this.configObj?.general?.cacheKey.trim() === 'undefined') 
         ? '' : this.configObj?.general?.cacheKey;
         return tmpvalue;
     }
@@ -205,233 +205,268 @@ export default class NavMenu2 extends LightningElement {
 
     /* Labels Config */
     get overflowLabel() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.labels?.overflowLabel) || this.configObj?.labels?.overflowLabel.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.labels?.overflowLabel) || this.configObj?.labels?.overflowLabel.trim() === 'undefined') 
         ? '' : this.configObj?.labels?.overflowLabel;
         return tmpvalue;
     }
     get drillDownBackButtonLabel() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.labels?.drilldownBackLabel) || this.configObj?.labels?.drilldownBackLabel.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.labels?.drilldownBackLabel) || this.configObj?.labels?.drilldownBackLabel.trim() === 'undefined') 
         ? '' : this.configObj?.labels?.drilldownBackLabel;
         return tmpvalue;
     }
     get allLabel() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.labels?.drilldownGotoLabel) || this.configObj?.labels?.drilldownGotoLabel.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.labels?.drilldownGotoLabel) || this.configObj?.labels?.drilldownGotoLabel.trim() === 'undefined') 
         ? '' : this.configObj?.labels?.drilldownGotoLabel;
         return tmpvalue;
     }
 
 
-    @api uuid = crypto.randomUUID();
+    @api uuid = generalUtils.generateUniqueIdentifier();
     @track pageRef;
 
     get isInSitePreview() {
         
-        return (this.pageRef?.state?.app === "commeditor" || this.pageRef?.state?.view === "editor");
+        return experienceUtils.isInSitePreview(this.pageRef);
     }
     
 
     //styling inputs
     get hideHamburgerMenuAnimation() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.styles?.hideHamburgerMenuAnimation)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.hideHamburgerMenuAnimation)) 
         ? false : this.configObj?.styles?.hideHamburgerMenuAnimation;
         return tmpvalue;
     }
 
     get menuAlignment() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.menuAlignment) || this.configObj?.styles?.menuAlignment.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.menuAlignment) || this.configObj?.styles?.menuAlignment.trim() === 'undefined') 
         ? 'center' : this.configObj?.styles?.menuAlignment;
         return tmpvalue;
     }
 
     get menuItemVerticalPadding() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.styles?.menuItemVerticalPadding)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.menuItemVerticalPadding)) 
         ? 20 : this.configObj?.styles?.menuItemVerticalPadding;
         return tmpvalue;
     }
 
     get topLevelItemSpacing() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.styles?.topLevelItemSpacing)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.topLevelItemSpacing)) 
         ? 20 : this.configObj?.styles?.topLevelItemSpacing;
         return tmpvalue;
     }
 
     get overrideFontFamily() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.overrideFontFamily) || this.configObj?.styles?.overrideFontFamily.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.overrideFontFamily) || this.configObj?.styles?.overrideFontFamily.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.overrideFontFamily;
         return tmpvalue;
     }
 
+    get overrideFontSize() {
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.overrideFontSize)) 
+        ? undefined : this.configObj?.styles?.overrideFontSize;
+        return tmpvalue;
+    }
+
+    get overrideFontSizeMobile() {
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.overrideFontSizeMobile)) 
+        ? undefined : this.configObj?.styles?.overrideFontSizeMobile;
+        return tmpvalue;
+    }
+
+    get sldsIconSize() {
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.sldsIconSize) || this.configObj?.styles?.sldsIconSize.trim() === 'undefined') 
+        ? '1' : this.configObj?.styles?.sldsIconSize;
+        try {
+            tmpvalue = parseFloat(tmpvalue);
+        } catch(err){
+            tmpvalue = 1;
+        }
+        return tmpvalue;
+    }
+
+    get iconSpacing() {
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.iconSpacing)) 
+        ? 10 : this.configObj?.styles?.iconSpacing;
+        return tmpvalue;
+    }
+
     get overrideTextCase() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.overrideTextCase) || this.configObj?.styles?.overrideTextCase.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.overrideTextCase) || this.configObj?.styles?.overrideTextCase.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.overrideTextCase;
         return tmpvalue;
     }
 
     get navMenuClassNames() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.menuCSSClasses) || this.configObj?.styles?.menuCSSClasses.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.menuCSSClasses) || this.configObj?.styles?.menuCSSClasses.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.menuCSSClasses;
         return tmpvalue;
     }
 
     /* Color Config */
     get navContainerTextColor() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navContainerTextColor) || this.configObj?.styles?.navContainerTextColor.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navContainerTextColor) || this.configObj?.styles?.navContainerTextColor.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.navContainerTextColor;
         return tmpvalue;
     }
 
     get navContainerTextColorHover() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navContainerTextColorHover) || this.configObj?.styles?.navContainerTextColorHover.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navContainerTextColorHover) || this.configObj?.styles?.navContainerTextColorHover.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.navContainerTextColorHover;
         return tmpvalue;
     }
 
     get navContainerBackgroundColor() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navContainerBackgroundColor) || this.configObj?.styles?.navContainerBackgroundColor.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navContainerBackgroundColor) || this.configObj?.styles?.navContainerBackgroundColor.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.navContainerBackgroundColor;
         return tmpvalue;
     }
 
     get navContainerBackgroundColorHover() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navContainerBackgroundColorHover) || this.configObj?.styles?.navContainerBackgroundColorHover.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navContainerBackgroundColorHover) || this.configObj?.styles?.navContainerBackgroundColorHover.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.navContainerBackgroundColorHover;
         return tmpvalue;
     }
 
     get navTextColor() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navTextColor) || this.configObj?.styles?.navTextColor.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navTextColor) || this.configObj?.styles?.navTextColor.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.navTextColor;
         return tmpvalue;
     }
 
     get navTextColorHover() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navTextColorHover) || this.configObj?.styles?.navTextColorHover.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navTextColorHover) || this.configObj?.styles?.navTextColorHover.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.navTextColorHover;
         return tmpvalue;
     }
 
     get navBackgroundColor() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navBackgroundColor) || this.configObj?.styles?.navBackgroundColor.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navBackgroundColor) || this.configObj?.styles?.navBackgroundColor.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.navBackgroundColor;
         return tmpvalue;
     }
 
     get navBackgroundColorHover() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navBackgroundColorHover) || this.configObj?.styles?.navBackgroundColorHover.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navBackgroundColorHover) || this.configObj?.styles?.navBackgroundColorHover.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.navBackgroundColorHover;
         return tmpvalue;
     }
 
     get navContainerBorderStyle() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navContainerBorderStyle) || this.configObj?.styles?.navContainerBorderStyle.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navContainerBorderStyle) || this.configObj?.styles?.navContainerBorderStyle.trim() === 'undefined') 
         ? 'none' : this.configObj?.styles?.navContainerBorderStyle;
         return tmpvalue;
     }
 
     get navContainerBorderDirection() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.styles?.navContainerBorderDirection) || this.configObj?.styles?.navContainerBorderDirection.length === 0) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.navContainerBorderDirection) || this.configObj?.styles?.navContainerBorderDirection.length === 0) 
         ? ['bottom'] : this.configObj?.styles?.navContainerBorderDirection;
         return tmpvalue;
     }
 
     get navContainerBorderColor() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navContainerBorderColor) || this.configObj?.styles?.navContainerBorderColor.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navContainerBorderColor) || this.configObj?.styles?.navContainerBorderColor.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.navContainerBorderColor;
         return tmpvalue;
     }
 
     get navContainerBorderWidth() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.styles?.navContainerBorderWidth)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.navContainerBorderWidth)) 
         ? 1 : this.configObj?.styles?.navContainerBorderWidth;
         return tmpvalue;
     }
 
     get navBorderStyle() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navBorderStyle) || this.configObj?.styles?.navBorderStyle.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navBorderStyle) || this.configObj?.styles?.navBorderStyle.trim() === 'undefined') 
         ? 'none' : this.configObj?.styles?.navBorderStyle;
         return tmpvalue;
     }
 
     get navBorderDirection() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.styles?.navBorderDirection) || this.configObj?.styles?.navBorderDirection.length === 0) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.navBorderDirection) || this.configObj?.styles?.navBorderDirection.length === 0) 
         ? ['bottom'] : this.configObj?.styles?.navBorderDirection;
         return tmpvalue;
     }
 
     get navBorderColor() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navBorderColor) || this.configObj?.styles?.navBorderColor.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navBorderColor) || this.configObj?.styles?.navBorderColor.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.navBorderColor;
         return tmpvalue;
     }
 
     get navBorderWidth() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.styles?.navBorderWidth)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.navBorderWidth)) 
         ? 1 : this.configObj?.styles?.navBorderWidth;
         return tmpvalue;
     }
     
     get navAlsoApplyToSelectedState() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.styles?.navAlsoApplyToSelectedState)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.navAlsoApplyToSelectedState)) 
         ? false : this.configObj?.styles?.navAlsoApplyToSelectedState;
         return tmpvalue;
     }
 
     get navContainerAlsoApplyToSelectedState() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.styles?.navContainerAlsoApplyToSelectedState)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.navContainerAlsoApplyToSelectedState)) 
         ? false : this.configObj?.styles?.navContainerAlsoApplyToSelectedState;
         return tmpvalue;
     }
 
     get navAllLevelBorderStyle() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navAllLevelBorderStyle) || this.configObj?.styles?.navAllLevelBorderStyle.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navAllLevelBorderStyle) || this.configObj?.styles?.navAllLevelBorderStyle.trim() === 'undefined') 
         ? 'none' : this.configObj?.styles?.navAllLevelBorderStyle;
         return tmpvalue;
     }
 
     get navAllLevelBorderColor() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navAllLevelBorderColor) || this.configObj?.styles?.navAllLevelBorderColor.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navAllLevelBorderColor) || this.configObj?.styles?.navAllLevelBorderColor.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.navAllLevelBorderColor;
         return tmpvalue;
     }
 
     get navAllLevelBorderWidth() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.styles?.navAllLevelBorderWidth)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.navAllLevelBorderWidth)) 
         ? 1 : this.configObj?.styles?.navAllLevelBorderWidth;
         return tmpvalue;
     }
 
+    get navAllLevelBorderRadius() {
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.navAllLevelBorderRadius)) 
+        ? 0 : this.configObj?.styles?.navAllLevelBorderRadius;
+        return tmpvalue;
+    }
+
     get navAllLevelShadowBoxType() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navAllLevelShadowBoxType) || this.configObj?.styles?.navAllLevelShadowBoxType.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navAllLevelShadowBoxType) || this.configObj?.styles?.navAllLevelShadowBoxType.trim() === 'undefined') 
         ? 'none' : this.configObj?.styles?.navAllLevelShadowBoxType;
         return tmpvalue;
     }
 
     get navAllLevelShadowBoxColor() {
-        let tmpvalue = (this.isStringEmpty(this.configObj?.styles?.navAllLevelShadowBoxColor) || this.configObj?.styles?.navAllLevelShadowBoxColor.trim() === 'undefined') 
+        let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.navAllLevelShadowBoxColor) || this.configObj?.styles?.navAllLevelShadowBoxColor.trim() === 'undefined') 
         ? '' : this.configObj?.styles?.navAllLevelShadowBoxColor;
         return tmpvalue;
     }
 
     get navAllLevelShadowBoxXOffset() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.styles?.navAllLevelShadowBoxXOffset)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.navAllLevelShadowBoxXOffset)) 
         ? 1 : this.configObj?.styles?.navAllLevelShadowBoxXOffset;
         return tmpvalue;
     }
 
     get navAllLevelShadowBoxYOffset() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.styles?.navAllLevelShadowBoxYOffset)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.navAllLevelShadowBoxYOffset)) 
         ? 1 : this.configObj?.styles?.navAllLevelShadowBoxYOffset;
         return tmpvalue;
     }
 
     get navAllLevelShadowBoxBlur() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.styles?.navAllLevelShadowBoxBlur)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.navAllLevelShadowBoxBlur)) 
         ? 1 : this.configObj?.styles?.navAllLevelShadowBoxBlur;
         return tmpvalue;
     }
 
     get navAllLevelShadowBoxSpread() {
-        let tmpvalue = (this.isObjectEmpty(this.configObj?.styles?.navAllLevelShadowBoxSpread)) 
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.navAllLevelShadowBoxSpread)) 
         ? 1 : this.configObj?.styles?.navAllLevelShadowBoxSpread;
         return tmpvalue;
     }
@@ -449,28 +484,17 @@ export default class NavMenu2 extends LightningElement {
     
     get menuAriaAnnouncement()
     {
-        
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
 
-        if(this.items !== undefined && this.items !== null && this.items.length > 0)
+        if(generalUtils.isArrayEmpty(this.items) === false)
         {
             return ' Menu first Item of ' + this.items.length + ' items';
         }
-        else 
-        {
-            return '';
-        }
+  
+        return '';
+        
     }
 
     get menuAlignmentClass() {
-
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
 
         const cssClasses = ['slds-grid hamburgerIconContainer'];
 
@@ -487,11 +511,6 @@ export default class NavMenu2 extends LightningElement {
 
     get hamburgerMenuClass() {
 
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
-
         const cssClasses = ['slds-button slds-button_icon slds-button_icon-inverse ccnavmenu-hamburger-button slds-p-horizontal_x-small'];
 
         if (this.hideHamburgerMenuAnimation === false) {
@@ -503,11 +522,6 @@ export default class NavMenu2 extends LightningElement {
     }
 
     get closeButtonDivClasses() {
-
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
 
         const cssClasses = ['closeButtonDiv'];
         if (this.menuAlignment === 'left') {
@@ -524,10 +538,6 @@ export default class NavMenu2 extends LightningElement {
     @wire(fetchMenu,{menuId: '$menuId', language: '$language', nameFilter: '$menuName'})
     fetchMenuImperativeWiring(result) 
     {
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
 
         if (result.data) {
             let resData = JSON.parse(result.data)
@@ -535,18 +545,18 @@ export default class NavMenu2 extends LightningElement {
             {
                 try {
 
-                    if(this.items === undefined || this.items === null || this.items.length === 0)
+                    if(generalUtils.isArrayEmpty(this.items) === true)
                     {
-                        this.consoleLog('no_cache','clientCacheStatus: ');
+                        generalUtils.consoleLog(this.debugMode, 'no_cache','clientCacheStatus: ');
                     }
 
                     this.items = resData?.menu;
                     this.userInfo = resData?.user;
                     
-                    if(!this.isStringEmpty(this.urlSubMapJson))
+                    if(!generalUtils.isStringEmpty(this.urlSubMapJson))
                     {
                         this.handleUserInfoReplacements();
-                        if(this.items && Array.isArray(this.items))
+                        if(generalUtils.isArrayEmpty(this.items) === false)
                         {
                             this.handleUrlReplaceItems(this.items);
                         }
@@ -554,7 +564,7 @@ export default class NavMenu2 extends LightningElement {
                     
                     this.putMenuInCache();
                     this.error = undefined;
-                    this.consoleLog(resData.cacheStatus + '','cacheStatus: ');
+                    generalUtils.consoleLog(this.debugMode, resData.cacheStatus + '','serverCacheStatus: ');
                 }catch(e){}
             }
             else if(!resData.menu && resData.error)
@@ -596,11 +606,11 @@ export default class NavMenu2 extends LightningElement {
 
         try {
             
-            if(this.language !== undefined && this.language !== null && this.language.trim() === 'auto')
+            if(generalUtils.isObjectEmpty(this.language) === false && this.language.trim() === 'auto')
             {
-                let lang = this.getURLParameter('language');
-                lang = (this.isStringEmpty(lang)) ? ActiveLanguageCode : lang;
-                this.language += (!this.isStringEmpty(lang)) ? lang : '';
+                let lang = generalUtils.getURLParameter('language');
+                lang = (generalUtils.isStringEmpty(lang)) ? experienceUtils.getActiveLanguage() : lang;
+                this.language += (!generalUtils.isStringEmpty(lang)) ? lang : '';
             }
         } catch(e){}
 
@@ -620,11 +630,6 @@ export default class NavMenu2 extends LightningElement {
 
     disconnectedCallback() {
 
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
-
         if(this.isHamburgerMenu === true)
         {
             window.removeEventListener('click', this.clickListener);
@@ -639,7 +644,7 @@ export default class NavMenu2 extends LightningElement {
         }
 
         this.setStylingProperties();
-        if(this.template.querySelector('c-tree') !== undefined && this.template.querySelector('c-tree') !== null && typeof this.template.querySelector('c-tree').handleWindowResize === 'function')
+        if(generalUtils.isObjectEmpty(this.template.querySelector('c-tree')) === false && typeof this.template.querySelector('c-tree').handleWindowResize === 'function')
         {
             this.template.querySelector('c-tree').handleWindowResize();
         }
@@ -648,15 +653,10 @@ export default class NavMenu2 extends LightningElement {
     toggleHamburgerMenu(e)
     {
 
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
-
         this.hamburgerMenuVisible = !this.hamburgerMenuVisible;
         
         let hamburgerMenu = this.template.querySelector('[data-id="toggleHamburgerMenu"]');
-        if(hamburgerMenu !== undefined && hamburgerMenu !== null)
+        if(generalUtils.isObjectEmpty(hamburgerMenu) === false)
         {
             hamburgerMenu.classList.toggle('opened');
             hamburgerMenu.setAttribute('aria-expanded', hamburgerMenu.classList.contains('opened'));
@@ -668,11 +668,6 @@ export default class NavMenu2 extends LightningElement {
     handleCloseHamburgerMenu(e)
     {
 
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
-
         if(this.shouldCloseHamburgerMenu(e) === true)
         {
             this.closeHamburgerMenu();
@@ -682,14 +677,9 @@ export default class NavMenu2 extends LightningElement {
 
     shouldCloseHamburgerMenu(e) {
 
-        if(this.debugMode === true)
+        if(generalUtils.isObjectEmpty(e.target) === false)
         {
-            debugger;
-        }
-
-        if(e.target !== undefined && e.target !== null)
-        {
-            if(e.detail.forceClose !== undefined && e.detail.forceClose !== null && e.detail.forceClose === true)
+            if(generalUtils.isObjectEmpty(e.detail.forceClose) === false && e.detail.forceClose === true)
             {
                 return true;
             }
@@ -713,14 +703,10 @@ export default class NavMenu2 extends LightningElement {
 
     closeHamburgerMenu()
     {
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
 
         this.hamburgerMenuVisible = false;
         let hamburgerMenu = this.template.querySelector('[data-id="toggleHamburgerMenu"]');
-        if(hamburgerMenu !== undefined && hamburgerMenu !== null)
+        if(generalUtils.isObjectEmpty(hamburgerMenu) === false)
         {
             hamburgerMenu.classList.remove('opened');
             hamburgerMenu.setAttribute('aria-expanded', false);
@@ -728,48 +714,19 @@ export default class NavMenu2 extends LightningElement {
     }
 
 
-    checkMobile()
-    {
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
-        let check = false;
-        (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
-        if(check === false && formFactor === 'Small')
-        {
-            check = true;
-        }
-        return check;
-    }
-
-    getURLParameter(name) {
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
-        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
-      }
-
-
     setStylingProperties()
     {
-        
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
 
         let treeItemCSS = this.template.querySelector('div[role="ccnavMenuCSS"]');
 
-        if(!this.isObjectEmpty(treeItemCSS))
+        if(!generalUtils.isObjectEmpty(treeItemCSS))
         {
-            if(!this.isStringEmpty(this.navContainerTextColor))
+            if(!generalUtils.isStringEmpty(this.navContainerTextColor))
             {
                 treeItemCSS.style.setProperty('--ccnavmenus-navContainer-text-color', this.navContainerTextColor);
             }
 
-            if(!this.isStringEmpty(this.navContainerTextColorHover))
+            if(!generalUtils.isStringEmpty(this.navContainerTextColorHover))
             {
                 treeItemCSS.style.setProperty('--ccnavmenus-navContainer-text-color-hover', this.navContainerTextColorHover);
                 if(this.navContainerAlsoApplyToSelectedState === true)
@@ -778,12 +735,12 @@ export default class NavMenu2 extends LightningElement {
                 }
             }
 
-            if(!this.isStringEmpty(this.navContainerBackgroundColor))
+            if(!generalUtils.isStringEmpty(this.navContainerBackgroundColor))
             {
                 treeItemCSS.style.setProperty('--ccnavmenus-navContainer-background-color', this.navContainerBackgroundColor);
             }
 
-            if(!this.isStringEmpty(this.navContainerBackgroundColorHover))
+            if(!generalUtils.isStringEmpty(this.navContainerBackgroundColorHover))
             {
                 treeItemCSS.style.setProperty('--ccnavmenus-navContainer-background-color-hover', this.navContainerBackgroundColorHover);
                 if(this.navContainerAlsoApplyToSelectedState === true)
@@ -792,12 +749,12 @@ export default class NavMenu2 extends LightningElement {
                 }
             }
 
-            if(!this.isStringEmpty(this.navTextColor))
+            if(!generalUtils.isStringEmpty(this.navTextColor))
             {
                 treeItemCSS.style.setProperty('--ccnavmenus-nav-text-color', this.navTextColor);
             }
 
-            if(!this.isStringEmpty(this.navTextColorHover))
+            if(!generalUtils.isStringEmpty(this.navTextColorHover))
             {
                 treeItemCSS.style.setProperty('--ccnavmenus-nav-text-color-hover', this.navTextColorHover);
                 if(this.navAlsoApplyToSelectedState === true)
@@ -806,12 +763,12 @@ export default class NavMenu2 extends LightningElement {
                 }
             }
             
-            if(!this.isStringEmpty(this.navBackgroundColor))
+            if(!generalUtils.isStringEmpty(this.navBackgroundColor))
             {
                 treeItemCSS.style.setProperty('--ccnavmenus-nav-background-color', this.navBackgroundColor);
             }
 
-            if(!this.isStringEmpty(this.navBackgroundColorHover))
+            if(!generalUtils.isStringEmpty(this.navBackgroundColorHover))
             {
                 treeItemCSS.style.setProperty('--ccnavmenus-nav-background-color-hover', this.navBackgroundColorHover);
                 if(this.navAlsoApplyToSelectedState === true)
@@ -822,13 +779,40 @@ export default class NavMenu2 extends LightningElement {
 
 
 
-            if(!this.isStringEmpty(this.overrideFontFamily))
+            if(!generalUtils.isStringEmpty(this.overrideFontFamily))
             {
                 treeItemCSS.style.setProperty('--ccnavmenus-fontFamily', this.overrideFontFamily);
             }
 
+            if(!generalUtils.isObjectEmpty(this.overrideFontSizeMobile) && deviceUtils.getFormFactor() === 'Small')
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-fontSize', this.overrideFontSizeMobile + 'px');                          
+            }
+            else if(!generalUtils.isObjectEmpty(this.overrideFontSize) && deviceUtils.getFormFactor() !== 'Small')
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-fontSize', this.overrideFontSize + 'px');
+            }
+            else if(generalUtils.isObjectEmpty(this.overrideFontSizeMobile) && deviceUtils.getFormFactor() === 'Small')
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-fontSize', 'var(--dxp-s-html-font-size-mobile, 16px)');   
+            }
+            else
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-fontSize', 'var(--dxp-s-html-font-size, 16px)');
+            }
             
-            if(!this.isStringEmpty(this.overrideTextCase))
+
+            if(!generalUtils.isObjectEmpty(this.sldsIconSize))
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-icon-multiplier', this.sldsIconSize);
+            }
+            
+            if(!generalUtils.isObjectEmpty(this.iconSpacing))
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-icon-spacing', this.iconSpacing + 'px');
+            }
+
+            if(!generalUtils.isStringEmpty(this.overrideTextCase))
             {
                 treeItemCSS.style.setProperty('--ccnavmenus-textTransform', this.overrideTextCase);
             }
@@ -881,24 +865,29 @@ export default class NavMenu2 extends LightningElement {
                 treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-list-before-after-display', 'inherit');
             }
 
-            if(!this.isStringEmpty(this.navAllLevelBorderStyle) && this.navAllLevelBorderStyle !== 'none')
+            if(!generalUtils.isStringEmpty(this.navAllLevelBorderStyle) && this.navAllLevelBorderStyle !== 'none')
             {
                 let borderStyle = '';
                 borderStyle += this.navAllLevelBorderWidth + 'px ';
                 borderStyle += this.navAllLevelBorderStyle + ' ';
-                borderStyle += (this.isStringEmpty(this.navAllLevelBorderColor)) ? 'var(--dxp-g-brand)' : this.navAllLevelBorderColor;
+                borderStyle += (generalUtils.isStringEmpty(this.navAllLevelBorderColor)) ? 'var(--dxp-g-brand)' : this.navAllLevelBorderColor;
 
                 treeItemCSS.style.setProperty('--ccnavmenus-nav-allLevel-border', borderStyle);
             }
 
-            if(!this.isStringEmpty(this.navContainerBorderStyle) && this.navContainerBorderStyle !== 'none')
+            if(generalUtils.isObjectEmpty(this.navAllLevelBorderRadius) === false)
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-nav-allLevel-border-radius', this.navAllLevelBorderRadius + 'px');
+            }
+
+            if(!generalUtils.isStringEmpty(this.navContainerBorderStyle) && this.navContainerBorderStyle !== 'none')
             {
                 let borderStyle = '';
                 borderStyle += this.navContainerBorderWidth + 'px ';
                 borderStyle += this.navContainerBorderStyle + ' ';
-                borderStyle += (this.isStringEmpty(this.navContainerBorderColor)) ? 'var(--dxp-g-brand)' : this.navContainerBorderColor;
+                borderStyle += (generalUtils.isStringEmpty(this.navContainerBorderColor)) ? 'var(--dxp-g-brand)' : this.navContainerBorderColor;
 
-                if(!this.isObjectEmpty(this.navContainerBorderDirection) && this.navContainerBorderDirection.includes('bottom'))
+                if(!generalUtils.isObjectEmpty(this.navContainerBorderDirection) && this.navContainerBorderDirection.includes('bottom'))
                 {
                     treeItemCSS.style.setProperty('--ccnavmenus-navContainer-border-bottom', borderStyle);
                     if(this.navContainerAlsoApplyToSelectedState === true)
@@ -907,7 +896,7 @@ export default class NavMenu2 extends LightningElement {
                     }
                 }
 
-                if(!this.isObjectEmpty(this.navContainerBorderDirection) && this.navContainerBorderDirection.includes('top'))
+                if(!generalUtils.isObjectEmpty(this.navContainerBorderDirection) && this.navContainerBorderDirection.includes('top'))
                 {
                     treeItemCSS.style.setProperty('--ccnavmenus-navContainer-border-top', borderStyle);
                     if(this.navContainerAlsoApplyToSelectedState === true)
@@ -916,7 +905,7 @@ export default class NavMenu2 extends LightningElement {
                     }
                 }
 
-                if(!this.isObjectEmpty(this.navContainerBorderDirection) && this.navContainerBorderDirection.includes('left'))
+                if(!generalUtils.isObjectEmpty(this.navContainerBorderDirection) && this.navContainerBorderDirection.includes('left'))
                 {
                     treeItemCSS.style.setProperty('--ccnavmenus-navContainer-border-left', borderStyle);
                     if(this.navContainerAlsoApplyToSelectedState === true)
@@ -925,7 +914,7 @@ export default class NavMenu2 extends LightningElement {
                     }
                 }
 
-                if(!this.isObjectEmpty(this.navContainerBorderDirection) && this.navContainerBorderDirection.includes('right'))
+                if(!generalUtils.isObjectEmpty(this.navContainerBorderDirection) && this.navContainerBorderDirection.includes('right'))
                 {
                     treeItemCSS.style.setProperty('--ccnavmenus-navContainer-border-right', borderStyle);
                     if(this.navContainerAlsoApplyToSelectedState === true)
@@ -937,14 +926,14 @@ export default class NavMenu2 extends LightningElement {
             }
 
 
-            if(!this.isStringEmpty(this.navBorderStyle) && this.navBorderStyle !== 'none')
+            if(!generalUtils.isStringEmpty(this.navBorderStyle) && this.navBorderStyle !== 'none')
             {
                 let borderStyle = '';
                 borderStyle += this.navBorderWidth + 'px ';
                 borderStyle += this.navBorderStyle + ' ';
-                borderStyle += (this.isStringEmpty(this.navBorderColor)) ? 'var(--dxp-g-brand)' : this.navBorderColor;
+                borderStyle += (generalUtils.isStringEmpty(this.navBorderColor)) ? 'var(--dxp-g-brand)' : this.navBorderColor;
 
-                if(!this.isObjectEmpty(this.navBorderDirection) && this.navBorderDirection.includes('bottom'))
+                if(!generalUtils.isObjectEmpty(this.navBorderDirection) && this.navBorderDirection.includes('bottom'))
                 {
                     treeItemCSS.style.setProperty('--ccnavmenus-nav-border-bottom', borderStyle);
                     if(this.navAlsoApplyToSelectedState === true)
@@ -953,7 +942,7 @@ export default class NavMenu2 extends LightningElement {
                     }
                 }
 
-                if(!this.isObjectEmpty(this.navBorderDirection) && this.navBorderDirection.includes('top'))
+                if(!generalUtils.isObjectEmpty(this.navBorderDirection) && this.navBorderDirection.includes('top'))
                 {
                     treeItemCSS.style.setProperty('--ccnavmenus-nav-border-top', borderStyle);
                     if(this.navAlsoApplyToSelectedState === true)
@@ -962,7 +951,7 @@ export default class NavMenu2 extends LightningElement {
                     }
                 }
 
-                if(!this.isObjectEmpty(this.navBorderDirection) && this.navBorderDirection.includes('left'))
+                if(!generalUtils.isObjectEmpty(this.navBorderDirection) && this.navBorderDirection.includes('left'))
                 {
                     treeItemCSS.style.setProperty('--ccnavmenus-nav-border-left', borderStyle);
                     if(this.navAlsoApplyToSelectedState === true)
@@ -971,7 +960,7 @@ export default class NavMenu2 extends LightningElement {
                     }
                 }
 
-                if(!this.isObjectEmpty(this.navBorderDirection) && this.navBorderDirection.includes('right'))
+                if(!generalUtils.isObjectEmpty(this.navBorderDirection) && this.navBorderDirection.includes('right'))
                 {
                     treeItemCSS.style.setProperty('--ccnavmenus-nav-border-right', borderStyle);
                     if(this.navAlsoApplyToSelectedState === true)
@@ -983,13 +972,13 @@ export default class NavMenu2 extends LightningElement {
             }
 
 
-            if(!this.isStringEmpty(this.navAllLevelShadowBoxType) && this.navAllLevelShadowBoxType !== 'none')
+            if(!generalUtils.isStringEmpty(this.navAllLevelShadowBoxType) && this.navAllLevelShadowBoxType !== 'none')
             {
 
                 let shadowBoxStyle = '';
                 shadowBoxStyle += (this.navAllLevelShadowBoxType === 'inset') ? 'inset ' : '';
                 shadowBoxStyle += this.navAllLevelShadowBoxXOffset + 'px ' + this.navAllLevelShadowBoxYOffset + 'px ' + this.navAllLevelShadowBoxBlur + 'px ' + this.navAllLevelShadowBoxSpread + 'px ';
-                shadowBoxStyle += (!this.isStringEmpty(this.navAllLevelShadowBoxColor)) ? this.navAllLevelShadowBoxColor : 'var(--dxp-g-brand)';
+                shadowBoxStyle += (!generalUtils.isStringEmpty(this.navAllLevelShadowBoxColor)) ? this.navAllLevelShadowBoxColor : 'var(--dxp-g-brand)';
 
                 treeItemCSS.style.setProperty('--ccnavmenus-nav-allLevel-shadowBox', shadowBoxStyle);
 
@@ -1000,18 +989,13 @@ export default class NavMenu2 extends LightningElement {
     }
 
     handleUrlReplaceItems(items) {
-        
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
 
-        if(items !== undefined && items !== null && Array.isArray(items))
+        if(generalUtils.isArrayEmpty(items) === false)
         {
             for (var item of items) {
 
                 this.handleUrlReplace(item);
-                if(item.items !== undefined && item.items !== null && Array.isArray(item.items))
+                if(generalUtils.isArrayEmpty(item.items) === false)
                 {
                     this.handleUrlReplaceItems(item.items);
                 }
@@ -1023,28 +1007,24 @@ export default class NavMenu2 extends LightningElement {
 
     handleUrlReplace(item)
     {
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
         
         try {
             
-            if(!this.isStringEmpty(this.urlSubMapJsonModified))
+            if(!generalUtils.isStringEmpty(this.urlSubMapJsonModified))
             {
                 let urlSubMap = JSON.parse(this.urlSubMapJsonModified);
 
-                if(urlSubMap !== undefined && urlSubMap !== null && urlSubMap.length > 0)
+                if(generalUtils.isArrayEmpty(urlSubMap) === false)
                 {
                     for(let i=0;i<urlSubMap.length;i++)
                     {
-                        if(urlSubMap[i].replaceThis === undefined || urlSubMap[i].replaceThis === null || urlSubMap[i].replaceThis.trim() === ''
-                            || urlSubMap[i].replaceWith === undefined || urlSubMap[i].replaceWith === null)
+                        if(generalUtils.isStringEmpty(urlSubMap[i].replaceThis) === true
+                            || generalUtils.isObjectEmpty(urlSubMap[i].replaceWith) === true)
                         {
                             continue;
                         }
 
-                        let searchMask = this.escapeRegex(urlSubMap[i].replaceThis);
+                        let searchMask = generalUtils.escapeRegex(urlSubMap[i].replaceThis);
                         
                         let regEx = new RegExp(searchMask, "ig");
                         
@@ -1052,8 +1032,8 @@ export default class NavMenu2 extends LightningElement {
                         
 
                         
-                        item.href = (item.href !== undefined && item.href !== null) ? item.href.replace(regEx, replaceMask) : item.href;
-                        item.label = (item.label !== undefined && item.label !== null) ? item.label.replace(regEx, replaceMask) : item.label;
+                        item.href = (generalUtils.isObjectEmpty(item.href) === false) ? item.href.replace(regEx, replaceMask) : item.href;
+                        item.label = (generalUtils.isObjectEmpty(item.label) === false) ? item.label.replace(regEx, replaceMask) : item.label;
                             
                         
                     }
@@ -1065,96 +1045,87 @@ export default class NavMenu2 extends LightningElement {
         } catch(e) {}
     }
 
-    escapeRegex(string) {
-        return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-    }
-
     handleUserInfoReplacements()
     {
 
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
+        this.urlSubMapJsonModified = generalUtils.cloneObjectWithJSON(this.urlSubMapJson);
 
-        this.urlSubMapJsonModified = JSON.parse(JSON.stringify(this.urlSubMapJson));
-
-        if(this.userInfo.Id !== undefined && this.userInfo.Id !== null)
+        if(generalUtils.isObjectEmpty(this.userInfo.Id) === false)
         {
 
-            let searchMask = this.escapeRegex('[@User.Id]');
+            let searchMask = generalUtils.escapeRegex('[@User.Id]');
             let regEx = new RegExp(searchMask, "ig");
             let replaceMask = this.userInfo.Id;
             this.urlSubMapJsonModified = this.urlSubMapJsonModified.replace(regEx,replaceMask);
         } 
         
-        if(this.userInfo.AccountId !== undefined && this.userInfo.AccountId !== null)
+        if(generalUtils.isObjectEmpty(this.userInfo.AccountId) === false)
         {
 
-            let searchMask = this.escapeRegex('[@User.AccountId]');
+            let searchMask = generalUtils.escapeRegex('[@User.AccountId]');
             let regEx = new RegExp(searchMask, "ig");
             let replaceMask = this.userInfo.AccountId;
             this.urlSubMapJsonModified = this.urlSubMapJsonModified.replace(regEx,replaceMask);
         }
         
-        if(this.userInfo?.Account?.Name !== undefined && this.userInfo?.Account?.Name !== null)
+        if(generalUtils.isObjectEmpty(this.userInfo?.Account?.Name) === false)
         {
 
-            let searchMask = this.escapeRegex('[@User.AccountName]');
+            let searchMask = generalUtils.escapeRegex('[@User.AccountName]');
             let regEx = new RegExp(searchMask, "ig");
             let replaceMask = this.userInfo?.Account?.Name;
             this.urlSubMapJsonModified = this.urlSubMapJsonModified.replace(regEx,replaceMask);
         }
 
-        if(this.userInfo.ContactId !== undefined && this.userInfo.ContactId !== null)
+        if(generalUtils.isObjectEmpty(this.userInfo.ContactId) === false)
         {
 
-            let searchMask = this.escapeRegex('[@User.ContactId]');
+            let searchMask = generalUtils.escapeRegex('[@User.ContactId]');
             let regEx = new RegExp(searchMask, "ig");
             let replaceMask = this.userInfo.ContactId;
             this.urlSubMapJsonModified = this.urlSubMapJsonModified.replace(regEx,replaceMask);
         }
 
-        if(this.userInfo.FirstName !== undefined && this.userInfo.FirstName !== null)
+        if(generalUtils.isObjectEmpty(this.userInfo.FirstName) === false)
         {
 
-            let searchMask = this.escapeRegex('[@User.FirstName]');
+            let searchMask = generalUtils.escapeRegex('[@User.FirstName]');
             let regEx = new RegExp(searchMask, "ig");
             let replaceMask = this.userInfo.FirstName;
             this.urlSubMapJsonModified = this.urlSubMapJsonModified.replace(regEx,replaceMask);
         }
 
-        if(!this.isStringEmpty(this.userInfo.FirstName))
+        if(!generalUtils.isObjectEmpty(this.userInfo.FirstName))
         {
 
-            let searchMask = this.escapeRegex('[@User.FirstInitial]');
+            let searchMask = generalUtils.escapeRegex('[@User.FirstInitial]');
             let regEx = new RegExp(searchMask, "ig");
             let replaceMask = this.userInfo.FirstName.substr(0,1);
             this.urlSubMapJsonModified = this.urlSubMapJsonModified.replace(regEx,replaceMask);
         }
 
-        if(this.userInfo.LastName !== undefined && this.userInfo.LastName !== null)
+        if(generalUtils.isObjectEmpty(this.userInfo.LastName) === false)
         {
 
-            let searchMask = this.escapeRegex('[@User.LastName]');
+            let searchMask = generalUtils.escapeRegex('[@User.LastName]');
             let regEx = new RegExp(searchMask, "ig");
             let replaceMask = this.userInfo.LastName;
             this.urlSubMapJsonModified = this.urlSubMapJsonModified.replace(regEx,replaceMask);
         }
 
-        if(!this.isStringEmpty(this.userInfo.LastName))
+        if(!generalUtils.isObjectEmpty(this.userInfo.LastName))
         {
 
-            let searchMask = this.escapeRegex('[@User.LastInitial]');
+            let searchMask = generalUtils.escapeRegex('[@User.LastInitial]');
             let regEx = new RegExp(searchMask, "ig");
             let replaceMask = this.userInfo.LastName.substr(0,1);
             this.urlSubMapJsonModified = this.urlSubMapJsonModified.replace(regEx,replaceMask);
         }
         
-        if(this.userInfo.CommunityNickname !== undefined && this.userInfo.CommunityNickname !== null)
+        if(generalUtils.isObjectEmpty(this.userInfo.CommunityNickname) === false)
         {
 
-            let searchMask = this.escapeRegex('[@User.CommunityNickname]');
+            let searchMask = generalUtils.escapeRegex('[@User.CommunityNickname]');
             let regEx = new RegExp(searchMask, "ig");
             let replaceMask = this.userInfo.CommunityNickname;
             this.urlSubMapJsonModified = this.urlSubMapJsonModified.replace(regEx,replaceMask);
@@ -1165,48 +1136,20 @@ export default class NavMenu2 extends LightningElement {
     getMenuFromCache()
     {
 
-        if(this.debugMode === true)
+        if (this.cacheEnabled === true && 'caches' in window) 
         {
-            debugger;
-        }
-
-        if (this.cacheEnabled === true && 'caches' in window) {
-
-            caches.open(this.cacheName).then(cache => {
-                cache.match(this.cacheKeyCalculated).then(response => {
-                    if(response) {
-                        response.json().then(jsonValue => {
-
-                            try {
-                                this.items = JSON.parse(jsonValue);
-                                this.consoleLog('from_cache','clientCacheStatus: ');
-                             } catch(err) {
-                                this.consoleLog('cache_error','clientCacheStatus: ');
-                                }
-
-                        });
-                        
-                    }
-
-                }); 
-            })
+            generalUtils.consoleLog(this.debugMode, 'attempting to retrieve menu from cache');
+            this.items = cacheUtils.getFromCache(this.cacheName, this.cacheKeyCalculated, this.debugMode);
         }
 
     }
 
     putMenuInCache()
     {
-        if(this.debugMode === true)
-        {
-            debugger;
-        }
 
         if (this.cacheEnabled === true && 'caches' in window) 
         {
-
-            caches.open(this.cacheName).then(cache => {
-                cache.put(this.cacheKeyCalculated, Response.json(JSON.stringify(this.items)));
-            });
+            cacheUtils.putInCache(this.cacheName, this.cacheKeyCalculated, this.items, this.debugMode)
         }
 
     }
@@ -1217,24 +1160,6 @@ export default class NavMenu2 extends LightningElement {
         let tmpItemsString = JSON.stringify(this.items);
         this.items = undefined;
         this.items = JSON.parse(tmpItemsString);
-    }
-
-    consoleLog(text = '', before = '', after = '')
-    {
-        if(this.debugMode === true)
-        {
-            console.log(before + text + after);
-        }
-    }
-    
-    isObjectEmpty(param)
-    {   
-        return (param === undefined || param === null);
-    }
-
-    isStringEmpty(param)
-    {   
-        return (typeof param === 'string') ? (param === undefined || param === null || param.trim() === '') : this.isObjectEmpty(param);
     }
 
 }

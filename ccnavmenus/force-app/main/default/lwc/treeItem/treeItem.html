@@ -112,13 +112,14 @@
                         <c-primitive-icon
                             icon-name={computedIconName}
                             variant="bare"
-                            svg-class="slds-button__icon slds-button__icon_small"
+                            svg-class="slds-button__icon slds-button__icon_xx-small"
                             no-transform="true"
                             data-target-icon-type="chevron"
                             tabindex={computedIconTabindex}
                             focusable={computedIconFocusable}
                             onclick={handleClick}
                             onkeydown={handleKeydown}
+                            position="left"
 
                         >
                             </c-primitive-icon>
@@ -127,16 +128,20 @@
                             {buttonLabel}
                         </span>
                     </button>
+                    <template if:true={showIconSpacer}>
+                        <span class="iconSpacer"></span>
+                    </template>
                 </template>
                 <span class="slds-has-flexi-truncate">
                     <span class="slds-hide" id={ariaLabelledById} if:true={isFirstNode}>{computedMenuAriaAnnouncement}</span>
-                    <a href={href} tabindex="0" role={linkRole} target={target} class="slds-p-horizontal_x-small menuLink" aria-expanded={linkIsExpanded} aria-labelledby={ariaLabelledById} aria-label={linkTitle} title={linkTitle}>
+                    <a href={href} tabindex="0" role={linkRole} target={target} class="menuLink" aria-expanded={linkIsExpanded} aria-labelledby={ariaLabelledById} aria-label={linkTitle} title={linkTitle}>
                         <template if:true={icon}>
                             <c-primitive-icon if:true={iconPositionLeft}
                             icon-name={icon}
                             variant="bare"
                             svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-right_x-small"
                             no-transform="true"
+                            position="left"
                             >
                             </c-primitive-icon>
                         </template>
@@ -158,6 +163,7 @@
                             variant="bare"
                             svg-class="slds-button__icon slds-button__icon_small menu-icon slds-m-left_x-small"
                             no-transform="true"
+                            position="right"
                             >
                             </c-primitive-icon>
                         </template>
@@ -180,13 +186,14 @@
                     <c-primitive-icon if:true={level}
                         icon-name={computedIconName}
                         variant="bare"
-                        svg-class="slds-button__icon slds-button__icon_small"
+                        svg-class="slds-button__icon slds-button__icon_xx-small"
                         no-transform="true"
                         data-target-icon-type="chevron"
                         tabindex={computedIconTabindex}
                         focusable={computedIconFocusable}
                         onclick={handleClick}
                         onkeydown={handleKeydown}
+                        position="right"
                     >
                     </c-primitive-icon>
                     <span class="slds-assistive-text">

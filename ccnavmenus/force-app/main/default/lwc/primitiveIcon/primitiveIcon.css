@@ -21,3 +21,19 @@ svg {
 {
     transform: none !important;
 }
+
+svg {
+    width: calc( var(--ccnavmenus-icon-multiplier, 1) * var(--ccnavmenus-fontSize, 16px));
+    height: calc( var(--ccnavmenus-icon-multiplier, 1) * var(--ccnavmenus-fontSize, 16px));
+
+}
+
+.extraSpaceLeft
+{
+    margin-left: var(--ccnavmenus-icon-spacing, 10px);
+}
+
+.extraSpaceRight
+{
+    margin-right: var(--ccnavmenus-icon-spacing, 10px);
+}

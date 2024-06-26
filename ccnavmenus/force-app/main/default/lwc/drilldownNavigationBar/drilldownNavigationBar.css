@@ -16,6 +16,7 @@
     transition: background-color 0.2s linear;
     color: var(--ccnavmenus-navContainer-text-color, var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-navigation-text-color, var(--dxp-g-root-contrast))));
     font-family: var(--ccnavmenus-fontFamily, inherit);
+    font-size: var(--ccnavmenus-fontSize, 16px);
     text-transform: var(--ccnavmenus-textTransform);
     font-size: var(--dxp-s-body-font-size,var(--dxp-g-font-size-3));
 }

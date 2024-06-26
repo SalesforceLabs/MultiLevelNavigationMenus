@@ -16,6 +16,7 @@
     transition: background-color 0.2s linear;
     color: var(--ccnavmenus-navContainer-text-color, var(--ccnavmenus-brandNavigationColorText, var(--dxp-c-navigation-text-color, var(--dxp-g-root-contrast))));
     font-family: var(--ccnavmenus-fontFamily, inherit);
+    font-size: var(--ccnavmenus-fontSize, 16px);
     text-transform: var(--ccnavmenus-textTransform);
 }
 
@@ -73,5 +74,6 @@ ul.display-block > li {
     width: 100%;
     z-index: 9001;
     border: var(--ccnavmenus-nav-allLevel-border);
+    border-radius: var(--ccnavmenus-nav-allLevel-border-radius, 0);
     box-shadow: var(--ccnavmenus-nav-allLevel-shadowBox);
 }

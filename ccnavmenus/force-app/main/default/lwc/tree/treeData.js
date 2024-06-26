@@ -7,6 +7,7 @@
 
 import { getTreeNode } from './treeNode';
 import { assert } from 'c/utilsPrivate';
+import {isObjectEmpty} from 'c/gtaUtilsGeneral';
 
 export class TreeData {
     constructor() {
@@ -166,7 +167,7 @@ export class TreeData {
         }
         function isNodeValid(currentNode, level) {
             const hasCycle = seen.has(currentNode);
-            const hasLabel = level === 0 ? true : (currentNode.label !== undefined && currentNode.label !== null);
+            const hasLabel = level === 0 ? true : (isObjectEmpty(currentNode.label) === false);
             assert(
                 hasCycle === false,
                 `Data passed to lightning:tree has circular reference. Skipping the node`
@@ -336,7 +337,7 @@ export class TreeData {
     }
 
     findIndex(key) {
-        return this.indices[key] !== undefined ? this.indices[key].index : -1;
+        return isObjectEmpty(this.indices[key]) === false ? this.indices[key].index : -1;
     }
 
     getChildNum(key) {
