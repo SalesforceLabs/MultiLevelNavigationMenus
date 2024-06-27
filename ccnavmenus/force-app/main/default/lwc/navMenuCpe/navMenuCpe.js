@@ -6,8 +6,11 @@ import * as componentUtils from 'c/gtaUtilsComponent';
 
 const typeDelay = 1000;
 const defaultCSSClasses = 'slds-m-bottom_medium';
+const propertyEditorWidthStyle = ':root {--cb-property-editor-width: 400px;}';
 
 export default class NavMenuCpe extends LightningElement {
+
+    uuid = generalUtils.generateUniqueIdentifier();
 
     @track menuOptions = new Array();
     @track showSpinner = false;
@@ -886,7 +889,20 @@ export default class NavMenuCpe extends LightningElement {
     connectedCallback() {
 
         this.loadMenus('');
+        let styleEl = document.createElement('style');
+        styleEl.classList.add('ccnavmenus-' + this.uuid);
+        styleEl.innerHTML = propertyEditorWidthStyle;
+        document.body.appendChild(styleEl);
 
+
+    }
+
+    disconnectedCallback() {
+        let styleEl = document.body.querySelector('style.ccnavmenus-' + this.uuid);
+        if(generalUtils.isObjectEmpty(styleEl) === false)
+        {
+            styleEl.remove();
+        }
     }
 
     async loadMenus(searchTerm, forceShowMenuOptions = false) {

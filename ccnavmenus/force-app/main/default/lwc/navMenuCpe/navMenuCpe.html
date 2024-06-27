@@ -348,11 +348,15 @@
                 <lightning-accordion-section name="deployment" label="Deployment">
                     <div class="slds-p-left_small slds-p-top_medium">
                         
-                        <lightning-button label="Save Config" title="Save Config"
-                            onclick={handleExportConfig}></lightning-button>
-
-                        <lightning-button label="Load Config" title="Load Config" class="slds-m-left_medium"
-                            onclick={openImportModal}></lightning-button>
+                        <div class="inlineBlock slds-m-right_medium slds-m-top_medium">
+                            <lightning-button label="Save Config" title="Save Config" 
+                                onclick={handleExportConfig}></lightning-button>
+                        </div>
+                        
+                        <div class="inlineBlock slds-m-top_medium">
+                            <lightning-button label="Load Config" title="Load Config"
+                                onclick={openImportModal}></lightning-button>
+                        </div>
 
                         <template lwc:if={exportError}>
                             <div class="slds-text-color_error slds-text-body_small">{exportError}</div>

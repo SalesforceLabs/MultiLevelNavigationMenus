@@ -10,3 +10,7 @@
 a.docLink:hover .docIcon {
     --slds-c-icon-color-foreground-default: var(--slds-c-button-text-color-hover,var(--sds-c-button-text-color-hover,#014486))
 }
+
+.inlineBlock {
+    display: inline-block;
+}
