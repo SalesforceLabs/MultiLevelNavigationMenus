@@ -45,7 +45,7 @@
     display: block;
     background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBackgroundColor,var(--dxp-c-navigation-list-background-color)));
     transition: background-color 0.2s linear;
-    padding-right: 2.4rem;
+    padding-right: 4rem;
     padding-left: 1.5rem;
     padding-top: calc(var(--ccnavmenus-menuItemVerticalPadding)/2);
     padding-bottom: calc(var(--ccnavmenus-menuItemVerticalPadding)/2);
@@ -265,6 +265,10 @@
         border-bottom-color: var(--ccnavmenus-brandNavigationBackgroundColor, white);
         border-width: 9px;
         margin-left: -9px;
+    }
+
+    .comm-drilldown-navigation__list.menuMobileView {
+        width: 19rem;
     }
 
     .comm-drilldown-navigation__list.menuMobileView:before,
