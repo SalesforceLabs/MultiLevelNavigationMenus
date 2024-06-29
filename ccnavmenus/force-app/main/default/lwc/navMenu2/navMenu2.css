@@ -147,7 +147,6 @@ nav.applyBackground {
     width: 19rem;
     z-index: 100;
     top: 50px;
-    box-shadow: var(--ccnavmenus-nav-allLevel-shadowBox);
     background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBackgroundColor));
 }
 
