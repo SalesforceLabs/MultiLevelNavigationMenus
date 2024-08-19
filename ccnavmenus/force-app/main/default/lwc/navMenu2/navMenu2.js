@@ -226,7 +226,7 @@ export default class NavMenu2 extends LightningElement {
 
     get isInSitePreview() {
         
-        return experienceUtils.isInSitePreview(this.pageRef);
+        return experienceUtils.isInSitePreview();
     }
     
 

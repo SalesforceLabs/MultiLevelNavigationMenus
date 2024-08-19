@@ -97,12 +97,17 @@ export function getExperienceSiteBasePath()
 
 /**
  * returns whether the code is running in context of builder / site preview
- * @param {object} pageRef - CurrentPageReference imported from lightning/navigation
  * @returns {boolean}
  * Example: let inSitePreview = isInSitePreview();
  */
-export function isInSitePreview(pageRef) {
-    return (pageRef?.state?.app === "commeditor" || pageRef?.state?.view === "editor");
+export function isInSitePreview() {
+    let domain = document.URL.split('?')[0].replace('https://','').split('/')[0];
+    return (domain.includes('.sitepreview.')  
+        || domain.includes('.livepreview.') 
+        || domain.includes('.live-preview.')  
+        || domain.includes('.live.') 
+        || domain.includes('.builder.') 
+        );
 }
 
 
