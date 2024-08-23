@@ -152,7 +152,9 @@ export default class MegaNavigationList extends LightningElement {
 
     handleNavClick(event) {
         let preventDefaultAndPropagation = false;
-        if(event.target?.role !== 'menuitem' && event?.target?.tagName !== 'C-MEGA-NAVIGATION-LIST')
+        let role = event.target?.role;
+        role = (generalUtils.isStringEmpty(role) === true) ? event.target.getAttribute('role') : role ;
+        if(role !== 'menuitem' && event?.target?.tagName !== 'C-MEGA-NAVIGATION-LIST')
         {
             preventDefaultAndPropagation = true;
         }
