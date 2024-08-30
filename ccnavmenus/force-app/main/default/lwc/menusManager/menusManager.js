@@ -144,7 +144,7 @@ export default class MenusManager extends LightningElement {
         if (result.data) {
             try {
                 this.menuItemListResult = result;
-                let menuItemResult = JSON.parse(result.data);
+                let menuItemResult = JSON.parse(result.data.replaceAll('"items"','"_children"'));
                 if(menuItemResult.itemsList)
                 {
                     let itemsListTmp = menuItemResult.itemsList;
@@ -206,7 +206,8 @@ export default class MenusManager extends LightningElement {
             }catch(e){}
         } else if (result.error) {
             this.menuItemListResult = result;
-            this.error = result.error;
+            this.error = JSON.stringify(result.error);
+            this.showSpinner = false;
             this.menuItemList = undefined;
             this.menuItemMap = undefined;
         }
@@ -241,7 +242,8 @@ export default class MenusManager extends LightningElement {
             }
         } else if (result.error) {
             this.menuListResult = result;
-            this.error = result.error;
+            this.error = JSON.stringify(result.error);
+            this.showSpinner = false;
             this.menuList = undefined;
         }
     }
@@ -265,7 +267,8 @@ export default class MenusManager extends LightningElement {
             this.error = undefined;
         } else if (result.error) {
             this.languageListResult = result;
-            this.error = result.error;
+            this.error = JSON.stringify(result.error);
+            this.showSpinner = false;
             this.languageList = undefined;
         }
     }
@@ -321,6 +324,7 @@ export default class MenusManager extends LightningElement {
     
     createMenuSuccess() 
     {
+        this.error = undefined;
         refreshApex(this.menuListResult);
         this.closeCreateModal();
     }
@@ -337,6 +341,7 @@ export default class MenusManager extends LightningElement {
     
     editMenuSuccess() 
     {
+        this.error = undefined;
         refreshApex(this.menuListResult);
         this.closeEditModal();
     }
@@ -373,6 +378,7 @@ export default class MenusManager extends LightningElement {
                 this.closeDeleteModal();
                 this.menuItemList = undefined;
                 this.menuId = null;
+                this.error = undefined;
                 return refreshApex(this.menuListResult);
             }
             else 
@@ -414,6 +420,7 @@ export default class MenusManager extends LightningElement {
                 if(result === 'success')
                 {
                     this.closeManageCacheModal();
+                    this.error = undefined;
                     setTimeout(() => {
                         refreshApex(this.menuItemListResult);
                     }, 500);
@@ -508,6 +515,7 @@ export default class MenusManager extends LightningElement {
     {
 
         this.clearManageCacheModal();
+        this.error = undefined;
         refreshApex(this.menuItemListResult);
 
         this.selectedMenuItemIdForCreate = undefined;
@@ -538,6 +546,7 @@ export default class MenusManager extends LightningElement {
         .then(() => {
             this.clearManageCacheModal();
             this.closeDeleteMIModal();
+            this.error = undefined;
             return refreshApex(this.menuItemListResult);
         })
         .catch((error) => {
@@ -562,7 +571,7 @@ export default class MenusManager extends LightningElement {
                 this.menuName = this.menuOptions[i].label;
             }
         }
-        
+        this.error = undefined;
         refreshApex(this.menuItemListResult);  
         
         try{
@@ -600,7 +609,7 @@ export default class MenusManager extends LightningElement {
         this.showSpinner = true;
         this.languageFilter = e.detail.value;
         this.languageFilter = (this.languageFilter === 'none') ? '' : this.languageFilter ;
-        
+        this.error = undefined;
         setTimeout(() => {
             refreshApex(this.menuItemListResult);
         }, 500);
@@ -613,6 +622,7 @@ export default class MenusManager extends LightningElement {
 
     handleRefreshMenuItems(e)
     {
+        this.error = undefined;
         refreshApex(this.menuItemListResult);
     }
 
@@ -645,6 +655,7 @@ export default class MenusManager extends LightningElement {
                     {
                         
                         this.menuItemList = undefined;
+                        this.error = undefined;
                         refreshApex(this.menuListResult);
                         this.menuId = res.menuId;
                         this.menuName = (JSONMenuImport.name !== undefined && JSONMenuImport.name !== null && JSONMenuImport.name.trim() !== '') ? JSONMenuImport.name : this.menuName;

@@ -187,7 +187,8 @@ global with sharing class menusManagerController {
             resultMap.put('error', e+'');
         }
 
-        return System.JSON.serialize(resultMap).replaceAll('"items"','"_children"');
+        //return System.JSON.serialize(resultMap).replaceAll('"items"','"_children"');
+        return System.JSON.serialize(resultMap);
     }
 
 

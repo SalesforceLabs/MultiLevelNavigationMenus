@@ -14,7 +14,7 @@
             For full documentation, please check the following link: <a href="https://multilvlmenusforexpcloudupdates.substack.com/" target="_blank" class="slds-p-left_x-small">https://multilvlmenusforexpcloudupdates.substack.com</a>
         </div>
         <div class="slds-align_absolute-center slds-p-vertical_large">
-            <div class="slds-size_2-of-4 ">
+            <div class="slds-size_3-of-4 ">
                 <lightning-combobox
                     name="menus"
                     label="Choose Menu"
@@ -69,6 +69,9 @@
                         </lightning-button>
                     </template>
                 </lightning-button-group>
+                <template lwc:if={error}>
+                    <div class="slds-notify slds-notify_alert slds-alert_error slds-m-top_small" role="alert">{error}</div>
+                </template>
                 <a data-name="exportMenu" class="slds-hide"></a>
             </div>
         </div>
