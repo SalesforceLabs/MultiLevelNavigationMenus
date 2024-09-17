@@ -35,6 +35,7 @@ export default class DrilldownNavigationList extends LightningElement {
     _focusedListItemIndex;
     @track _flatItems = {};
     @track _listStack = [];
+    drilldownWidth;
 
     @api showBackLabel = false;
     @api backButtonLabel = 'Back';
@@ -260,6 +261,27 @@ export default class DrilldownNavigationList extends LightningElement {
                 this._focusedListItemIndex = listItems.length - 1;
             }
         }
+
+        let menu = this.template.querySelector('[role=menu]');
+        if(!generalUtils.isObjectEmpty(menu))
+        {
+            let menuWidth = generalUtils.getContainerElementWidth(menu)+'px';
+            if(menuWidth !== this.drilldownWidth)
+            {
+                this.drilldownWidth = menuWidth;
+                this.dispatchEvent(
+                    new CustomEvent('ccnavmenus__widthchange', {
+                        bubbles: true,
+                        cancelable: true,
+                        composed: true,
+                        detail: {
+                            drilldownWidth: this.drilldownWidth
+                        }
+                    })
+                );
+            }
+        }
+
     }
 
     /**
@@ -395,14 +417,14 @@ export default class DrilldownNavigationList extends LightningElement {
 
     shouldCloseHamburgerMenu(event) {
 
-        if(generalUtils.isObjectEmpty(event.target) === false && event.target.tagName === 'A' && generalUtils.isObjectEmpty(event.target.dataset.id) === false
+        if(this.isInHamburgerMenu && generalUtils.isObjectEmpty(event.target) === false && event.target.tagName === 'A' && generalUtils.isObjectEmpty(event.target.dataset.id) === false
             && generalUtils.isObjectEmpty(event.target.href) === false && event.target.href.trim() !== 'javascript:void(0);'
             && event.target.href.trim() !== 'javascript:void(0)')
         {
             return true;
         }
 
-        if(generalUtils.isObjectEmpty(event.target) === false && event.target.tagName === 'C-PRIMITIVE-ICON' 
+        if(this.isInHamburgerMenu &&  generalUtils.isObjectEmpty(event.target) === false && event.target.tagName === 'C-PRIMITIVE-ICON' 
             && generalUtils.isObjectEmpty(event.target.dataset.islink) === false && event.target.dataset.islink === 'true')
         {
             return true;

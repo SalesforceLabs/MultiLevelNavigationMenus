@@ -459,71 +459,21 @@
             active-section-name=stylesGeneral>
                 <lightning-accordion-section name="stylesGeneral" label="General">
 
-                    <div class={propInputs.menuAlignment.classes}>
-                        <lightning-select
-                            name={propInputs.menuAlignment.key}
-                            label={propInputs.menuAlignment.label} 
-                            value={propInputs.menuAlignment.value}
-                            options={propInputs.menuAlignment.options}
-                            onchange={propInputs.menuAlignment.changeHandler}
-                            required={propInputs.menuAlignment.required}
-                            data-key={propInputs.menuAlignment.key}
-                            field-level-help={propInputs.menuAlignment.help} 
-                            ></lightning-select>
-                    </div>
-
-                    <lightning-input 
-                        type={propInputs.menuItemVerticalPadding.type} 
-                        label={propInputs.menuItemVerticalPadding.label} 
-                        class={propInputs.menuItemVerticalPadding.classes} 
-                        value={propInputs.menuItemVerticalPadding.value}
-                        onchange={propInputs.menuItemVerticalPadding.changeHandler} 
-                        data-key={propInputs.menuItemVerticalPadding.key}
-                        field-level-help={propInputs.menuItemVerticalPadding.help} 
-                        required={propInputs.menuItemVerticalPadding.required}
-                        >
-                    </lightning-input>
-
-                    <div class={propInputs.sldsIconSize.classes}>
-                        <lightning-select
-                            name={propInputs.sldsIconSize.key}
-                            label={propInputs.sldsIconSize.label} 
-                            value={propInputs.sldsIconSize.value}
-                            options={propInputs.sldsIconSize.options}
-                            onchange={propInputs.sldsIconSize.changeHandler}
-                            required={propInputs.sldsIconSize.required}
-                            data-key={propInputs.sldsIconSize.key}
-                            field-level-help={propInputs.sldsIconSize.help} 
-                            ></lightning-select>
-                    </div>
-
-                    <lightning-input 
-                    type={propInputs.iconSpacing.type} 
-                    label={propInputs.iconSpacing.label} 
-                    class={propInputs.iconSpacing.classes} 
-                    value={propInputs.iconSpacing.value}
-                    onchange={propInputs.iconSpacing.changeHandler} 
-                    data-key={propInputs.iconSpacing.key}
-                    field-level-help={propInputs.iconSpacing.help} 
-                    required={propInputs.iconSpacing.required}
-                    >
-                </lightning-input>
-
-                    <lightning-input 
-                        type={propInputs.overrideFontFamily.type} 
-                        label={propInputs.overrideFontFamily.label} 
-                        class={propInputs.overrideFontFamily.classes} 
-                        value={propInputs.overrideFontFamily.value}
-                        onchange={propInputs.overrideFontFamily.changeHandler} 
-                        data-key={propInputs.overrideFontFamily.key}
-                        field-level-help={propInputs.overrideFontFamily.help} 
-                        required={propInputs.overrideFontFamily.required}
-                        >
-                    </lightning-input>
-
-                    <div class="slds-text-heading_small slds-m-top_large">Font Size Overrides:</div>
                     <lightning-tabset>
-                        <lightning-tab label="Desktop">
+                        <lightning-tab label="Desktop" class="slds-p-left_small">
+                            
+                            <div class={propInputs.menuAlignment.classes}>
+                                <lightning-select
+                                    name={propInputs.menuAlignment.key}
+                                    label={propInputs.menuAlignment.label} 
+                                    value={propInputs.menuAlignment.value}
+                                    options={propInputs.menuAlignment.options}
+                                    onchange={propInputs.menuAlignment.changeHandler}
+                                    required={propInputs.menuAlignment.required}
+                                    data-key={propInputs.menuAlignment.key}
+                                    field-level-help={propInputs.menuAlignment.help} 
+                                    ></lightning-select>
+                            </div>
 
                             <lightning-input 
                                 type={propInputs.overrideFontSize.type} 
@@ -537,9 +487,123 @@
                                 >
                             </lightning-input>
 
-                        </lightning-tab>
+                            <lightning-input 
+                                type={propInputs.menuItemVerticalPadding.type} 
+                                label={propInputs.menuItemVerticalPadding.label} 
+                                class={propInputs.menuItemVerticalPadding.classes} 
+                                value={propInputs.menuItemVerticalPadding.value}
+                                onchange={propInputs.menuItemVerticalPadding.changeHandler} 
+                                data-key={propInputs.menuItemVerticalPadding.key}
+                                field-level-help={propInputs.menuItemVerticalPadding.help} 
+                                required={propInputs.menuItemVerticalPadding.required}
+                                >
+                            </lightning-input>
 
-                        <lightning-tab label="Mobile">
+                            <div class={propInputs.sldsIconSize.classes}>
+                                <lightning-select
+                                    name={propInputs.sldsIconSize.key}
+                                    label={propInputs.sldsIconSize.label} 
+                                    value={propInputs.sldsIconSize.value}
+                                    options={propInputs.sldsIconSize.options}
+                                    onchange={propInputs.sldsIconSize.changeHandler}
+                                    required={propInputs.sldsIconSize.required}
+                                    data-key={propInputs.sldsIconSize.key}
+                                    field-level-help={propInputs.sldsIconSize.help} 
+                                    ></lightning-select>
+                            </div>
+
+                            <lightning-input 
+                                type={propInputs.iconSpacing.type} 
+                                label={propInputs.iconSpacing.label} 
+                                class={propInputs.iconSpacing.classes} 
+                                value={propInputs.iconSpacing.value}
+                                onchange={propInputs.iconSpacing.changeHandler} 
+                                data-key={propInputs.iconSpacing.key}
+                                field-level-help={propInputs.iconSpacing.help} 
+                                required={propInputs.iconSpacing.required}
+                                >
+                            </lightning-input>
+
+                        </lightning-tab>
+                        <lightning-tab label="Tablet" class="slds-p-left_small">
+
+                            <div class={propInputs.menuAlignmentTablet.classes}>
+                                <lightning-select
+                                    name={propInputs.menuAlignmentTablet.key}
+                                    label={propInputs.menuAlignmentTablet.label} 
+                                    value={propInputs.menuAlignmentTablet.value}
+                                    options={propInputs.menuAlignmentTablet.options}
+                                    onchange={propInputs.menuAlignmentTablet.changeHandler}
+                                    required={propInputs.menuAlignmentTablet.required}
+                                    data-key={propInputs.menuAlignmentTablet.key}
+                                    field-level-help={propInputs.menuAlignmentTablet.help} 
+                                    ></lightning-select>
+                            </div>
+
+                            <lightning-input 
+                                type={propInputs.overrideFontSizeTablet.type} 
+                                label={propInputs.overrideFontSizeTablet.label} 
+                                class={propInputs.overrideFontSizeTablet.classes} 
+                                value={propInputs.overrideFontSizeTablet.value}
+                                onchange={propInputs.overrideFontSizeTablet.changeHandler} 
+                                data-key={propInputs.overrideFontSizeTablet.key}
+                                field-level-help={propInputs.overrideFontSizeTablet.help} 
+                                required={propInputs.overrideFontSizeTablet.required}
+                                >
+                            </lightning-input>
+
+                            <lightning-input 
+                                type={propInputs.menuItemVerticalPaddingTablet.type} 
+                                label={propInputs.menuItemVerticalPaddingTablet.label} 
+                                class={propInputs.menuItemVerticalPaddingTablet.classes} 
+                                value={propInputs.menuItemVerticalPaddingTablet.value}
+                                onchange={propInputs.menuItemVerticalPaddingTablet.changeHandler} 
+                                data-key={propInputs.menuItemVerticalPaddingTablet.key}
+                                field-level-help={propInputs.menuItemVerticalPaddingTablet.help} 
+                                required={propInputs.menuItemVerticalPaddingTablet.required}
+                                >
+                            </lightning-input>
+
+                            <div class={propInputs.sldsIconSizeTablet.classes}>
+                                <lightning-select
+                                    name={propInputs.sldsIconSizeTablet.key}
+                                    label={propInputs.sldsIconSizeTablet.label} 
+                                    value={propInputs.sldsIconSizeTablet.value}
+                                    options={propInputs.sldsIconSizeTablet.options}
+                                    onchange={propInputs.sldsIconSizeTablet.changeHandler}
+                                    required={propInputs.sldsIconSizeTablet.required}
+                                    data-key={propInputs.sldsIconSizeTablet.key}
+                                    field-level-help={propInputs.sldsIconSizeTablet.help} 
+                                    ></lightning-select>
+                            </div>
+
+                            <lightning-input 
+                                type={propInputs.iconSpacingTablet.type} 
+                                label={propInputs.iconSpacingTablet.label} 
+                                class={propInputs.iconSpacingTablet.classes} 
+                                value={propInputs.iconSpacingTablet.value}
+                                onchange={propInputs.iconSpacingTablet.changeHandler} 
+                                data-key={propInputs.iconSpacingTablet.key}
+                                field-level-help={propInputs.iconSpacingTablet.help} 
+                                required={propInputs.iconSpacingTablet.required}
+                                >
+                            </lightning-input>
+
+                        </lightning-tab>
+                        <lightning-tab label="Mobile" class="slds-p-left_small">
+                            
+                            <div class={propInputs.menuAlignmentMobile.classes}>
+                                <lightning-select
+                                    name={propInputs.menuAlignmentMobile.key}
+                                    label={propInputs.menuAlignmentMobile.label} 
+                                    value={propInputs.menuAlignmentMobile.value}
+                                    options={propInputs.menuAlignmentMobile.options}
+                                    onchange={propInputs.menuAlignmentMobile.changeHandler}
+                                    required={propInputs.menuAlignmentMobile.required}
+                                    data-key={propInputs.menuAlignmentMobile.key}
+                                    field-level-help={propInputs.menuAlignmentMobile.help} 
+                                    ></lightning-select>
+                            </div>
 
                             <lightning-input 
                                 type={propInputs.overrideFontSizeMobile.type} 
@@ -553,8 +617,64 @@
                                 >
                             </lightning-input>
 
+                            <lightning-input 
+                                type={propInputs.menuItemVerticalPaddingMobile.type} 
+                                label={propInputs.menuItemVerticalPaddingMobile.label} 
+                                class={propInputs.menuItemVerticalPaddingMobile.classes} 
+                                value={propInputs.menuItemVerticalPaddingMobile.value}
+                                onchange={propInputs.menuItemVerticalPaddingMobile.changeHandler} 
+                                data-key={propInputs.menuItemVerticalPaddingMobile.key}
+                                field-level-help={propInputs.menuItemVerticalPaddingMobile.help} 
+                                required={propInputs.menuItemVerticalPaddingMobile.required}
+                                >
+                            </lightning-input>
+
+                            <div class={propInputs.sldsIconSizeMobile.classes}>
+                                <lightning-select
+                                    name={propInputs.sldsIconSizeMobile.key}
+                                    label={propInputs.sldsIconSizeMobile.label} 
+                                    value={propInputs.sldsIconSizeMobile.value}
+                                    options={propInputs.sldsIconSizeMobile.options}
+                                    onchange={propInputs.sldsIconSizeMobile.changeHandler}
+                                    required={propInputs.sldsIconSizeMobile.required}
+                                    data-key={propInputs.sldsIconSizeMobile.key}
+                                    field-level-help={propInputs.sldsIconSizeMobile.help} 
+                                    ></lightning-select>
+                            </div>
+
+                            <lightning-input 
+                                type={propInputs.iconSpacingMobile.type} 
+                                label={propInputs.iconSpacingMobile.label} 
+                                class={propInputs.iconSpacingMobile.classes} 
+                                value={propInputs.iconSpacingMobile.value}
+                                onchange={propInputs.iconSpacingMobile.changeHandler} 
+                                data-key={propInputs.iconSpacingMobile.key}
+                                field-level-help={propInputs.iconSpacingMobile.help} 
+                                required={propInputs.iconSpacingMobile.required}
+                                >
+                            </lightning-input>
+
                         </lightning-tab>
                     </lightning-tabset>
+
+                    
+
+                    
+
+                    
+
+                    <lightning-input 
+                        type={propInputs.overrideFontFamily.type} 
+                        label={propInputs.overrideFontFamily.label} 
+                        class={propInputs.overrideFontFamily.classes} 
+                        value={propInputs.overrideFontFamily.value}
+                        onchange={propInputs.overrideFontFamily.changeHandler} 
+                        data-key={propInputs.overrideFontFamily.key}
+                        field-level-help={propInputs.overrideFontFamily.help} 
+                        required={propInputs.overrideFontFamily.required}
+                        >
+                    </lightning-input>
+
 
 
                     <div class={propInputs.overrideTextCase.classes}>

@@ -55,6 +55,7 @@ div[role="ccnavMenuCSS"]
     --ccnavmenus-drillDownNav-list-before-after-display: inherit;
     --ccnavmenus-drillDownNav-list-vertical-left: 0;
     --ccnavmenus-drillDownNav-list-vertical-float: none;
+    --ccnavmenus-drillDownNav-width: 19rem;
 }
 
 nav.applyBackground {
@@ -144,7 +145,7 @@ nav.applyBackground {
 .hamburgerMenuContainer
 {
     position: absolute;
-    width: 19rem;
+    width: var( --ccnavmenus-drillDownNav-width, 19rem);
     z-index: 100;
     top: 50px;
     background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBackgroundColor));

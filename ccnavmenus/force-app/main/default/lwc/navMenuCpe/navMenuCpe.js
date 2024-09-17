@@ -270,15 +270,49 @@ export default class NavMenuCpe extends LightningElement {
             },
             menuAlignment: {
                 key: 'menuAlignment', //key used for html lightning-input tag identifier, must match key in propInputs
-                label: 'Menu Alignment', //label used for html lighting-input tag
+                label: 'Menu Alignment - Desktop', //label used for html lighting-input tag
                 type: 'select', //type used for html lightning-input tag
                 help: 'Menu Alignment', //tooltip / help text used for html lightning-input tag
                 required: true, //required used for html lightning-input tag
                 valuePath: 'styles.menuAlignment', //property path within the value object
                 value: 'center', //default value
                 doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
-                classes: defaultCSSClasses + ' slds-m-top_medium', //css classes for html lightning-input tag
+                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
                 changeHandler: this.handleMenuAlignmentChange, //onchange handler for html lightning-input tag
+                options:[
+                    { label: 'Center', value: 'center' },
+                    { label: 'Left', value: 'left' },
+                    { label: 'Right', value: 'right' }
+                ],
+            },
+            menuAlignmentTablet: {
+                key: 'menuAlignmentTablet', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'Menu Alignment - Tablet', //label used for html lighting-input tag
+                type: 'select', //type used for html lightning-input tag
+                help: 'Menu Alignment', //tooltip / help text used for html lightning-input tag
+                required: true, //required used for html lightning-input tag
+                valuePath: 'styles.menuAlignmentTablet', //property path within the value object
+                value: 'center', //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
+                changeHandler: this.handleMenuAlignmentTabletChange, //onchange handler for html lightning-input tag
+                options:[
+                    { label: 'Center', value: 'center' },
+                    { label: 'Left', value: 'left' },
+                    { label: 'Right', value: 'right' }
+                ],
+            },
+            menuAlignmentMobile: {
+                key: 'menuAlignmentMobile', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'Menu Alignment - Mobile', //label used for html lighting-input tag
+                type: 'select', //type used for html lightning-input tag
+                help: 'Menu Alignment', //tooltip / help text used for html lightning-input tag
+                required: true, //required used for html lightning-input tag
+                valuePath: 'styles.menuAlignmentMobile', //property path within the value object
+                value: 'center', //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
+                changeHandler: this.handleMenuAlignmentMobileChange, //onchange handler for html lightning-input tag
                 options:[
                     { label: 'Center', value: 'center' },
                     { label: 'Left', value: 'left' },
@@ -287,37 +321,73 @@ export default class NavMenuCpe extends LightningElement {
             },
             menuItemVerticalPadding: {
                 key: 'menuItemVerticalPadding', //key used for html lightning-input tag identifier, must match key in propInputs
-                label: 'Menu Item Vertical Padding (in px)', //label used for html lighting-input tag
+                label: 'Menu Item Vertical Padding (in px) - Desktop', //label used for html lighting-input tag
                 type: 'number', //type used for html lightning-input tag
                 help: 'Top / Bottom total padding for all menu items', //tooltip / help text used for html lightning-input tag
                 required: true, //required used for html lightning-input tag
                 valuePath: 'styles.menuItemVerticalPadding', //property path within the value object
                 value: 16, //default value
                 doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
-                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
+                classes: defaultCSSClasses + ' slds-m-top_medium', //css classes for html lightning-input tag
                 changeHandler: this.handleMenuItemVerticalPaddingChange, //onchange handler for html lightning-input tag
+            },
+            menuItemVerticalPaddingTablet: {
+                key: 'menuItemVerticalPaddingTablet', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'Menu Item Vertical Padding (in px) - Tablet', //label used for html lighting-input tag
+                type: 'number', //type used for html lightning-input tag
+                help: 'Top / Bottom total padding for all menu items', //tooltip / help text used for html lightning-input tag
+                required: true, //required used for html lightning-input tag
+                valuePath: 'styles.menuItemVerticalPaddingTablet', //property path within the value object
+                value: 16, //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + ' slds-m-top_medium', //css classes for html lightning-input tag
+                changeHandler: this.handleMenuItemVerticalPaddingTabletChange, //onchange handler for html lightning-input tag
+            },
+            menuItemVerticalPaddingMobile: {
+                key: 'menuItemVerticalPaddingMobile', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'Menu Item Vertical Padding (in px) - Mobile', //label used for html lighting-input tag
+                type: 'number', //type used for html lightning-input tag
+                help: 'Top / Bottom total padding for all menu items', //tooltip / help text used for html lightning-input tag
+                required: true, //required used for html lightning-input tag
+                valuePath: 'styles.menuItemVerticalPaddingMobile', //property path within the value object
+                value: 16, //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + ' slds-m-top_medium', //css classes for html lightning-input tag
+                changeHandler: this.handleMenuItemVerticalPaddingMobileChange, //onchange handler for html lightning-input tag
             },
             overrideFontSize: {
                 key: 'overrideFontSize', //key used for html lightning-input tag identifier, must match key in propInputs
-                label: 'Override Font Size (in px)', //label used for html lighting-input tag
+                label: 'Override Font Size (in px) - Desktop', //label used for html lighting-input tag
                 type: 'number', //type used for html lightning-input tag
                 help: 'Override font size, defaults to theme values', //tooltip / help text used for html lightning-input tag
                 required: false, //required used for html lightning-input tag
                 valuePath: 'styles.overrideFontSize', //property path within the value object
                 value: undefined, //default value
-                doSetDefaultValue: false, //set to true to set this lightning-input's default value to what is stored in the value object
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
                 classes: defaultCSSClasses + '', //css classes for html lightning-input tag
                 changeHandler: this.handleOverrideFontSizeChange, //onchange handler for html lightning-input tag
             },
+            overrideFontSizeTablet: {
+                key: 'overrideFontSizeTablet', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'Override Font Size (in px) - Tablet', //label used for html lighting-input tag
+                type: 'number', //type used for html lightning-input tag
+                help: 'Override font size in tablet, defaults to theme values', //tooltip / help text used for html lightning-input tag
+                required: false, //required used for html lightning-input tag
+                valuePath: 'styles.overrideFontSizeTablet', //property path within the value object
+                value: undefined, //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
+                changeHandler: this.handleOverrideFontSizeTabletChange, //onchange handler for html lightning-input tag
+            },
             overrideFontSizeMobile: {
                 key: 'overrideFontSizeMobile', //key used for html lightning-input tag identifier, must match key in propInputs
-                label: 'Override Font Size Mobile (in px)', //label used for html lighting-input tag
+                label: 'Override Font Size (in px) - Mobile', //label used for html lighting-input tag
                 type: 'number', //type used for html lightning-input tag
                 help: 'Override font size in mobile, defaults to theme values', //tooltip / help text used for html lightning-input tag
                 required: false, //required used for html lightning-input tag
                 valuePath: 'styles.overrideFontSizeMobile', //property path within the value object
                 value: undefined, //default value
-                doSetDefaultValue: false, //set to true to set this lightning-input's default value to what is stored in the value object
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
                 classes: defaultCSSClasses + '', //css classes for html lightning-input tag
                 changeHandler: this.handleOverrideFontSizeMobileChange, //onchange handler for html lightning-input tag
             },
@@ -354,7 +424,7 @@ export default class NavMenuCpe extends LightningElement {
                 valuePath: 'styles.overrideFontFamily', //property path within the value object
                 value: '', //default value
                 doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
-                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
+                classes: defaultCSSClasses + ' slds-m-top_xx-large', //css classes for html lightning-input tag
                 changeHandler: this.handleOverrideFontFamilyChange, //onchange handler for html lightning-input tag
             },
             overrideTextCase: {
@@ -378,7 +448,7 @@ export default class NavMenuCpe extends LightningElement {
             },
             sldsIconSize: {
                 key: 'sldsIconSize', //key used for html lightning-input tag identifier, must match key in propInputs
-                label: 'SLDS Icon Size', //label used for html lighting-input tag
+                label: 'SLDS Icon Size - Desktop', //label used for html lighting-input tag
                 type: 'select', //type used for html lightning-input tag
                 help: 'SLDS Icon Size. Affected by both the font and this value together. Font Awesome Icons are only affected by the font size.', //tooltip / help text used for html lightning-input tag
                 required: true, //required used for html lightning-input tag
@@ -395,9 +465,47 @@ export default class NavMenuCpe extends LightningElement {
                     { label: 'X-Large', value: '1.5' }
                 ],
             },
+            sldsIconSizeTablet: {
+                key: 'sldsIconSizeTablet', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'SLDS Icon Size - Tablet', //label used for html lighting-input tag
+                type: 'select', //type used for html lightning-input tag
+                help: 'SLDS Icon Size. Affected by both the font and this value together. Font Awesome Icons are only affected by the font size.', //tooltip / help text used for html lightning-input tag
+                required: true, //required used for html lightning-input tag
+                valuePath: 'styles.sldsIconSizeTablet', //property path within the value object
+                value: '1', //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + ' slds-m-top_medium', //css classes for html lightning-input tag
+                changeHandler: this.handleSldsIconSizeTabletChange, //onchange handler for html lightning-input tag
+                options:[
+                    { label: 'X-Small', value: '0.5' },
+                    { label: 'Small', value: '0.75' },
+                    { label: 'Medium', value: '1' },
+                    { label: 'Large', value: '1.25' },
+                    { label: 'X-Large', value: '1.5' }
+                ],
+            },
+            sldsIconSizeMobile: {
+                key: 'sldsIconSizeMobile', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'SLDS Icon Size - Mobile', //label used for html lighting-input tag
+                type: 'select', //type used for html lightning-input tag
+                help: 'SLDS Icon Size. Affected by both the font and this value together. Font Awesome Icons are only affected by the font size.', //tooltip / help text used for html lightning-input tag
+                required: true, //required used for html lightning-input tag
+                valuePath: 'styles.sldsIconSizeMobile', //property path within the value object
+                value: '1', //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + ' slds-m-top_medium', //css classes for html lightning-input tag
+                changeHandler: this.handleSldsIconSizeMobileChange, //onchange handler for html lightning-input tag
+                options:[
+                    { label: 'X-Small', value: '0.5' },
+                    { label: 'Small', value: '0.75' },
+                    { label: 'Medium', value: '1' },
+                    { label: 'Large', value: '1.25' },
+                    { label: 'X-Large', value: '1.5' }
+                ],
+            },
             iconSpacing: {
                 key: 'iconSpacing', //key used for html lightning-input tag identifier, must match key in propInputs
-                label: 'Icon Horizontal Spacing (in px)', //label used for html lighting-input tag
+                label: 'Icon Horizontal Spacing (in px) - Desktop', //label used for html lighting-input tag
                 type: 'number', //type used for html lightning-input tag
                 help: 'Icon Horizontal padding in px', //tooltip / help text used for html lightning-input tag
                 required: true, //required used for html lightning-input tag
@@ -406,6 +514,30 @@ export default class NavMenuCpe extends LightningElement {
                 doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
                 classes: defaultCSSClasses + '', //css classes for html lightning-input tag
                 changeHandler: this.handleIconSpacingChange, //onchange handler for html lightning-input tag
+            },
+            iconSpacingTablet: {
+                key: 'iconSpacingTablet', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'Icon Horizontal Spacing (in px) - Tablet', //label used for html lighting-input tag
+                type: 'number', //type used for html lightning-input tag
+                help: 'Icon Horizontal padding in px', //tooltip / help text used for html lightning-input tag
+                required: true, //required used for html lightning-input tag
+                valuePath: 'styles.iconSpacingTablet', //property path within the value object
+                value: 10, //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
+                changeHandler: this.handleIconSpacingTabletChange, //onchange handler for html lightning-input tag
+            },
+            iconSpacingMobile: {
+                key: 'iconSpacingMobile', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'Icon Horizontal Spacing (in px) - Mobile', //label used for html lighting-input tag
+                type: 'number', //type used for html lightning-input tag
+                help: 'Icon Horizontal padding in px', //tooltip / help text used for html lightning-input tag
+                required: true, //required used for html lightning-input tag
+                valuePath: 'styles.iconSpacingMobile', //property path within the value object
+                value: 10, //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
+                changeHandler: this.handleIconSpacingMobileChange, //onchange handler for html lightning-input tag
             },
             menuCSSClasses: {
                 key: 'menuCSSClasses', //key used for html lightning-input tag identifier, must match key in propInputs
@@ -1400,6 +1532,30 @@ export default class NavMenuCpe extends LightningElement {
             {detail: {value: JSON.stringify(tmpvalueObj)}}));
     }
 
+    handleMenuAlignmentTabletChange(e) {
+
+        let selectedValue = e.detail.value;
+        this.propInputs.menuAlignmentTablet.value = selectedValue;
+
+        let tmpvalueObj = this.getValueObj();
+        tmpvalueObj.styles.menuAlignmentTablet = selectedValue;
+
+        this.dispatchEvent(new CustomEvent("valuechange", 
+            {detail: {value: JSON.stringify(tmpvalueObj)}}));
+    }
+
+    handleMenuAlignmentMobileChange(e) {
+
+        let selectedValue = e.detail.value;
+        this.propInputs.menuAlignmentMobile.value = selectedValue;
+
+        let tmpvalueObj = this.getValueObj();
+        tmpvalueObj.styles.menuAlignmentMobile = selectedValue;
+
+        this.dispatchEvent(new CustomEvent("valuechange", 
+            {detail: {value: JSON.stringify(tmpvalueObj)}}));
+    }
+
     handleHideHamburgerMenuAnimationChange(e) {
         let inputValue = e.detail.checked;
         this.propInputs.hideHamburgerMenuAnimation.value = inputValue;
@@ -1431,6 +1587,30 @@ export default class NavMenuCpe extends LightningElement {
 
         let tmpvalueObj = this.getValueObj();
         tmpvalueObj.styles.sldsIconSize = selectedValue;
+
+        this.dispatchEvent(new CustomEvent("valuechange", 
+            {detail: {value: JSON.stringify(tmpvalueObj)}}));
+    }
+
+    handleSldsIconSizeTabletChange(e) {
+
+        let selectedValue = e.detail.value;
+        this.propInputs.sldsIconSizeTablet.value = selectedValue;
+
+        let tmpvalueObj = this.getValueObj();
+        tmpvalueObj.styles.sldsIconSizeTablet = selectedValue;
+
+        this.dispatchEvent(new CustomEvent("valuechange", 
+            {detail: {value: JSON.stringify(tmpvalueObj)}}));
+    }
+
+    handleSldsIconSizeMobileChange(e) {
+
+        let selectedValue = e.detail.value;
+        this.propInputs.sldsIconSizeMobile.value = selectedValue;
+
+        let tmpvalueObj = this.getValueObj();
+        tmpvalueObj.styles.sldsIconSizeMobile = selectedValue;
 
         this.dispatchEvent(new CustomEvent("valuechange", 
             {detail: {value: JSON.stringify(tmpvalueObj)}}));
@@ -1508,6 +1688,74 @@ export default class NavMenuCpe extends LightningElement {
         
     }
 
+    handleMenuItemVerticalPaddingTabletChange(e) {
+
+        window.clearTimeout(this.propInputs.menuItemVerticalPaddingTablet.textDelayTimeout);
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this.propInputs.menuItemVerticalPaddingTablet.textDelayTimeout = setTimeout(() => {
+            
+            this.displayInputErrorByDataKey('menuItemVerticalPaddingTablet', '');
+            let inputvalue = e.detail.value;
+            if(!generalUtils.isStringEmpty(inputvalue))
+            {
+                try {
+
+                    inputvalue = parseInt(inputvalue);
+                    this.propInputs.menuItemVerticalPaddingTablet.value = inputvalue;
+
+                    let tmpvalueObj = this.getValueObj();
+                    tmpvalueObj.styles.menuItemVerticalPaddingTablet = inputvalue;
+
+                    this.dispatchEvent(new CustomEvent("valuechange", 
+                        {detail: {value: JSON.stringify(tmpvalueObj)}}));
+
+                } catch(e) {
+                    this.displayInputErrorByDataKey('menuItemVerticalPaddingTablet', 'Invalid number provided.');
+                }
+            }
+            else 
+            {
+                this.displayInputErrorByDataKey('menuItemVerticalPaddingTablet', 'Invalid number provided.');
+            }
+
+        }, typeDelay);
+        
+    }
+
+    handleMenuItemVerticalPaddingMobileChange(e) {
+
+        window.clearTimeout(this.propInputs.menuItemVerticalPaddingMobile.textDelayTimeout);
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this.propInputs.menuItemVerticalPaddingMobile.textDelayTimeout = setTimeout(() => {
+            
+            this.displayInputErrorByDataKey('menuItemVerticalPaddingMobile', '');
+            let inputvalue = e.detail.value;
+            if(!generalUtils.isStringEmpty(inputvalue))
+            {
+                try {
+
+                    inputvalue = parseInt(inputvalue);
+                    this.propInputs.menuItemVerticalPaddingMobile.value = inputvalue;
+
+                    let tmpvalueObj = this.getValueObj();
+                    tmpvalueObj.styles.menuItemVerticalPaddingMobile = inputvalue;
+
+                    this.dispatchEvent(new CustomEvent("valuechange", 
+                        {detail: {value: JSON.stringify(tmpvalueObj)}}));
+
+                } catch(e) {
+                    this.displayInputErrorByDataKey('menuItemVerticalPaddingMobile', 'Invalid number provided.');
+                }
+            }
+            else 
+            {
+                this.displayInputErrorByDataKey('menuItemVerticalPaddingMobile', 'Invalid number provided.');
+            }
+
+        }, typeDelay);
+        
+    }
+
     handleOverrideFontSizeChange(e) {
 
         window.clearTimeout(this.propInputs.overrideFontSize.textDelayTimeout);
@@ -1530,6 +1778,36 @@ export default class NavMenuCpe extends LightningElement {
 
             } catch(e) {
                 this.displayInputErrorByDataKey('overrideFontSize', 'Invalid number provided.');
+            }
+            
+
+
+        }, typeDelay);
+        
+    }
+
+    handleOverrideFontSizeTabletChange(e) {
+
+        window.clearTimeout(this.propInputs.overrideFontSizeTablet.textDelayTimeout);
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this.propInputs.overrideFontSizeTablet.textDelayTimeout = setTimeout(() => {
+            
+            this.displayInputErrorByDataKey('overrideFontSizeTablet', '');
+            let inputvalue = e.detail.value;
+           
+            try {
+
+                inputvalue = (generalUtils.isStringEmpty(inputvalue) === true) ? undefined : parseInt(inputvalue);
+                this.propInputs.overrideFontSizeTablet.value = inputvalue;
+
+                let tmpvalueObj = this.getValueObj();
+                tmpvalueObj.styles.overrideFontSizeTablet = inputvalue;
+
+                this.dispatchEvent(new CustomEvent("valuechange", 
+                    {detail: {value: JSON.stringify(tmpvalueObj)}}));
+
+            } catch(e) {
+                this.displayInputErrorByDataKey('overrideFontSizeTablet', 'Invalid number provided.');
             }
             
 
@@ -1630,6 +1908,74 @@ export default class NavMenuCpe extends LightningElement {
             else 
             {
                 this.displayInputErrorByDataKey('iconSpacing', 'Invalid number provided.');
+            }
+
+        }, typeDelay);
+        
+    }
+
+    handleIconSpacingTabletChange(e) {
+
+        window.clearTimeout(this.propInputs.iconSpacingTablet.textDelayTimeout);
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this.propInputs.iconSpacingTablet.textDelayTimeout = setTimeout(() => {
+            
+            this.displayInputErrorByDataKey('iconSpacingTablet', '');
+            let inputvalue = e.detail.value;
+            if(!generalUtils.isStringEmpty(inputvalue))
+            {
+                try {
+
+                    inputvalue = parseInt(inputvalue);
+                    this.propInputs.iconSpacingTablet.value = inputvalue;
+
+                    let tmpvalueObj = this.getValueObj();
+                    tmpvalueObj.styles.iconSpacingTablet = inputvalue;
+
+                    this.dispatchEvent(new CustomEvent("valuechange", 
+                        {detail: {value: JSON.stringify(tmpvalueObj)}}));
+
+                } catch(e) {
+                    this.displayInputErrorByDataKey('iconSpacingTablet', 'Invalid number provided.');
+                }
+            }
+            else 
+            {
+                this.displayInputErrorByDataKey('iconSpacingTablet', 'Invalid number provided.');
+            }
+
+        }, typeDelay);
+        
+    }
+
+    handleIconSpacingMobileChange(e) {
+
+        window.clearTimeout(this.propInputs.iconSpacingMobile.textDelayTimeout);
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this.propInputs.iconSpacingMobile.textDelayTimeout = setTimeout(() => {
+            
+            this.displayInputErrorByDataKey('iconSpacingMobile', '');
+            let inputvalue = e.detail.value;
+            if(!generalUtils.isStringEmpty(inputvalue))
+            {
+                try {
+
+                    inputvalue = parseInt(inputvalue);
+                    this.propInputs.iconSpacingMobile.value = inputvalue;
+
+                    let tmpvalueObj = this.getValueObj();
+                    tmpvalueObj.styles.iconSpacingMobile = inputvalue;
+
+                    this.dispatchEvent(new CustomEvent("valuechange", 
+                        {detail: {value: JSON.stringify(tmpvalueObj)}}));
+
+                } catch(e) {
+                    this.displayInputErrorByDataKey('iconSpacingMobile', 'Invalid number provided.');
+                }
+            }
+            else 
+            {
+                this.displayInputErrorByDataKey('iconSpacingMobile', 'Invalid number provided.');
             }
 
         }, typeDelay);

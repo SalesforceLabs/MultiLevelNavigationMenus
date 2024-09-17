@@ -511,10 +511,9 @@ export default class cTree extends LightningElement {
                 }
                 else
                 {
-                    let eventDetail = {forceClose: true};
-                    const custEvent = new CustomEvent(
-                        'closehamburgermenu', {detail: eventDetail});
-                    this.dispatchEvent(custEvent);
+
+                    this.dispatchEvent(new CustomEvent('ccnavmenus__closehamburgermenu', {bubbles: true, composed: true}));
+                    
                 }
             }
         } catch(e){}

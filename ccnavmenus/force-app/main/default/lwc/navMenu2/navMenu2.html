@@ -37,6 +37,8 @@
                                 is-first-level={trueVar}
                                 uuid={uuid}
                                 goto-label={allLabel}
+                                is-in-hamburger-menu={isHamburgerMenu}
+                                onccnavmenus__closehamburgermenu={closeHamburgerMenu}
                                 >
                                 </c-mega-navigation-list>
 
@@ -54,7 +56,7 @@
                                 back-button-label={drillDownBackButtonLabel}
                                 overflow-label={overflowLabel}
                                 all-label={allLabel}
-                                in-hamburger-menu=true
+                                in-hamburger-menu={isHamburgerMenu}
                                 uuid={uuid}
 
                                 brand-navigation-color-text={brandNavigationColorText}
@@ -65,6 +67,7 @@
                                 top-level-item-spacing={topLevelItemSpacing}
                                 menu-alignment={menuAlignment}
 
+                                onccnavmenus__widthchange={updateDrilldownNavWidth}
                                 onccnavmenus__closehamburgermenu={closeHamburgerMenu}
                                 ></c-drilldown-navigation-bar>
 
@@ -125,6 +128,7 @@
                             goto-label={allLabel}
                             container-classes="applyBorder applyShadowBox applyBackground slds-p-around_large"
                             
+
                             >
                         </c-mega-navigation-list>
                         
@@ -143,9 +147,9 @@
                                     focus-on-last-item={setFocusOnLastSubMenuItem}
                                     back-button-label={drillDownBackButtonLabel}
                                     all-label={allLabel}
-                                    show-back-label=true
-                                    is-vertical=true
-                                    is-in-hamburger-menu=true
+                                    show-back-label
+                                    is-vertical
+                                    
                                     
                                     
                                     >
@@ -203,8 +207,9 @@
                                 top-level-item-spacing={topLevelItemSpacing}
                                 menu-alignment={menuAlignment}
                                 goto-label={allLabel}
+                                
 
-                                onccnavmenus__closehamburgermenu={closeHamburgerMenu}
+                                
                                 ></c-mega-navigation-bar>
                         </nav>  
                         
@@ -228,7 +233,7 @@
                                 top-level-item-spacing={topLevelItemSpacing}
                                 menu-alignment={menuAlignment}
 
-                                onclosehamburgermenu={closehamburgermenu}
+                                
                             ></c-drilldown-navigation-bar>
                         </nav>
                     </template>

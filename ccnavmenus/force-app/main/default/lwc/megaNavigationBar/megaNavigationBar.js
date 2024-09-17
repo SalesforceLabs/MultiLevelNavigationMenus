@@ -10,11 +10,10 @@ import * as generalUtils from 'c/gtaUtilsGeneral';
 import { addOverflowMenu } from './overflow';
 
 
-const NAVIGATE_EVENT = 'navigatetopage';
+//const NAVIGATE_EVENT = 'navigatetopage';
 const SHOW_APP_LAUNCHER = 'showapplauncher';
 const DEFAULT_ALIGNMENT = 'left';
 const labelAppLauncherTitle = 'App Launcher';
-const labelOverflowLabel = 'More';
 const componentNameLabel = 'Nav Menu';
 
 /**
@@ -343,7 +342,7 @@ export default class MegaNavigationBar extends LightningElement {
     /**
      * Fires the 'navigatetopage' event with itemId as parameter
      */
-    fireNavigationEvent(event) {
+    /*fireNavigationEvent(event) {
         let itemId = event?.currentTarget?.dataset?.id;
         let item = this.findItem(itemId);
         this.dispatchEvent(
@@ -358,7 +357,7 @@ export default class MegaNavigationBar extends LightningElement {
                 }
             })
         );
-    }
+    }*/
 
     setItemActive(id, active) {
         const itemIndex = this.findItemIndex(id);
@@ -440,7 +439,7 @@ export default class MegaNavigationBar extends LightningElement {
      */
     handleLeafClick(event) {
         this.closeSubMenus();
-        this.fireNavigationEvent(event);
+        //this.fireNavigationEvent(event);
     }
 
     closeSubMenus() {
@@ -460,7 +459,9 @@ export default class MegaNavigationBar extends LightningElement {
      */
     handleNavClick(event) {
         let preventDefaultAndPropagation = true;
-        if(event?.target?.role === 'menuitem')
+        let role = event.target?.role;
+        role = (generalUtils.isStringEmpty(role) === true) ? event.target.getAttribute('role') : role ;
+        if(role === 'menuitem')
         {
            let item = this.findItem(event?.target?.dataset?.id);
            if(!item.hasChildren && !item.href.startsWith('javascript:void(0)'))

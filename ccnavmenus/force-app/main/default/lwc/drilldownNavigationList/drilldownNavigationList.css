@@ -45,7 +45,7 @@
     display: block;
     background-color: var(--ccnavmenus-nav-background-color, var(--ccnavmenus-brandNavigationBackgroundColor,var(--dxp-c-navigation-list-background-color)));
     transition: background-color 0.2s linear;
-    padding-right: calc(var(--ccnavmenus-icon-spacing) + 2.4rem);
+    padding-right: calc( 1.5rem + var(--ccnavmenus-icon-spacing) + (var(--ccnavmenus-icon-multiplier, 1) * var(--ccnavmenus-fontSize, 16px)));
     padding-left: 1.5rem;
     padding-top: calc(var(--ccnavmenus-menuItemVerticalPadding)/2);
     padding-bottom: calc(var(--ccnavmenus-menuItemVerticalPadding)/2);
@@ -121,10 +121,10 @@
 
 
 
-.comm-drilldown-navigation__list .comm-drilldown-navigation__chevron-right {
+/*.comm-drilldown-navigation__list .comm-drilldown-navigation__chevron-right {
     top: var(--dxp-c-navigation-list-chevron-padding-top);
     right: var(--dxp-c-navigation-list-chevron-padding-right);
-}
+}*/
 
 .comm-drilldown-navigation__slideRightToLeft {
     animation-name: none;
@@ -268,7 +268,7 @@
     }
 
     .comm-drilldown-navigation__list.menuMobileView {
-        width: 19rem;
+        width: fit-content;
     }
 
     .comm-drilldown-navigation__list.menuMobileView:before,

@@ -17,6 +17,7 @@ export default class MegaNavigationList extends LightningElement {
     @api gotoLabel = 'Go to';
     @api doNotRenderParentLink = false;
     @api containerClasses = '';
+    @api isInHamburgerMenu = false;
     
     @track megaListContainerWidth;
 
@@ -162,6 +163,29 @@ export default class MegaNavigationList extends LightningElement {
             event.stopPropagation();
             event.preventDefault();
         }
+        else 
+        {
+            if(this.shouldCloseHamburgerMenu(event))
+            {
+                this.dispatchEvent(new CustomEvent('ccnavmenus__closehamburgermenu', {bubbles: true, composed: true}));
+            }
+        }
+    }
+
+
+    shouldCloseHamburgerMenu(event) {
+        let role = event.target?.role;
+        role = (generalUtils.isStringEmpty(role) === true) ? event.target.getAttribute('role') : role ;
+        if(this.isInHamburgerMenu && generalUtils.isObjectEmpty(event.target) === false && role === 'menuitem' &&
+        (event.target.tagName === 'DIV' || event.target.tagName === 'C-PRIMITIVE-ICON' || event.target.tagName === 'A') 
+            )
+        {
+            return true;
+        }
+
+
+        return false;
+
     }
 
 

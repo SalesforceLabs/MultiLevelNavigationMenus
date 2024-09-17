@@ -13,7 +13,6 @@ const NAVIGATE_EVENT = 'navigatetopage';
 const SHOW_APP_LAUNCHER = 'showapplauncher';
 const DEFAULT_ALIGNMENT = 'left';
 const labelAppLauncherTitle = 'App Launcher';
-const labelOverflowLabel = 'More';
 const componentNameLabel = 'Nav Menu';
 
 /**
@@ -460,6 +459,11 @@ export default class DrilldownNavigationBar extends LightningElement {
                 preventDefaultAndPropagation = false;
            }
         }
+
+        if(event.target.tagName === 'C-DRILLDOWN-NAVIGATION-LIST')
+        {
+            preventDefaultAndPropagation = false;
+        }
         
         if (preventDefaultAndPropagation) {
             event.stopPropagation();
@@ -650,5 +654,6 @@ export default class DrilldownNavigationBar extends LightningElement {
             })
         );
     }
+
 
 }

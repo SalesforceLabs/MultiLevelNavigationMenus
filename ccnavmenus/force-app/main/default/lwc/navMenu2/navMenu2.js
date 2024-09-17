@@ -240,12 +240,36 @@ export default class NavMenu2 extends LightningElement {
     get menuAlignment() {
         let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.menuAlignment) || this.configObj?.styles?.menuAlignment.trim() === 'undefined') 
         ? 'center' : this.configObj?.styles?.menuAlignment;
+
+        if(deviceUtils.getFormFactor() === 'Medium')
+        {
+            tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.menuAlignmentTablet) || this.configObj?.styles?.menuAlignmentTablet.trim() === 'undefined') 
+            ? tmpvalue : this.configObj?.styles?.menuAlignmentTablet;
+        }
+        else if(deviceUtils.getFormFactor() === 'Small')
+        {
+            tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.menuAlignmentMobile) || this.configObj?.styles?.menuAlignmentMobile.trim() === 'undefined') 
+            ? tmpvalue : this.configObj?.styles?.menuAlignmentMobile;
+        }
+
         return tmpvalue;
     }
 
     get menuItemVerticalPadding() {
         let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.menuItemVerticalPadding)) 
         ? 20 : this.configObj?.styles?.menuItemVerticalPadding;
+
+        if(deviceUtils.getFormFactor() === 'Medium')
+        {
+            tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.menuItemVerticalPaddingTablet)) 
+            ? tmpvalue : this.configObj?.styles?.menuItemVerticalPaddingTablet;
+        }
+        else if(deviceUtils.getFormFactor() === 'Small')
+        {
+            tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.menuItemVerticalPaddingMobile)) 
+            ? tmpvalue : this.configObj?.styles?.menuItemVerticalPaddingMobile;
+        }
+
         return tmpvalue;
     }
 
@@ -267,6 +291,12 @@ export default class NavMenu2 extends LightningElement {
         return tmpvalue;
     }
 
+    get overrideFontSizeTablet() {
+        let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.overrideFontSizeTablet)) 
+        ? undefined : this.configObj?.styles?.overrideFontSizeTablet;
+        return tmpvalue;
+    }
+
     get overrideFontSizeMobile() {
         let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.overrideFontSizeMobile)) 
         ? undefined : this.configObj?.styles?.overrideFontSizeMobile;
@@ -276,6 +306,18 @@ export default class NavMenu2 extends LightningElement {
     get sldsIconSize() {
         let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.sldsIconSize) || this.configObj?.styles?.sldsIconSize.trim() === 'undefined') 
         ? '1' : this.configObj?.styles?.sldsIconSize;
+
+        if(deviceUtils.getFormFactor() === 'Medium')
+        {
+            tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.sldsIconSizeTablet) || this.configObj?.styles?.sldsIconSizeTablet.trim() === 'undefined') 
+            ? tmpvalue : this.configObj?.styles?.sldsIconSizeTablet;
+        }
+        else if(deviceUtils.getFormFactor() === 'Small')
+        {
+            tmpvalue = (generalUtils.isStringEmpty(this.configObj?.styles?.sldsIconSizeMobile) || this.configObj?.styles?.sldsIconSizeMobile.trim() === 'undefined') 
+            ? tmpvalue : this.configObj?.styles?.sldsIconSizeMobile;
+        }
+
         try {
             tmpvalue = parseFloat(tmpvalue);
         } catch(err){
@@ -287,6 +329,18 @@ export default class NavMenu2 extends LightningElement {
     get iconSpacing() {
         let tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.iconSpacing)) 
         ? 10 : this.configObj?.styles?.iconSpacing;
+
+        if(deviceUtils.getFormFactor() === 'Medium')
+        {
+            tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.iconSpacingTablet)) 
+            ? tmpvalue : this.configObj?.styles?.iconSpacingTablet;
+        }
+        else if(deviceUtils.getFormFactor() === 'Small')
+        {
+            tmpvalue = (generalUtils.isObjectEmpty(this.configObj?.styles?.iconSpacingMobile)) 
+            ? tmpvalue : this.configObj?.styles?.iconSpacingMobile;
+        }
+
         return tmpvalue;
     }
 
@@ -788,13 +842,21 @@ export default class NavMenu2 extends LightningElement {
             {
                 treeItemCSS.style.setProperty('--ccnavmenus-fontSize', this.overrideFontSizeMobile + 'px');                          
             }
-            else if(!generalUtils.isObjectEmpty(this.overrideFontSize) && deviceUtils.getFormFactor() !== 'Small')
+            else if(!generalUtils.isObjectEmpty(this.overrideFontSizeTablet) && deviceUtils.getFormFactor() === 'Medium')
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-fontSize', this.overrideFontSizeTablet + 'px');                          
+            }
+            else if(!generalUtils.isObjectEmpty(this.overrideFontSize) && deviceUtils.getFormFactor() === 'Large')
             {
                 treeItemCSS.style.setProperty('--ccnavmenus-fontSize', this.overrideFontSize + 'px');
             }
             else if(generalUtils.isObjectEmpty(this.overrideFontSizeMobile) && deviceUtils.getFormFactor() === 'Small')
             {
                 treeItemCSS.style.setProperty('--ccnavmenus-fontSize', 'var(--dxp-s-html-font-size-mobile, 16px)');   
+            }
+            else if(generalUtils.isObjectEmpty(this.overrideFontSizeTablet) && deviceUtils.getFormFactor() === 'Medium')
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-fontSize', 'var(--dxp-s-html-font-size-tablet, 16px)');   
             }
             else
             {
@@ -1160,6 +1222,21 @@ export default class NavMenu2 extends LightningElement {
         let tmpItemsString = JSON.stringify(this.items);
         this.items = undefined;
         this.items = JSON.parse(tmpItemsString);
+    }
+
+    updateDrilldownNavWidth(event) {
+
+        let treeItemCSS = this.template.querySelector('div[role="ccnavMenuCSS"]');
+
+        if(!generalUtils.isObjectEmpty(treeItemCSS) && !generalUtils.isObjectEmpty(event.detail) && !generalUtils.isObjectEmpty(event.detail.drilldownWidth))
+        {
+            if(!generalUtils.isStringEmpty(this.navContainerTextColor))
+            {
+                treeItemCSS.style.setProperty('--ccnavmenus-drillDownNav-width', event.detail.drilldownWidth);
+            }
+
+        }
+
     }
 
 }
