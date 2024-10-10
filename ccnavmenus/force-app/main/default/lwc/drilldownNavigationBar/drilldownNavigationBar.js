@@ -295,7 +295,14 @@ export default class DrilldownNavigationBar extends LightningElement {
             this._resetTabIndex = true;
             this.resetTabIndex();
             this.setActiveItemToInactive();
-        }
+
+            if(this.inHamburgerMenu === true)
+            {
+                this.dispatchEvent(new CustomEvent('ccnavmenus__closehamburgermenu', {bubbles: true, composed: true}));
+            }
+
+        }        
+
     };
 
     connectedCallback() {
