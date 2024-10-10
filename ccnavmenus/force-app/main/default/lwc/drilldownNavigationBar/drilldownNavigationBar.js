@@ -29,7 +29,7 @@ export default class DrilldownNavigationBar extends LightningElement {
     @api inHamburgerMenu = false;
     @api allLabel = 'Go to';
     @api menuAlignmentClass;
-
+    @api additionalOverflowWidth = 0;
 
 
     //styling inputs
@@ -45,6 +45,7 @@ export default class DrilldownNavigationBar extends LightningElement {
     setFocusOnFirstSubMenuItem;
     setFocusOnLastSubMenuItem;
     menuItemsChanged = false;
+    overflowCalculated = false;
 
     /*
     We need to store the inner Width to prevent Safari on iOS from triggering overflow calculations when resize is
@@ -168,7 +169,7 @@ export default class DrilldownNavigationBar extends LightningElement {
     calculateNavItemWidth() {
         const elements = this.template.querySelectorAll('nav ul > li');
         elements.forEach((el) => {
-            this.itemWidth.push(generalUtils.getElementWidth(el));
+            this.itemWidth.push(generalUtils.getElementWidth(el) + this.additionalOverflowWidth);
         });
     }
 
@@ -201,7 +202,6 @@ export default class DrilldownNavigationBar extends LightningElement {
         const navRequiredWidth = this.getNavRequiredWidth();
         const overflowMenuWidth = this.getOverflowWidth();
         
-        
 
         // If available width is too small to show all items
         if (navAvailableWidth < navRequiredWidth) {
@@ -226,6 +226,11 @@ export default class DrilldownNavigationBar extends LightningElement {
         else 
         {
             this.visibleMenuItems = generalUtils.cloneObjectWithJSON(this.menuItems);
+        }
+
+        if(navAvailableWidth > 0 && navRequiredWidth > 0 && generalUtils.isArrayEmpty(this.visibleMenuItems) === false)
+        {
+            this.overflowCalculated = true;
         }
 
     }
@@ -265,7 +270,7 @@ export default class DrilldownNavigationBar extends LightningElement {
         if (this.menuItemsChanged) {
             this.menuItemsChanged = false;
             this.calculateNavItemWidth();
-            setTimeout(this.calculateOverflow.bind(this), 1000);
+            setTimeout(this.calculateOverflow.bind(this), 300);
         }
 
     }
@@ -320,6 +325,11 @@ export default class DrilldownNavigationBar extends LightningElement {
             'slds-grid',
             'slds-has-flexi-truncate'
         ];
+
+        if(this.overflowCalculated === false)
+        {
+            cssClasses.push('slds-hidden');
+        }
 
         // Default is 'left' and only 'center' and 'right' need to be set explicitly
         if (this.menuAlignment === 'center') {

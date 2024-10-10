@@ -32,6 +32,7 @@ export default class MegaNavigationBar extends LightningElement {
     @api displayBackdrop = false;
     @api uuid;
     @api gotoLabel = 'Go to';
+    @api additionalOverflowWidth = 0;
 
 
     //styling inputs
@@ -48,6 +49,7 @@ export default class MegaNavigationBar extends LightningElement {
     setFocusOnLastSubMenuItem;
     menuItemsChanged = false;
     trueVar = true;
+    overflowCalculated = false;
 
     /*
     We need to store the inner Width to prevent Safari on iOS from triggering overflow calculations when resize is
@@ -172,7 +174,7 @@ export default class MegaNavigationBar extends LightningElement {
     calculateNavItemWidth() {
         const elements = this.template.querySelectorAll('nav ul > li');
         elements.forEach((el) => {
-            this.itemWidth.push(generalUtils.getElementWidth(el));
+            this.itemWidth.push(generalUtils.getElementWidth(el) + this.additionalOverflowWidth);
         });
     }
 
@@ -232,6 +234,11 @@ export default class MegaNavigationBar extends LightningElement {
             this.visibleMenuItems = generalUtils.cloneObjectWithJSON(this.menuItems);
         }
 
+        if(navAvailableWidth > 0 && navRequiredWidth > 0 && generalUtils.isArrayEmpty(this.visibleMenuItems) === false)
+        {
+            this.overflowCalculated = true;
+        }
+
     }
 
     customEvalMenuItems(tmpmenuItems) {
@@ -269,7 +276,7 @@ export default class MegaNavigationBar extends LightningElement {
         if (this.menuItemsChanged) {
             this.menuItemsChanged = false;
             this.calculateNavItemWidth();
-            setTimeout(this.calculateOverflow.bind(this), 1000);
+            setTimeout(this.calculateOverflow.bind(this), 300);
         }
 
     }
@@ -324,6 +331,11 @@ export default class MegaNavigationBar extends LightningElement {
             'slds-grid',
             'slds-has-flexi-truncate'
         ];
+
+        if(this.overflowCalculated === false)
+        {
+            cssClasses.push('slds-hidden');
+        }
 
         // Default is 'left' and only 'center' and 'right' need to be set explicitly
         if (this.menuAlignment === 'center') {

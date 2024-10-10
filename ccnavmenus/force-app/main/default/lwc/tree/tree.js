@@ -8,7 +8,9 @@
 import { LightningElement, api, track } from 'lwc';
 import { TreeData } from './treeData';
 import { keyCodes, deepCopy } from 'c/utilsPrivate';
+
 import * as generalUtils from 'c/gtaUtilsGeneral';
+import * as deviceUtils from 'c/gtaUtilsDevice';
 
 export default class cTree extends LightningElement {
     @api header;
@@ -38,6 +40,7 @@ export default class cTree extends LightningElement {
     @track widthCalculated = false;
     @track clickListener;
     @track resizeListener;
+    @track formFactor = deviceUtils.convertWidthToFormFactor(window.innerWidth);
     
 
     @track origItems = [];
@@ -122,14 +125,31 @@ export default class cTree extends LightningElement {
 
     @api menuAlignmentClass = '';
 
+    get menuAlignmentClassComputed() {
+        return this.menuAlignmentClass + ' slds-wrap';
+    }
+
     @api get treeContainerClasses() {
         let treeContainerClasses = 'slds-tree_container';
         treeContainerClasses += (generalUtils.isObjectEmpty(this.isVertical) === false && this.isVertical) ? ' slds-tree_container-vertical slds-p-around_small ' : ' slds-tree_container-horizontal';
         return treeContainerClasses;
     }
 
+    get firstLevelItems() { 
+      
+        const treeRoot = this.treedata.parse(this.origItems, this.selectedItem, this.selectedContains);
+        let children = treeRoot ? treeRoot.children : [];
+        for(let i=0;i<children.length;i++)
+        {
+            children[i].items = [];
+        }
+        return children;
+        
+    }
+
     connectedCallback()
     {
+        
         this.moreItems.label = this.overflowLabel;
         if(!this.isVertical)
         {
@@ -145,6 +165,10 @@ export default class cTree extends LightningElement {
                 'resize',
                 this.resizeListener
             );
+
+            let portrait = window.matchMedia("(orientation: portrait)");
+
+            portrait.addEventListener("change", this.resizeListener);
             
         }
     }
@@ -219,6 +243,8 @@ export default class cTree extends LightningElement {
     }
 
     renderedCallback() {
+        
+
         if (this._selectedItem) {
             this.setFocusToItem(this._currentFocusedItem, false);
         }
@@ -524,8 +550,25 @@ export default class cTree extends LightningElement {
         try {
             //clearTimeout(this.resizeId);
             //this.resizeId = setTimeout(this.handleMenuResize(e), 500);
-            this.resizeId = generalUtils.debounce(this.handleMenuResize(e), 500);
+            
+            let tmpFormFactor = deviceUtils.convertWidthToFormFactor(window.innerWidth);
+            if(tmpFormFactor !== this.formFactor)
+            {
+                this.formFactor = tmpFormFactor;
+                this.widthCalculated = false;
+                setTimeout(this.prepareWindowResize(), 500);
+            }
+            else 
+            {
+                generalUtils.debounce(this.handleMenuResize(e), 500);
+            }
+            
         } catch(e){}
+    }
+
+    prepareWindowResize()
+    {
+        this.handleWidthCalculations();
     }
 
     handleWidthCalculations()
@@ -538,7 +581,7 @@ export default class cTree extends LightningElement {
             else
             {
                 this.origItems = (generalUtils.isArrayEmpty(this.origItems) === true) ? this.items : this.origItems; 
-                let treeItemElementsObjects = this.template.querySelector('c-tree-item');
+                let treeItemElementsObjects = this.template.querySelector('c-tree-item.slds-tree-hidden');
                 let treeItemElements = (generalUtils.isObjectEmpty(treeItemElementsObjects) === false) ? treeItemElementsObjects.treeItemElements : [];
 
                 if(treeItemElements.length > 0)
@@ -549,11 +592,13 @@ export default class cTree extends LightningElement {
                         {
                             //let computedWidth = treeItemElements[i].offsetWidth + parseInt(getComputedStyle(treeItemElements[i]).marginLeft) + parseInt(getComputedStyle(treeItemElements[i]).marginRight);
                             let computedWidth = generalUtils.getElementWidth(treeItemElements[i]);
-                            this.origItems[i].calcWidth = (generalUtils.isObjectEmpty(this.origItems[i].calcWidth) === true || this.origItems[i].calcWidth > computedWidth) ? computedWidth : this.origItems[i].calcWidth;
+                            //this.origItems[i].calcWidth = (generalUtils.isObjectEmpty(this.origItems[i].calcWidth) === true || this.origItems[i].calcWidth > computedWidth) ? computedWidth : this.origItems[i].calcWidth;
+                            this.origItems[i].calcWidth = computedWidth;
                         }
                         else
                         {
-                            this.moreItems.calcWidth = (generalUtils.isObjectEmpty(this.moreItems.calcWidth) === true) ? generalUtils.getElementWidth(treeItemElements[i]) : this.moreItems.calcWidth;
+                            //this.moreItems.calcWidth = (generalUtils.isObjectEmpty(this.moreItems.calcWidth) === true) ? generalUtils.getElementWidth(treeItemElements[i]) : this.moreItems.calcWidth;
+                            this.moreItems.calcWidth = generalUtils.getElementWidth(treeItemElements[i]);
                         }
                     }
                     this.widthCalculated = true;
