@@ -45,6 +45,17 @@ export default class NavMenu2 extends LightningElement {
     get language() {
         let tmpvalue = (generalUtils.isStringEmpty(this.configObj?.general?.languageFilter) || this.configObj?.general?.languageFilter.trim() === 'undefined') 
         ? 'auto' : this.configObj?.general?.languageFilter;
+
+        try {
+            
+            if(generalUtils.isObjectEmpty(tmpvalue) === false && tmpvalue.trim() === 'auto')
+            {
+                let lang = generalUtils.getURLParameter('language');
+                lang = (generalUtils.isStringEmpty(lang)) ? experienceUtils.getActiveLanguage() : lang;
+                tmpvalue += (!generalUtils.isStringEmpty(lang)) ? lang : '';
+            }
+        } catch(e){}
+
         return tmpvalue;
     }
     
@@ -604,9 +615,10 @@ export default class NavMenu2 extends LightningElement {
     @wire(fetchMenu,{menuId: '$menuId', language: '$language', nameFilter: '$menuName'})
     fetchMenuImperativeWiring(result) 
     {
-
         if (result.data) {
+            
             let resData = JSON.parse(result.data)
+            
             if(resData.menu)
             {
                 try {
@@ -669,16 +681,6 @@ export default class NavMenu2 extends LightningElement {
         {
             this.getMenuFromCache();
         }
-
-        try {
-            
-            if(generalUtils.isObjectEmpty(this.language) === false && this.language.trim() === 'auto')
-            {
-                let lang = generalUtils.getURLParameter('language');
-                lang = (generalUtils.isStringEmpty(lang)) ? experienceUtils.getActiveLanguage() : lang;
-                this.language += (!generalUtils.isStringEmpty(lang)) ? lang : '';
-            }
-        } catch(e){}
 
         this.setStylingProperties();
 
