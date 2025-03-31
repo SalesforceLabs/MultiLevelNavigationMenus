@@ -153,6 +153,12 @@ global with sharing class menusManagerController {
     global static String getMenu(String menuId, String language)
     {
         Map<String,Object> resultMap = new Map<String,Object>();
+
+        if(menuId == null || menuId.trim() == '')
+        {
+            return System.JSON.serialize(resultMap);
+        }
+
         List<treeItem> listTOCLevel1 = new List<treeItem>();
 
         try {
