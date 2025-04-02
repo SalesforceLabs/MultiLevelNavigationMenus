@@ -109,6 +109,22 @@
                                     ></lightning-select>
                                 </div>
 
+                                <template lwc:if={isHorizontalFirstLevelDesktop}>
+                                    <div class={propInputs.dropdownOnHoverDesktop.classes}>
+                                        <lightning-input 
+                                            type={propInputs.dropdownOnHoverDesktop.type} 
+                                            label={propInputs.dropdownOnHoverDesktop.label} 
+                                            class={propInputs.dropdownOnHoverDesktop.classes} 
+                                            checked={propInputs.dropdownOnHoverDesktop.value}
+                                            onchange={propInputs.dropdownOnHoverDesktop.changeHandler} 
+                                            data-key={propInputs.dropdownOnHoverDesktop.key}
+                                            field-level-help={propInputs.dropdownOnHoverDesktop.help} 
+                                            required={propInputs.dropdownOnHoverDesktop.required}
+                                            >
+                                        </lightning-input>
+                                    </div>
+                                </template>
+
                             </lightning-tab>
                             <lightning-tab label="Tablet">
 
@@ -138,6 +154,22 @@
                                     ></lightning-select>
                                 </div>
 
+                                <template lwc:if={isHorizontalFirstLevelTablet}>
+                                    <div class={propInputs.dropdownOnHoverTablet.classes}>
+                                        <lightning-input 
+                                            type={propInputs.dropdownOnHoverTablet.type} 
+                                            label={propInputs.dropdownOnHoverTablet.label} 
+                                            class={propInputs.dropdownOnHoverTablet.classes} 
+                                            checked={propInputs.dropdownOnHoverTablet.value}
+                                            onchange={propInputs.dropdownOnHoverTablet.changeHandler} 
+                                            data-key={propInputs.dropdownOnHoverTablet.key}
+                                            field-level-help={propInputs.dropdownOnHoverTablet.help} 
+                                            required={propInputs.dropdownOnHoverTablet.required}
+                                            >
+                                        </lightning-input>
+                                    </div>
+                                </template>
+
                             </lightning-tab>
                             <lightning-tab label="Mobile">
 
@@ -166,6 +198,22 @@
                                     field-level-help={propInputs.menuModeMobile.help} 
                                     ></lightning-select>
                                 </div>
+
+                                <template lwc:if={isHorizontalFirstLevelMobile}>
+                                    <div class={propInputs.dropdownOnHoverMobile.classes}>
+                                        <lightning-input 
+                                            type={propInputs.dropdownOnHoverMobile.type} 
+                                            label={propInputs.dropdownOnHoverMobile.label} 
+                                            class={propInputs.dropdownOnHoverMobile.classes} 
+                                            checked={propInputs.dropdownOnHoverMobile.value}
+                                            onchange={propInputs.dropdownOnHoverMobile.changeHandler} 
+                                            data-key={propInputs.dropdownOnHoverMobile.key}
+                                            field-level-help={propInputs.dropdownOnHoverMobile.help} 
+                                            required={propInputs.dropdownOnHoverMobile.required}
+                                            >
+                                        </lightning-input>
+                                    </div>
+                                </template>
 
                             </lightning-tab>
                         </lightning-tabset>

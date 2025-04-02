@@ -122,6 +122,27 @@ export default class NavMenu2 extends LightningElement {
 
     }
 
+    get expandOnHover() {
+        let expandOnHoverTmp = false;
+        if(this.isVertical === false && this.isHamburgerMenu === false)
+        {
+            if(this.formFactor === 'Medium')
+            {
+                expandOnHoverTmp = (this.configObj?.general?.dropdownOnHoverTablet === true) ? true : expandOnHoverTmp;
+            }
+            else if(this.formFactor === 'Small')
+            {
+                expandOnHoverTmp = (this.configObj?.general?.dropdownOnHoverMobile === true) ? true : expandOnHoverTmp;
+            }
+            else 
+            {
+                expandOnHoverTmp = (this.configObj?.general?.dropdownOnHoverDesktop === true) ? true : expandOnHoverTmp;
+            }
+            
+        }
+        return expandOnHoverTmp;
+    }
+
     get isDrillDown()
     {
 

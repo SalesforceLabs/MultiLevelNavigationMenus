@@ -66,6 +66,7 @@
                                 text-transform={textTransform}
                                 top-level-item-spacing={topLevelItemSpacing}
                                 menu-alignment={menuAlignment}
+                                expand-on-hover={expandOnHover}
 
                                 onccnavmenus__widthchange={updateDrilldownNavWidth}
                                 onccnavmenus__closehamburgermenu={closeHamburgerMenu}
@@ -86,7 +87,8 @@
                                         class="vertical-menu" 
                                         is-vertical="true" 
                                         uuid={uuid} 
-                                        
+                                        expand-on-hover={expandOnHover}
+
                                         hamburger-menu={isHamburgerMenu}
                                         menu-aria-announcement={menuAriaAnnouncement}
                                         overflow-label={overflowLabel}
@@ -169,7 +171,8 @@
                                         selected-contains="true" 
                                         is-vertical={isVertical} 
                                         uuid={uuid} 
-                                        
+                                        expand-on-hover={expandOnHover}
+
                                         class="vertical-menu"
                                         menu-aria-announcement={menuAriaAnnouncement}
                                         overflow-label={overflowLabel}
@@ -208,7 +211,7 @@
                                 menu-alignment={menuAlignment}
                                 goto-label={allLabel}
                                 additional-overflow-width={additionalOverflowWidth}
-
+                                expand-on-hover={expandOnHover}
                                 
                                 ></c-mega-navigation-bar>
                         </nav>  
@@ -232,7 +235,7 @@
                                 text-transform={textTransform}
                                 top-level-item-spacing={topLevelItemSpacing}
                                 menu-alignment={menuAlignment}
-
+                                expand-on-hover={expandOnHover}
                                 
                             ></c-drilldown-navigation-bar>
                         </nav>
@@ -250,7 +253,8 @@
                                     menu-alignment-class={menuAlignmentClass}
                                     is-vertical={isVertical} 
                                     uuid={uuid}                                     
-                                    
+                                    expand-on-hover={expandOnHover}
+
                                     menu-aria-announcement={menuAriaAnnouncement}
                                     overflow-label={overflowLabel}
 

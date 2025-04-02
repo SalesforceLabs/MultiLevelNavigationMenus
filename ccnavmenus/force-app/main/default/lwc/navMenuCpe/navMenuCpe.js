@@ -101,6 +101,18 @@ export default class NavMenuCpe extends LightningElement {
                     { label: 'Hidden', value: 'hidden'}
                 ],
             },
+            dropdownOnHoverDesktop: {
+                key: 'dropdownOnHoverDesktop', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'Dropdown On Hover', //label used for html lighting-input tag
+                type: 'toggle', //type used for html lightning-input tag
+                help: 'Toggle opening dropdown menus on hover in addition to just on clicks', //tooltip / help text used for html lightning-input tag
+                required: false, //required used for html lightning-input tag
+                valuePath: 'general.dropdownOnHoverDesktop', //property path within the value object
+                value: false, //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
+                changeHandler: this.handleDropdownOnHoverDesktopChange, //onchange handler for html lightning-input tag
+            },
             menuTypeTablet: {
                 key: 'menuTypeTablet', //key used for html lightning-input tag identifier, must match key in propInputs
                 label: 'Menu Type - Tablet', //label used for html lighting-input tag
@@ -136,6 +148,18 @@ export default class NavMenuCpe extends LightningElement {
                     { label: 'Hidden', value: 'hidden'}
                 ],
             },
+            dropdownOnHoverTablet: {
+                key: 'dropdownOnHoverTablet', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'Dropdown On Hover', //label used for html lighting-input tag
+                type: 'toggle', //type used for html lightning-input tag
+                help: 'Toggle opening dropdown menus on hover in addition to just on clicks', //tooltip / help text used for html lightning-input tag
+                required: false, //required used for html lightning-input tag
+                valuePath: 'general.dropdownOnHoverTablet', //property path within the value object
+                value: false, //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
+                changeHandler: this.handleDropdownOnHoverTabletChange, //onchange handler for html lightning-input tag
+            },
             menuTypeMobile: {
                 key: 'menuTypeMobile', //key used for html lightning-input tag identifier, must match key in propInputs
                 label: 'Menu Type - Mobile', //label used for html lighting-input tag
@@ -170,6 +194,18 @@ export default class NavMenuCpe extends LightningElement {
                     { label: 'Behind Hamburger Toggle', value: 'hamburger' },
                     { label: 'Hidden', value: 'hidden'}
                 ],
+            },
+            dropdownOnHoverMobile: {
+                key: 'dropdownOnHoverMobile', //key used for html lightning-input tag identifier, must match key in propInputs
+                label: 'Dropdown On Hover', //label used for html lighting-input tag
+                type: 'toggle', //type used for html lightning-input tag
+                help: 'Toggle opening dropdown menus on hover in addition to just on clicks', //tooltip / help text used for html lightning-input tag
+                required: false, //required used for html lightning-input tag
+                valuePath: 'general.dropdownOnHoverMobile', //property path within the value object
+                value: false, //default value
+                doSetDefaultValue: true, //set to true to set this lightning-input's default value to what is stored in the value object
+                classes: defaultCSSClasses + '', //css classes for html lightning-input tag
+                changeHandler: this.handleDropdownOnHoverMobileChange, //onchange handler for html lightning-input tag
             },
             cacheName: {
                 key: 'cacheName', //key used for html lightning-input tag identifier, must match key in propInputs
@@ -995,6 +1031,18 @@ export default class NavMenuCpe extends LightningElement {
         }
     }
 
+    get isHorizontalFirstLevelDesktop() {
+        return this.propInputs?.menuModeDesktop?.value === 'horizontalFirstLevel';
+    }
+
+    get isHorizontalFirstLevelTablet() {
+        return this.propInputs?.menuModeTablet?.value === 'horizontalFirstLevel';
+    }
+
+    get isHorizontalFirstLevelMobile() {
+        return this.propInputs?.menuModeMobile?.value === 'horizontalFirstLevel';
+    }
+
     get modalClass() {
         let classNames = 'slds-modal slds-modal_large slds-fade-in-open';
         return classNames;
@@ -1562,6 +1610,42 @@ export default class NavMenuCpe extends LightningElement {
 
         let tmpvalueObj = this.getValueObj();
         tmpvalueObj.styles.hideHamburgerMenuAnimation = inputValue;
+
+        this.dispatchEvent(new CustomEvent("valuechange", 
+            {detail: {value: JSON.stringify(tmpvalueObj)}}));
+
+    }
+    
+    handleDropdownOnHoverDesktopChange(e) {
+        let inputValue = e.detail.checked;
+        this.propInputs.dropdownOnHoverDesktop.value = inputValue;
+
+        let tmpvalueObj = this.getValueObj();
+        tmpvalueObj.general.dropdownOnHoverDesktop = inputValue;
+
+        this.dispatchEvent(new CustomEvent("valuechange", 
+            {detail: {value: JSON.stringify(tmpvalueObj)}}));
+
+    }
+
+    handleDropdownOnHoverTabletChange(e) {
+        let inputValue = e.detail.checked;
+        this.propInputs.dropdownOnHoverTablet.value = inputValue;
+
+        let tmpvalueObj = this.getValueObj();
+        tmpvalueObj.general.dropdownOnHoverTablet = inputValue;
+
+        this.dispatchEvent(new CustomEvent("valuechange", 
+            {detail: {value: JSON.stringify(tmpvalueObj)}}));
+
+    }
+
+    handleDropdownOnHoverMobileChange(e) {
+        let inputValue = e.detail.checked;
+        this.propInputs.dropdownOnHoverMobile.value = inputValue;
+
+        let tmpvalueObj = this.getValueObj();
+        tmpvalueObj.general.dropdownOnHoverMobile = inputValue;
 
         this.dispatchEvent(new CustomEvent("valuechange", 
             {detail: {value: JSON.stringify(tmpvalueObj)}}));

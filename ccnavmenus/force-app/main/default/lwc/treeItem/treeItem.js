@@ -40,7 +40,8 @@ export default class cTreeItem extends LightningElement {
     @api level = 0;
     @api isVertical = false;
     @api uuid;
-   
+    @api expandOnHover = false;
+
     @api menuAriaAnnouncement='';
 
     //styling inputs
@@ -322,6 +323,32 @@ export default class cTreeItem extends LightningElement {
     preventDefaultAndStopPropagation(event) {
         event.preventDefault();
         event.stopPropagation();
+    }
+
+    handleParentMouseOver(event) {
+
+        if (this.expandOnHover === true && this.isVertical === false) 
+        {
+            if(this.isExpanded === false && this.level === 1 && generalUtils.isArrayEmpty(this._children) === false)
+            {
+            let doClick = false;
+            if (event?.target?.role === 'menuitem') {
+              doClick = true;
+            }
+            else if(event?.target?.role === 'link')
+            {
+              event.target.querySelector("button").click();
+              doClick = false;
+            }
+            if (doClick === true) {
+              this.handleClick(event);
+            }
+            }
+            else if(generalUtils.isArrayEmpty(this._children) === true && this.isExpanded === true && this.level === 1)
+            {
+              document.body.click();
+            }
+        }
     }
 
     handleClick(event) {

@@ -6,7 +6,7 @@
  -->
 
  <template>
-    <div role="ccnavMenu-treeItemCSS">
+    <div role="ccnavMenu-treeItemCSS" onmouseover={handleParentMouseOver}>
         <template if:true={isRoot}>
             <ul class={menuAlignmentClass}>
             <template for:each={children} for:item="item" for:index="index">
@@ -34,7 +34,8 @@
                             child-items={item.node.children}
                             level={nextLevel}
                             is-vertical={isVertical}
-                            
+                            expand-on-hover={expandOnHover}
+
                             menu-aria-announcement={menuAriaAnnouncement}
 
                             brand-navigation-color-text={brandNavigationColorText}
@@ -76,6 +77,7 @@
                             aria-expanded={item.node.strexpanded}
                             level={nextLevel}
                             is-vertical={isVertical}
+                            expand-on-hover={expandOnHover}
                             
                             menu-aria-announcement={menuAriaAnnouncement}
 
@@ -230,6 +232,7 @@
                                         child-items={item.node.children}
                                         level={nextLevel}
                                         is-vertical={isVertical}
+                                        expand-on-hover={expandOnHover}
                                         
                                         menu-aria-announcement={menuAriaAnnouncement}
                                         
@@ -272,6 +275,7 @@
                                         aria-expanded={item.node.strexpanded}
                                         level={nextLevel}
                                         is-vertical={isVertical}
+                                        expand-on-hover={expandOnHover}
                                         
                                         menu-aria-announcement={menuAriaAnnouncement}
 

@@ -5,6 +5,7 @@
             aria-label={componentNameLabel}
             class=""
             onclick={handleNavClick}
+            onmouseout={handleNavMouseout}
             >
                 <ul
                     class={menuAlignmentClassCalculated}
@@ -45,6 +46,7 @@
                                         aria-expanded={item.active}
                                         aria-selected={item.isSelected}
                                         onclick={handleParentClick}
+                                        onmouseover={handleParentMouseOver}
                                         onkeydown={handleKeyDown}
                                         onfocus={handleFocus}
                                     >
@@ -112,6 +114,7 @@
                                     target={item.target}
                                     aria-selected={item.isSelected}
                                     onclick={handleLeafClick}
+                                    onmouseover={handleNavMouseout}
                                     onkeydown={handleKeyDown}
                                     onfocus={handleFocus}
                                 >

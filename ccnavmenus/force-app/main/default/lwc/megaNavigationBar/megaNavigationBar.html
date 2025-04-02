@@ -1,9 +1,10 @@
 <template>
-    <div role="menubarnav" class={menuAlignmentClass}>
+    <div role="menubarnav" class={menuAlignmentClass} >
         <nav
         aria-label={componentNameLabel}
         class=""
         onclick={handleNavClick}
+        onmouseout={handleNavMouseout}
         role="menubarnav"
         
         >
@@ -46,6 +47,7 @@
                                     aria-expanded={item.active}
                                     aria-selected={item.selected}
                                     onclick={handleParentClick}
+                                    onmouseover={handleParentMouseOver}
                                     onkeydown={handleKeyDown}
                                     onfocus={handleFocus}
                                 >
@@ -88,7 +90,7 @@
 
                                 <template if:true={item.active}>
 
-                                    <div class="megaPopover slds-p-horizontal_x-large slds-p-bottom_x-large">
+                                    <div class="megaPopover slds-p-horizontal_x-large slds-p-bottom_x-large" role="megaPopover">
 
                                         <c-mega-navigation-list
                                             parent-item={item}
@@ -117,6 +119,7 @@
                                 target={item.target}
                                 aria-selected={item.selected}
                                 onclick={handleLeafClick}
+                                onmouseover={handleNavMouseout}
                                 onkeydown={handleKeyDown}
                                 onfocus={handleFocus}
                             >

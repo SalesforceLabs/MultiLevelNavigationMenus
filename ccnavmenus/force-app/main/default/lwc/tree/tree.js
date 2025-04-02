@@ -29,6 +29,7 @@ export default class cTree extends LightningElement {
     @api topLevelItemSpacing = 20;  
     @api menuAriaAnnouncement='';
     @api menuAlignment = 'Left';
+    @api expandOnHover = false;
 
     @api overflowLabel = 'More';
 

@@ -33,6 +33,7 @@ export default class MegaNavigationBar extends LightningElement {
     @api uuid;
     @api gotoLabel = 'Go to';
     @api additionalOverflowWidth = 0;
+    @api expandOnHover = false;
 
 
     //styling inputs
@@ -418,6 +419,66 @@ export default class MegaNavigationBar extends LightningElement {
 
         if (activeItem) {
             this.setItemActive(activeItem.id, false);
+        }
+    }
+
+    handleParentMouseOver(event) {
+        if(this.expandOnHover === true)
+        {
+            let doClick = true;
+            if(event?.target?.role === 'menuitem' && generalUtils.isStringEmpty(event?.target?.dataset?.id) === false)
+            {
+                const activeItem = this.visibleMenuItems.find((i) => i.active)?.id;
+                if(generalUtils.isStringEmpty(activeItem) === false && activeItem === event?.target?.dataset?.id)
+                {
+                    doClick = false;
+                }
+
+                if(doClick === true)
+                {
+                    this.handleParentClick(event);
+                }
+            }                      
+        }
+    }
+
+    handleNavMouseout(event) {
+        event.stopPropagation();
+        
+        if(this.expandOnHover === true )
+        {
+            let doClose = false;
+
+           
+
+            if(event?.target?.role === 'menuitem' && generalUtils.isStringEmpty(event?.target?.dataset?.id) === false)
+            {
+                const activeItem = this.visibleMenuItems.find((i) => i.active)?.id;
+                if(generalUtils.isStringEmpty(activeItem) === false && activeItem !== event?.target?.dataset?.id)
+                {
+                    doClose = true;
+                }
+            }
+            else if(event?.target?.role === 'megaPopover' 
+                || event?.target?.tagName === 'C-MEGA-NAVIGATION-LIST' 
+                || event?.target?.role === 'none'
+                || event?.target?.tagName === 'C-PRIMITIVE-ICON')
+            {
+                doClose = false;
+            }
+            else
+            {
+                doClose = true;
+            }
+            
+            
+
+            if(doClose === true)
+            {
+                this.closeSubMenus();
+            }
+
+            
         }
     }
 
