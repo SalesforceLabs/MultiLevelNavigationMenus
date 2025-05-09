@@ -52,7 +52,7 @@ export default class NavMenu2 extends LightningElement {
             {
                 let lang = generalUtils.getURLParameter('language');
                 lang = (generalUtils.isStringEmpty(lang)) ? experienceUtils.getActiveLanguage() : lang;
-                tmpvalue += (!generalUtils.isStringEmpty(lang)) ? lang : '';
+                tmpvalue += (!generalUtils.isStringEmpty(lang)) ? lang.replace('-','_') : '';
             }
         } catch(e){}
 
